@@ -17,10 +17,11 @@ class general() :
       self.echequier[ (i,6) ]=pion(Noir)
       self.echequier[ (i,7) ]=ordre[i](Noir)
      
-   def traduction():
-    ch1=input(f"Au tour des {self.tour_de_jouer}s, quelle pièce voulez-vous jouer?")
+   def traduction(self):
+    #on convertit les coordonnées a3,b7,etc. en des coordonnées sur l'ensemble [0,7]
     
- #on convertit les coordonnées a3,b7,etc. en des coordonnées sur l'ensemble [0,7]
+    ch1=input(f"Au tour des {self.tour_de_jouer}s, quelle pièce voulez-vous jouer?")
+
     abcisse_depart=ord(ch1[0])-97
     ordonnee_depart=int(ch1[1])-1
     
@@ -31,8 +32,9 @@ class general() :
     
     return abcisse_depart, ordonnee_depart, abcisse_arrivee, ordonnee_arrivee
     
+    
    def main(self):
-    pass
+    
     
     
    
