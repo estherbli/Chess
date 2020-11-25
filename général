@@ -1,2 +1,5 @@
 class general :
-  
+  def __init__(self):
+    self.turn="Blanc"
+    self
+    
