@@ -1,5 +1,13 @@
-class general :
+class general() :
+
   def __init__(self):
     self.turn="Blanc"
-    self
+    self.echequier={}
+    self.placement_initial()
+    print("welcome players")
+    
+  def placement_initial(self):
+    
+    
+    
     
