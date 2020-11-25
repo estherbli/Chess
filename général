@@ -1,12 +1,22 @@
+import numpy as np
+
 class general() :
 
   def __init__(self):
-    self.turn="Blanc"
-    self.echequier={}
+    self.tour_de_jouer="Blanc"
+    self.echequier=np.zeros(8,8)
     self.placement_initial()
     print("welcome players")
     
   def placement_initial(self):
+    ordre=[tour, cavalier, fou, reine, roi, fou, cavalier, tour]
+    
+    for i in range(8):
+      self.echequier
+    
+    for i in range(8):
+      self.echequier[i][1]=pion(Blanc)
+      self.echequier[i][6]=pion(Noir)
     
     
     
