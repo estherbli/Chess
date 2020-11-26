@@ -34,6 +34,55 @@ class general() :
     
     
    def main(self):
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+   
+class general() :
+    def __init__(self):
+        self.echequier=[["tourN", "cavalierN", "fouN", "ReineN","RoiN", "fouN", "cavalierN", "tourN"],
+        ["pionN","pionN","pionN","pionN","pionN","pionN","pionN","pionN"],
+        [""]*8,
+        [""]*8,
+        [""]*8,
+        [""]*8,
+        ["pionB","pionB","pionB","pionB","pionB","pionB","pionB","pionB"],
+        ["tourB", "cavalierB", "fouB", "ReineB","RoiB", "fouB", "cavalierB", "tourB"]]
+        self.tour_de_jouer="Blanc"
+        self.setup()
+    
+    def setup(self):
+        LARGEUR=LONGUEUR=560
+        
+        import pygame
+ 
+        pygame.init()
+        FPS=20 #frame per second
+        main_surface =pygame.display.set_mode((900,LONGUEUR))
+        main_surface.fill((0, 0, 128))
+        pygame.display.set_caption('Chess') #titre de la fenêtre
+        
+        #for i in ["tourN", "cavalierN", "fouN", "ReineN","RoiN", "fouN", "cavalierN", "tourN"]:
+            #surface = pygame.image.load('C:\\Users\\emili\\OneDrive\\Documents\\CPES-2\\informatique\\chess\\pièces\\bB.png')
+        
+        #main_surface.blit(surface, (100,200))
+
+        echequier=pygame.image.load('C:\\Users\\emili\\OneDrive\\Documents\\CPES-2\\informatique\\chess\\echequier.png')
+        echequier=pygame.transform.scale(echequier, (LARGEUR,LONGUEUR)) #multiple de 8
+        main_surface.blit(echequier, (0,0))
+
+        rect = pygame.Rect((LARGEUR, 0), (32, 900-LONGUEUR)) # premier tuple=position, deuxième la taille
+
+        image = pygame.Surface((900-LONGUEUR, 50))  # The tuple represent size.
+        image.fill((200,200,200))  # We fill our surface with a nice white color (by default black).
+
+        main_surface.blit(image, rect)
+
+        pygame.display.flip() #met à jour l'écran
+        
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
     
     
     
