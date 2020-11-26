@@ -1,22 +1,100 @@
-class general() :
+import pygame
 
-  def __init__(self):
+class general() :
+    def __init__(self):
+        self.echequier=[["tourN", "cavalierN", "fouN", "ReineN","RoiN", "fouN", "cavalierN", "tourN"],
+        ["pionN","pionN","pionN","pionN","pionN","pionN","pionN","pionN"],
+        [""]*8,
+        [""]*8,
+        [""]*8,
+        [""]*8,
+        ["pionB","pionB","pionB","pionB","pionB","pionB","pionB","pionB"],
+        ["tourB", "cavalierB", "fouB", "ReineB","RoiB", "fouB", "cavalierB", "tourB"]]
+        self.tour_de_jouer="Blanc"
+        
+        self.largeur_echequier=560 #multiple de 8, mis ici pour pouvoir le changer facilement à loisir
+        self.main_surface=pygame.display.set_mode((900,self.largeur_echequier))
+        
+        self.setup_board()
+        
+        #on charge les pièces ici pour n'avoir à le faire qu'une seule fois (c'est une opération lourde)
+        pieces=["tourN", "cavalierN", "fouN", "ReineN","RoiN", "pionN", "pionB", "tourB", "cavalierB", "fouB", "ReineB","RoiB"]
+        self.images_pieces={}
+        for i in pieces:
+            self.images_pieces[i]=pygame.image.load(f'C:\\Users\\emili\\OneDrive\\Documents\\CPES-2\\informatique\\chess\\pièces\\{i}.png')
+        
+        self.setup_pieces()
+        self.turn()
     
-    self.tour_de_jouer="Blanc"
-    self.echequier={}
-    self.placement_initial()
-    print("welcome players")
+    def setup_pieces(self):
+        y=0
+        for i in range(8):
+            x=0
+            for j in range(8):
+                piece=self.echequier[i][j]
+                if piece!="":
+                    image=self.images_pieces[piece]
+                    self.main_surface.blit(image, (x,y)) 
+                x=70*j+70
+            y=70*i+70
+
+        pygame.display.flip() #met à jour l'écran
     
-  def placement_initial(self):
-    
-    ordre=[tour, cavalier, fou, reine, roi, fou, cavalier, tour]
-    
-    for i in range(8):
-      self.echequier[ (i,0) ]=ordre[i](Blanc)
-      self.echequier[ (i,1) ]=pion(Blanc)
-      self.echequier[ (i,6) ]=pion(Noir)
-      self.echequier[ (i,7) ]=ordre[i](Noir)
-     
+    def setup_board(self):
+        self.largeur_echequier=LARGEUR=LONGUEUR=560 #multiple de 8
+        
+        pygame.init()
+        #FPS=20 #frame per second ?????????????????????????????????????????????????????????????
+        self.main_surface.fill((200, 200, 200))
+        pygame.display.set_caption('Chess') #titre de la fenêtre
+        
+        #for i in ["tourN", "cavalierN", "fouN", "ReineN","RoiN", "fouN", "cavalierN", "tourN"]:
+            #surface = pygame.image.load('C:\\Users\\emili\\OneDrive\\Documents\\CPES-2\\informatique\\chess\\pièces\\bB.png')
+        
+        #main_surface.blit(surface, (100,200))
+
+        echequier=pygame.image.load('C:\\Users\\emili\\OneDrive\\Documents\\CPES-2\\informatique\\chess\\echequier2.png')
+        echequier=pygame.transform.scale(echequier, (LARGEUR,LONGUEUR)) #REDIMENSION
+        self.main_surface.blit(echequier, (0,0))
+
+#rectangle gris en haut à droite
+        rect = pygame.Rect((LARGEUR, 0), (20, 900-LONGUEUR)) # premier tuple=position, deuxième la taille
+
+        image = pygame.Surface((900-LONGUEUR, 27))  # The tuple represent size.
+        image.fill((200,200,200))  # rectangle gris en heut à droite pour écrire
+
+        self.main_surface.blit(image, rect)
+
+#texte
+        # pick a font you have and set its size
+        myfont = pygame.font.SysFont("Spectral", 40)
+        # apply it to text on a label
+        label = myfont.render("WELCOME PLAYER", 1, (0,0,0))
+        # put the label object on the screen at point x=570, y=2
+        self.main_surface.blit(label, (570,2))
+
+        pygame.display.flip() #met à jour l'écran
+        
+        #running = True
+        #while running:
+            #for event in pygame.event.get():
+                #if event.type == pygame.QUIT:
+                    #running = False
+        
+        #Permet de garder la fenêtre ouverte jusqu'à ce que l'utilisateur veuille la fermer
+        #Par défaut l'evennement QUIT correspond à cliquer sur la croix
+
+    def turn(self):
+        #clock = pg.time.Clock()
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+        pygame.quit()
+        #clock.tick(30)
+   
+   
    def traduction(self):
     #on convertit les coordonnées a3,b7,etc. en des coordonnées sur l'ensemble [0,7]
     
@@ -31,67 +109,5 @@ class general() :
     ordonnee_arrivee=int(ch2[1])-1
     
     return abcisse_depart, ordonnee_depart, abcisse_arrivee, ordonnee_arrivee
-    
-    
-   def main(self):
----------------------------------------------------------------------------------------------------------------------------------------------------------
-   
-class general() :
-    def __init__(self):
-        self.echequier=[["tourN", "cavalierN", "fouN", "ReineN","RoiN", "fouN", "cavalierN", "tourN"],
-        ["pionN","pionN","pionN","pionN","pionN","pionN","pionN","pionN"],
-        [""]*8,
-        [""]*8,
-        [""]*8,
-        [""]*8,
-        ["pionB","pionB","pionB","pionB","pionB","pionB","pionB","pionB"],
-        ["tourB", "cavalierB", "fouB", "ReineB","RoiB", "fouB", "cavalierB", "tourB"]]
-        self.tour_de_jouer="Blanc"
-        self.setup()
-    
-    def setup(self):
-        LARGEUR=LONGUEUR=560
-        
-        import pygame
- 
-        pygame.init()
-        FPS=20 #frame per second
-        main_surface =pygame.display.set_mode((900,LONGUEUR))
-        main_surface.fill((0, 0, 128))
-        pygame.display.set_caption('Chess') #titre de la fenêtre
-        
-        #for i in ["tourN", "cavalierN", "fouN", "ReineN","RoiN", "fouN", "cavalierN", "tourN"]:
-            #surface = pygame.image.load('C:\\Users\\emili\\OneDrive\\Documents\\CPES-2\\informatique\\chess\\pièces\\bB.png')
-        
-        #main_surface.blit(surface, (100,200))
-
-        echequier=pygame.image.load('C:\\Users\\emili\\OneDrive\\Documents\\CPES-2\\informatique\\chess\\echequier.png')
-        echequier=pygame.transform.scale(echequier, (LARGEUR,LONGUEUR)) #multiple de 8
-        main_surface.blit(echequier, (0,0))
-
-        rect = pygame.Rect((LARGEUR, 0), (32, 900-LONGUEUR)) # premier tuple=position, deuxième la taille
-
-        image = pygame.Surface((900-LONGUEUR, 50))  # The tuple represent size.
-        image.fill((200,200,200))  # We fill our surface with a nice white color (by default black).
-
-        main_surface.blit(image, rect)
-
-        pygame.display.flip() #met à jour l'écran
-        
-        running = True
-        while running:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-    
-    
-    
-   
-   
-    
-    
-    
-    
-    
     
     
