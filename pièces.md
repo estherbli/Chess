@@ -6,8 +6,8 @@ Y = {1:0, 2:1, 3:2, 4:3, 5:4, 6:5, 7:6, 8:7}
 class Piece:
   def __init__(self, couleur, positionix, positioniy, nom):
     self.couleur = couleur
-    self.positionx = positionix
-    self.positiony = positioniy
+    self.x = positionix
+    self.y = positioniy
     #nom est le type de pièce
     self.nom = nom
   
@@ -23,19 +23,20 @@ class Piece:
     #vérifier que le déplacement est possible pour la pièce
     if dpossible(self, x, y):
       #change la position de la pièce
-      self.position = [x,y]
+      self.x = x
+      self.y = y
     else : return 'Déplacement impossible'
     
   def dpossible(self):
     #vérifie que le déplacement est possible
+      return True or False
     
 class fou(Piece):
   def __init__(self, couleur, positionix, positioniy, nom=fou):
     Piece.__init__(self, couleur,positionix, positioniy, nom)
   
-  #est ce qu'on doit considérer qu'une personne peut essayer de ne pas déplacer une pièce?
   def dpossible(self, x, y):
-    if x - self.positionx == y - self.positiony : 
+    if (x - self.x == y - self.y) and not( y == self.y): 
       return True
     else : return False
     
@@ -48,17 +49,17 @@ class tour(Piece):
     self.joué = False
   
   def dpossible(self, x, y):
-    if x == self.positionx or y == self.positiony : 
+    if (x == self.x and y!=self.y) or (x!=self.x and y == self.y): 
       return True
     else : return False
     
 
 class dame(Piece):
-  def __init__(self, couleur, positionix, positioniy nom=dame):
+  def __init__(self, couleur, positionix, positioniy, nom=dame):
     Piece.__init__(self, couleur,positionix, positioniy, nom)
     
   def dpossible(self, x, y):
-    if (x == self.positionx or y == self.positiony) or (x - self.positionx == y - self.positiony) : 
+    if (x == self.x and y!=self.y) or (x!=self.x and y == self.y) or ((x - self.x == y - self.y) and not( y == self.y)) : 
       return True
     else : return False
     
@@ -70,16 +71,44 @@ class roi(Piece):
   
   #sans prendre en compte l'échec
   def dpossible(x,y):
+    if NotEchec:
+      davant_arriere1case = ( x == self.x and ((y == self.y + 1) or (y == self.y-1)))
+      ddiagonale1case = (x == self.x + 1 and y == self.y + 1)or (x == self.x - 1 and y == self.y - 1)
+      dcoté1case = (( y == self.y and ((x == self.x + 1) or (x == self.x-1)) )
+      if davant_arriere1case or dcoté1case or ddiagonale1case :
+        return True
+    
+    else : return False
+    
 
 class cavalier(Piece):
-  def __init__(self, couleur, positionix, positioniy nom=cavalier):
+  def __init__(self, couleur, positionix, positioniy, nom=cavalier):
     Piece.__init__(self, couleur,positionix, positioniy, nom)
+  
+  def dpossible(x,y):
+    dLavant = ( y == self.y + 2  and ((x == self.x + 1) or (x == self.x - 1)))
+    dLarriere = (y == self.x - 1 and ((x == self.x + 1) or (x == self.x - 1)))
+    dLdroite = (( x == self.x + 2 and ((y == self.y + 1) or (y == self.y - 1)))
+    dLgauche = (( x == self.x - 2 and ((y == self.y + 1) or (y == self.y - 1)))
+    if dLavant or dLarrière or dLdroite or dLgauche :
+      return True
+    else : return false
     
 class pion(Piece):
   def __init__(self, couleur, positionix, positioniy, nom=pion):
     Piece.__init__(self, couleur, positionix, positioniy, nom)
     #variable pour savoir si l'avancée de 2 cases est possible
     self.joué = False
+    #peut être transformer par une autre pièce (ou plutôt détruit et initialise une autre pièce à la place)
+    self.peutchanger = False
+  def dpossible(self, x, y):
+    #cas de prise en diagonale à considérer
+    if not(self.joué):
+      if (y == self.y +2) or (y == self.y +1) or (prise and y == self.y +1 and x == self.x +1) or (prise and y == self.y +1 and x == self.x -1):
+        return True
+    if (y == self.y +1) or (prise and y == self.y +1 and x == self.x +1) or (prise and y == self.y +1 and x == self.x -1): return True
+    else : return false
+    
 
     
     
