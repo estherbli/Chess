@@ -25,7 +25,7 @@ class general() :
         
         self.setup_pieces()
         self.turn()
-    
+
     def setup_pieces(self):
         y=0
         for i in range(8):
@@ -86,28 +86,34 @@ class general() :
 
     def turn(self):
         #clock = pg.time.Clock()
+        image_vide=pygame.image.load('C:\\Users\\emili\\OneDrive\\Documents\\CPES-2\\informatique\\chess\\Empty.png')
+        image_vide=pygame.transform.scale(image_vide, (70, 70))
+        boutton=image_vide
+
         running = True
         while running:
+            a=0
+            b=0
+            bouttons={}
+            for i in range(8):
+                for j in range(8):
+                    bouttons[i,j]=pygame.Rect(a+j*70,b+i*70,70,70)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+                
+                if event.type == pygame.MOUSEBUTTONDOWN:
+            # Set the x, y postions of the mouse click
+                    x, y = event.pos
+
+
+
+                    for key in bouttons :
+                        if bouttons[key].collidepoint(x, y):
+                            print(f'clicked on coordinates{key}')
+
         pygame.quit()
         #clock.tick(30)
-   
-   
-   def traduction(self):
-    #on convertit les coordonnées a3,b7,etc. en des coordonnées sur l'ensemble [0,7]
-    
-    ch1=input(f"Au tour des {self.tour_de_jouer}s, quelle pièce voulez-vous jouer?")
 
-    abcisse_depart=ord(ch1[0])-97
-    ordonnee_depart=int(ch1[1])-1
-    
-    ch2=input(f"Où voulez-vous déplacer votre {self.echequier[()]}")
-    
-    abcisse_arrivee=ord(ch2[0])-97
-    ordonnee_arrivee=int(ch2[1])-1
-    
-    return abcisse_depart, ordonnee_depart, abcisse_arrivee, ordonnee_arrivee
     
     
