@@ -43,7 +43,7 @@ class fou(Piece):
     
 
 class tour(Piece):
-  def __init__(self, couleur, positionix, positioniy, nom=tour):
+  def __init__(self, couleur, positionix, positioniy, nom='tour'):
     Piece.__init__(self, couleur,positionix, positioniy, nom)
     #variable bool pour le roque
     self.joué = False
@@ -55,7 +55,7 @@ class tour(Piece):
     
 
 class dame(Piece):
-  def __init__(self, couleur, positionix, positioniy, nom=dame):
+  def __init__(self, couleur, positionix, positioniy, nom='dame'):
     Piece.__init__(self, couleur,positionix, positioniy, nom)
     
   def dpossible(self, x, y):
@@ -64,7 +64,7 @@ class dame(Piece):
     else : return False
     
 class roi(Piece):
-  def __init__(self, couleur, positionix, positioniy, nom=roi):
+  def __init__(self, couleur, positionix, positioniy, nom='roi'):
     Piece.__init__(self, couleur,positionix, positioniy, nom)
     #variable bool pour vérifier si le roque est possible
     self.joué = False
@@ -74,28 +74,28 @@ class roi(Piece):
     if NotEchec:
       davant_arriere1case = ( x == self.x and ((y == self.y + 1) or (y == self.y-1)))
       ddiagonale1case = (x == self.x + 1 and y == self.y + 1)or (x == self.x - 1 and y == self.y - 1)
-      dcoté1case = (( y == self.y and ((x == self.x + 1) or (x == self.x-1)) )
-      if davant_arriere1case or dcoté1case or ddiagonale1case :
+      dcoté1case = (( y == self.y and ((x == self.x + 1) or (x == self.x-1)) ))
+      if davant_arriere1case or dcoté1case or ddiagonale1case:
         return True
     
     else : return False
     
 
 class cavalier(Piece):
-  def __init__(self, couleur, positionix, positioniy, nom=cavalier):
+  def __init__(self, couleur, positionix, positioniy, nom='cavalier'):
     Piece.__init__(self, couleur,positionix, positioniy, nom)
   
   def dpossible(x,y):
     dLavant = ( y == self.y + 2  and ((x == self.x + 1) or (x == self.x - 1)))
     dLarriere = (y == self.x - 1 and ((x == self.x + 1) or (x == self.x - 1)))
-    dLdroite = (( x == self.x + 2 and ((y == self.y + 1) or (y == self.y - 1)))
-    dLgauche = (( x == self.x - 2 and ((y == self.y + 1) or (y == self.y - 1)))
+    dLdroite = (( x == self.x + 2 and ((y == self.y + 1) or (y == self.y - 1))))
+    dLgauche = (( x == self.x - 2 and ((y == self.y + 1) or (y == self.y - 1))))
     if dLavant or dLarrière or dLdroite or dLgauche :
       return True
     else : return false
     
 class pion(Piece):
-  def __init__(self, couleur, positionix, positioniy, nom=pion):
+  def __init__(self, couleur, positionix, positioniy, nom='pion'):
     Piece.__init__(self, couleur, positionix, positioniy, nom)
     #variable pour savoir si l'avancée de 2 cases est possible
     self.joué = False
