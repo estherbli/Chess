@@ -18,8 +18,12 @@ class Piece:
     
   def deplacement(self, position):
     #traduit position entrée par joueur (on considère qu'il n'entre que des positions possibles c'est à dire de a à h et de 1 à 7
-    x = X[position[0]]
-    y = Y[position [1]]
+    #essai de prise en compte des bords de l'échiquier
+    if (x not in X) or (y not in Y):
+      return 'Déplacement impossible'
+    else:
+      x = X[position[0]]
+      y = Y[position [1]]
     #vérifier que le déplacement est possible pour la pièce
     if dpossible(self, x, y):
       #change la position de la pièce
