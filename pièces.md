@@ -1,5 +1,6 @@
 # Chess
 #dictionnaire permettant traduction de lettre à position
+#plus besoin 
 X = {'a':0, 'b':1, 'c':2, 'd':3, 'e':4, 'f':5, 'g':6, 'h':7}
 Y = {1:0, 2:1, 3:2, 4:3, 5:4, 6:5, 7:6, 8:7}
 
@@ -29,11 +30,13 @@ class Piece:
       #change la position de la pièce
       self.x = x
       self.y = y
-    else : return 'Déplacement impossible'
+    else : return 'Déplacement impossible' #à changer?
     
   def dpossible(self):
     #vérifie que le déplacement est possible
       return True or False
+    #rajouter vérification déplacment sans sauter au dessus d'autres pièces
+ 
     
 class fou(Piece):
   def __init__(self, couleur, positionix, positioniy, nom=fou):
