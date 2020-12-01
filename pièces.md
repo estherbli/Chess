@@ -19,6 +19,7 @@ class Piece:
     
   def deplacement(self, position):
     #traduit position entrée par joueur (on considère qu'il n'entre que des positions possibles c'est à dire de a à h et de 1 à 7
+    #sera traité autre part (lors du clic) finalement
     #essai de prise en compte des bords de l'échiquier
     if (x not in X) or (y not in Y):
       return 'Déplacement impossible'
@@ -35,7 +36,8 @@ class Piece:
   def dpossible(self):
     #vérifie que le déplacement est possible
       return True or False
-    #rajouter vérification déplacment sans sauter au dessus d'autres pièces
+    #rajouter vérification déplacement sans sauter au dessus d'autres pièces
+    #rajouter vérification de pas mise en échec de son propre roi
  
     
 class fou(Piece):
