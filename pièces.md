@@ -38,6 +38,7 @@ class Piece:
                 entre=True
             if entre==False:
               Echiquier[(self.x,self.y)],Echiquier[(x,y)]=Echiquier[(x,y)],Echiquier[(self.x,self.y)]  #échange le roi et la tour
+              tourB1.self.joué=roiB.self.joué=True
               return 'Roque effectué'
             else: return 'Déplacement impossible'  #peut-être inutile selon les cases atteintes possibles 
           if (Echiquier[(x,y)]==tourB2) and (tourB2.self.joué==False):
@@ -47,6 +48,7 @@ class Piece:
                 entre=True
             if entre==False:
               Echiquier[(self.x,self.y)],Echiquier[(x,y)]=Echiquier[(x,y)],Echiquier[(self.x,self.y)]
+              tourB2.self.joué=roiB.self.joué=True
               return 'Roque effectué'
             else: return 'Déplacement impossible'
         if (Echiquier[(self.x,self.y)]==roiN) and (roiN.self.joué==False):
@@ -57,6 +59,7 @@ class Piece:
                 entre=True
             if entre==False:
               Echiquier[(self.x,self.y)],Echiquier[(x,y)]=Echiquier[(x,y)],Echiquier[(self.x,self.y)]
+              tourN1.self.joué=roiN.self.joué=True
               return 'Roque effectué'
             else: return 'Déplacement impossible'
           if (Echiquier[(x,y)]==tourN2) and (tourN2.self.joué==False):
@@ -66,6 +69,7 @@ class Piece:
                 entre=True
             if entre==False:
               Echiquier[(self.x,self.y)],Echiquier[(x,y)]=Echiquier[(x,y)],Echiquier[(self.x,self.y)]
+              tourN2.self.joué=roiN.self.joué=True
               return 'Roque effectué'
             else: return 'Déplacement impossible'
         else :
