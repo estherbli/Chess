@@ -24,13 +24,20 @@ class Piece:
     if (x not in X) or (y not in Y):
       return 'Déplacement impossible'
     else:
-      x = X[position[0]]
+      x = X[position[0]]  #mettre le lien entre le déplacement sur le plateau et les coordonnées 
       y = Y[position [1]]
     #vérifier que le déplacement est possible pour la pièce
     if dpossible(self, x, y):
       #change la position de la pièce
-      self.x = x
-      self.y = y
+      if (x,y) in Echiquier and self.tour_de_jouer==couleur.Echiquier[(x,y)]:  #vérifie la couleur de la pièce si la case est occupée
+        return 'Déplacement impossible (case déjà occupée)'
+      if (x,y) in Echiquier and self.tour_de_jouer!=couleur.Echiquier[(x,y)]:
+        Echiquier.pop((x,y))  #pièce prise = supprimée de l'échiquier
+      else:
+        a=(self.x,self.y)
+        self.x = x
+        self.y = y
+        Echiquier[a]=(x,y)
     else : return 'Déplacement impossible' #à changer?
     
   def dpossible(self):
