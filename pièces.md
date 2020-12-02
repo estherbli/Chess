@@ -30,16 +30,17 @@ class Piece:
     if dpossible(self, x, y):
       #change la position de la pièce
       if (x,y) in Echiquier and self.tour_de_jouer==couleur.Echiquier[(x,y)]:  #vérifie la couleur de la pièce si la case est occupée
-        if (Echiquier[(self.x,self.y)]==roiB) and (roiB.self.joué==False):
-          if Echiquier[(x,y)]==tourB1:
+        if (Echiquier[(self.x,self.y)]==roiB) and (roiB.self.joué==False):  #vérifie que le roi n'a pas été joué
+          if (Echiquier[(x,y)]==tourB1) and (tourB1.self.joué==False): #vérifie que la tour n'a pas été jouée
             entre=False
-            for i range(self.x-1,-1,-1):
+            for i range(self.x-1,-1,-1):  #vérifie si il y a des pièces entre
               if (i,0) in Echiquier:
                 entre=True
             if entre==False:
-              Echiquier[(self.x,self.y)],Echiquier[(x,y)]=Echiquier[(x,y)],Echiquier[(self.x,self.y)]
+              Echiquier[(self.x,self.y)],Echiquier[(x,y)]=Echiquier[(x,y)],Echiquier[(self.x,self.y)]  #échange le roi et la tour
               return 'Roque effectué'
-          if Echiquier[(x,y)]==tourB2:
+            else: return 'Déplacement impossible'  #peut-être inutile selon les cases atteintes possibles 
+          if (Echiquier[(x,y)]==tourB2) and (tourB2.self.joué==False):
             entre=False
             for i range(self.x+1,7):
               if (i,0) in Echiquier:
@@ -47,8 +48,9 @@ class Piece:
             if entre==False:
               Echiquier[(self.x,self.y)],Echiquier[(x,y)]=Echiquier[(x,y)],Echiquier[(self.x,self.y)]
               return 'Roque effectué'
+            else: return 'Déplacement impossible'
         if (Echiquier[(self.x,self.y)]==roiN) and (roiN.self.joué==False):
-          if Echiquier[(x,y)]==tourN1:
+          if (Echiquier[(x,y)]==tourN1) and (tourN1.self.joué==False):
             entre=False
             for i range(self.x-1,-1,-1):
               if (i,7) in Echiquier:
@@ -56,7 +58,8 @@ class Piece:
             if entre==False:
               Echiquier[(self.x,self.y)],Echiquier[(x,y)]=Echiquier[(x,y)],Echiquier[(self.x,self.y)]
               return 'Roque effectué'
-          if Echiquier[(x,y)]==tourN2:
+            else: return 'Déplacement impossible'
+          if (Echiquier[(x,y)]==tourN2) and (tourN2.self.joué==False):
             entre=False
             for i range(self.x+1,7):
               if (i,7) in Echiquier:
@@ -64,6 +67,7 @@ class Piece:
             if entre==False:
               Echiquier[(self.x,self.y)],Echiquier[(x,y)]=Echiquier[(x,y)],Echiquier[(self.x,self.y)]
               return 'Roque effectué'
+            else: return 'Déplacement impossible'
         else :
           return 'Déplacement impossible (case déjà occupée)'
       if (x,y) in Echiquier and self.tour_de_jouer!=couleur.Echiquier[(x,y)]:
