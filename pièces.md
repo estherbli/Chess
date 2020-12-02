@@ -30,7 +30,42 @@ class Piece:
     if dpossible(self, x, y):
       #change la position de la pièce
       if (x,y) in Echiquier and self.tour_de_jouer==couleur.Echiquier[(x,y)]:  #vérifie la couleur de la pièce si la case est occupée
-        return 'Déplacement impossible (case déjà occupée)'
+        if (Echiquier[(self.x,self.y)]==roiB) and (roiB.self.joué==False):
+          if Echiquier[(x,y)]==tourB1:
+            entre=False
+            for i range(self.x-1,-1,-1):
+              if (i,0) in Echiquier:
+                entre=True
+            if entre==False:
+              Echiquier[(self.x,self.y)],Echiquier[(x,y)]=Echiquier[(x,y)],Echiquier[(self.x,self.y)]
+              return 'Roque effectué'
+          if Echiquier[(x,y)]==tourB2:
+            entre=False
+            for i range(self.x+1,7):
+              if (i,0) in Echiquier:
+                entre=True
+            if entre==False:
+              Echiquier[(self.x,self.y)],Echiquier[(x,y)]=Echiquier[(x,y)],Echiquier[(self.x,self.y)]
+              return 'Roque effectué'
+        if (Echiquier[(self.x,self.y)]==roiN) and (roiN.self.joué==False):
+          if Echiquier[(x,y)]==tourN1:
+            entre=False
+            for i range(self.x-1,-1,-1):
+              if (i,7) in Echiquier:
+                entre=True
+            if entre==False:
+              Echiquier[(self.x,self.y)],Echiquier[(x,y)]=Echiquier[(x,y)],Echiquier[(self.x,self.y)]
+              return 'Roque effectué'
+          if Echiquier[(x,y)]==tourN2:
+            entre=False
+            for i range(self.x+1,7):
+              if (i,7) in Echiquier:
+                entre=True
+            if entre==False:
+              Echiquier[(self.x,self.y)],Echiquier[(x,y)]=Echiquier[(x,y)],Echiquier[(self.x,self.y)]
+              return 'Roque effectué'
+        else :
+          return 'Déplacement impossible (case déjà occupée)'
       if (x,y) in Echiquier and self.tour_de_jouer!=couleur.Echiquier[(x,y)]:
         Echiquier.pop((x,y))  #pièce prise = supprimée de l'échiquier
       else:
