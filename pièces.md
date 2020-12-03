@@ -88,6 +88,11 @@ class Piece:
       return True or False
     #rajouter vérification déplacement sans sauter au dessus d'autres pièces
     #rajouter vérification de pas mise en échec de son propre roi
+    
+  def echec(self):
+    if Echiquier[(self.x,self.y)].dpossible((roiN.x,roiN.y)):   #self.x et y : coordonnées de la pièce bougée
+      print("Échec") #est-ce qu'on ajoute la couleur du roi et/ou une indication graphique ?
+      return True
  
     
 class fou(Piece):
