@@ -11,11 +11,6 @@ class Piece:
     self.y = positioniy
     #nom est le type de pièce
     self.nom = nom
-  
-  #appelé quand une pièce a été prise
-  def __del__(self):
-    #est ce qu'il faut qu'on code le genre de la pièce pour pouvoir dire La reine a été prise et non la reine a été pris?
-    print(f"Le {self.nom} {self.couleur} a été pris")
     
   def deplacement(self, position):
     #traduit position entrée par joueur (on considère qu'il n'entre que des positions possibles c'est à dire de a à h et de 1 à 7
@@ -33,7 +28,7 @@ class Piece:
         if (Echiquier[(self.x,self.y)]==roiB) and (roiB.self.joué==False):  #vérifie que le roi n'a pas été joué
           if (Echiquier[(x,y)]==tourB1) and (tourB1.self.joué==False): #vérifie que la tour n'a pas été jouée
             entre=False
-            for i range(self.x-1,-1,-1):  #vérifie si il y a des pièces entre
+            for i in range(self.x-1,-1,-1):  #vérifie si il y a des pièces entre
               if (i,0) in Echiquier:
                 entre=True
             if entre==False:
@@ -43,7 +38,7 @@ class Piece:
             else: return 'Déplacement impossible'  #peut-être inutile selon les cases atteintes possibles 
           if (Echiquier[(x,y)]==tourB2) and (tourB2.self.joué==False):
             entre=False
-            for i range(self.x+1,7):
+            for i in range(self.x+1,7):
               if (i,0) in Echiquier:
                 entre=True
             if entre==False:
@@ -54,7 +49,7 @@ class Piece:
         if (Echiquier[(self.x,self.y)]==roiN) and (roiN.self.joué==False):
           if (Echiquier[(x,y)]==tourN1) and (tourN1.self.joué==False):
             entre=False
-            for i range(self.x-1,-1,-1):
+            for i in range(self.x-1,-1,-1):
               if (i,7) in Echiquier:
                 entre=True
             if entre==False:
@@ -64,7 +59,7 @@ class Piece:
             else: return 'Déplacement impossible'
           if (Echiquier[(x,y)]==tourN2) and (tourN2.self.joué==False):
             entre=False
-            for i range(self.x+1,7):
+            for i in range(self.x+1,7):
               if (i,7) in Echiquier:
                 entre=True
             if entre==False:
@@ -96,15 +91,24 @@ class Piece:
  
     
 class fou(Piece):
-  def __init__(self, couleur, positionix, positioniy, nom=fou):
+  def __init__(self, couleur, positionix, positioniy, nom='fou'):
     Piece.__init__(self, couleur,positionix, positioniy, nom)
   
   def dpossible(self, x, y):
-    if (x - self.x == y - self.y) and not( y == self.y): 
-      return True
+    if (abs(x - self.x) == abs(y - self.y)):
+      pasx = pasy = 1
+      if x<self.x: pasx =-1 #parcours de gauche à droite
+      if y<self.y: pasy =-1 #parcours de haut en bas
+      xn = self.x + pasx #on part de la position initiale + 1 case
+      yn = self.y + pasy 
+      while xn!=x and yn!=y:
+        if (xn,yn) in Echiquier:
+          return False
+        xn += pasx
+        yn += pasy
+      else : return True
     else : return False
-    
-    
+
 
 class tour(Piece):
   def __init__(self, couleur, positionix, positioniy, nom='tour'):
@@ -113,10 +117,23 @@ class tour(Piece):
     self.joué = False
   
   def dpossible(self, x, y):
-    if (x == self.x and y!=self.y) or (x!=self.x and y == self.y): 
-      return True
+    if (x == self.x and y!=self.y): #déplacement vertical
+      #parcours case entre la position initiale et finale
+      pas = 1
+      if y>self.y: pas = -1 #parcourir de haut en bas
+      for i in range(self.y+pas, y,pas):
+          if (x,i) in Echiquier:
+            return False
+      else: return True
+    elif (x!=self.x and y == self.y): #déplacement horizontal
+      #parcours case entre la position initiale et finale
+      pas = 1
+      if x>self.x: pas = -1 #parcourir de gauche à droite
+      for i in range(self.x+pas, x, pas):
+          if (i,y) in Echiquier:
+            return False
+      else : return True
     else : return False
-    
 
 class dame(Piece):
   def __init__(self, couleur, positionix, positioniy, nom='dame'):
@@ -183,6 +200,10 @@ class pion(Piece):
     
     
  
+    
+ 
+ 
+    
     
  
  
