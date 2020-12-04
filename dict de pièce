@@ -19,7 +19,7 @@ pionN8 = pion( "noir", 7, 6, 'pionN')
 
 #crée les autres pièces blanches et noires
 tourB1 = tour('blanc', 0, 0, 'tourB')
-tourB2 = tour('blanc', 0, 0, 'tourB')
+tourB2 = tour('blanc', 7, 0, 'tourB')
 cavalierB1 = cavalier('blanc', 1, 0, 'cavalierB')
 cavalierB2 = cavalier('blanc', 6, 0, 'cavalierB')
 fouB1 = fou('blanc', 2, 0, 'fouB')
