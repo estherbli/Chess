@@ -63,13 +63,21 @@ class Piece:
             else: return 'Déplacement impossible'
         else :
           return 'Déplacement impossible (case déjà occupée)'
-      if (x,y) in Echiquier and self.tour_de_jouer!=couleur.Echiquier[(x,y)]:
-        Echiquier.pop((x,y))  #pièce prise = supprimée de l'échiquier
       else:
+        #prendre une pièce
+        if (x,y) in Echiquier and self.tour_de_jouer!=couleur.Echiquier[(x,y)]:
+          if roi in Echiquier[(x,y)].nom: #on ne peut pas manger le roi
+           return 'Déplacement impossible' 
+          else : 
+            Echiquier.pop((x,y))  #pièce prise = supprimée de l'échiquier
+        #bouge la pièce 
         a=(self.x,self.y)
         self.x = x
         self.y = y
-        Echiquier[a]=(x,y)
+        #on bouge la pièce en la rajoutant dans le dictionnaire avec comme clé sa nouvelle position
+        Echiquier[(x,y)] = self
+        #on supprime l'ancienne clé (position) de la pièce
+        Echiquier.pop((self.x, self.y))
     else : return 'Déplacement impossible' #à changer?
     
   def dpossible(self):
