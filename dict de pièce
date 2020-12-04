@@ -36,8 +36,8 @@ fouN2 = fou('noir', 5, 7, 'fouN')
 dameN = dame('noir', 3, 7, 'dameN') 
 roiN = roi('noir', 4, 7, 'roiN')
 
-Echequier ={(0,0) : tourB1, (7,0) : tourB2, (1,0) : cavalierB1, (6,0) : cavalierB2, (2,0) : fouB1, (7,0) : fouB2, (3,0) : dameB, (4,0) : roiB, (1,0) : pionB1, (1,1): pionB2, (2,1) : pionB3, (3,1) : pionB4, (4,1) : pionB5, (5,1): pionB6, (6,1): pionB7, (7,1) : pionB8, (0,7) : tourN1, (7,7) : tourN2, (1,7) : cavalierN1, (6,7) : cavalierN2, (2,7) : fouN1, (5,7) : fouN2, (3,7) : dameN, (4,7) : roiN, (1,6) : pionN1, (1,6): pionN2, (2,6) : pionN3, (3,6) : pionN4, (4,6) : pionN5, (5,6): pionN6, (6,6): pionN7, (7,6) : pionN8}
+Echiquier ={(0,0) : tourB1, (7,0) : tourB2, (1,0) : cavalierB1, (6,0) : cavalierB2, (2,0) : fouB1, (7,0) : fouB2, (3,0) : dameB, (4,0) : roiB, (1,0) : pionB1, (1,1): pionB2, (2,1) : pionB3, (3,1) : pionB4, (4,1) : pionB5, (5,1): pionB6, (6,1): pionB7, (7,1) : pionB8, (0,7) : tourN1, (7,7) : tourN2, (1,7) : cavalierN1, (6,7) : cavalierN2, (2,7) : fouN1, (5,7) : fouN2, (3,7) : dameN, (4,7) : roiN, (1,6) : pionN1, (1,6): pionN2, (2,6) : pionN3, (3,6) : pionN4, (4,6) : pionN5, (5,6): pionN6, (6,6): pionN7, (7,6) : pionN8}
 
 #print nom de la pièce et sa position
-for i in Echequier:
-  print(Echequier[i].nom, Echequier[i].x, Echequier[i].y)
+for i in Echiquier:
+  print(Echiquier[i].nom, Echiquier[i].x, Echiquier[i].y)
