@@ -79,10 +79,11 @@ class Piece:
     else : return 'Déplacement impossible' #à changer?
     
   def dpossible(self):
-    #vérifie que le déplacement est possible
+    #vérifie que le déplacement est un bon déplacement pour le type de pièce
+    #vérifie qu'on ne 'saute' pas au dessus de pièce
+    # à rajouter vérification de pas mise en échec de son propre roi
       return True or False
-    #rajouter vérification déplacement sans sauter au dessus d'autres pièces
-    #rajouter vérification de pas mise en échec de son propre roi
+
     
   def echec(self):  #à appeler après chaque tour : restreint les mvts possibles
     if Echiquier[(self.x,self.y)].dpossible((roiN.x,roiN.y)):   #self.x et y : coordonnées de la pièce bougée
@@ -95,7 +96,8 @@ class fou(Piece):
     Piece.__init__(self, couleur,positionix, positioniy, nom)
   
   def dpossible(self, x, y):
-    if (abs(x - self.x) == abs(y - self.y)):
+    if (abs(x - self.x) == abs(y - self.y)): #déplacement autorisé pour ce type de pièce
+      #vérification qu'on ne 'saute' pas au dessus d'autres pièces
       pasx = pasy = 1
       if x<self.x: pasx =-1 #parcours de gauche à droite
       if y<self.y: pasy =-1 #parcours de haut en bas
@@ -117,18 +119,19 @@ class tour(Piece):
     self.joué = False
   
   def dpossible(self, x, y):
-    if (x == self.x and y!=self.y): #déplacement vertical
-      #parcours case entre la position initiale et finale
+    if (x == self.x and y!=self.y): #déplacement vertical #déplacement autorisé pour ce type de pièce
+      #vérification qu'on ne 'saute' pas au dessus d'autres pièces
+      #Pour cela on parcourt case entre la position initiale et finale
       pas = 1
-      if y>self.y: pas = -1 #parcourir de haut en bas
+      if y<self.y: pas = -1 #parcourir de haut en bas
       for i in range(self.y+pas, y,pas):
           if (x,i) in Echiquier:
             return False
       else: return True
-    elif (x!=self.x and y == self.y): #déplacement horizontal
-      #parcours case entre la position initiale et finale
+    elif (x!=self.x and y == self.y): #déplacement horizontal #déplacement autorisé pour ce type de pièce
+      #vérification qu'on ne 'saute' pas au dessus d'autres pièces
       pas = 1
-      if x>self.x: pas = -1 #parcourir de gauche à droite
+      if x<self.x: pas = -1 #parcourir de gauche à droite
       for i in range(self.x+pas, x, pas):
           if (i,y) in Echiquier:
             return False
@@ -140,10 +143,39 @@ class dame(Piece):
     Piece.__init__(self, couleur,positionix, positioniy, nom)
     
   def dpossible(self, x, y):
-    if (x == self.x and y!=self.y) or (x!=self.x and y == self.y) or ((x - self.x == y - self.y) and not( y == self.y)) : 
-      return True
+    #déplacement comme une tour
+    if (x == self.x and y!=self.y):  #déplacement vertical
+      #vérification qu'on ne 'saute' pas au dessus d'autres pièces
+      pas = 1
+      if y<self.y: pas = -1 #parcourir de haut en bas
+      for i in range(self.y+pas, y,pas):
+          if (x,i) in Echiquier:
+            return False
+      else: return True
+    elif (x!=self.x and y == self.y): #déplacement horizontal autorisé pour ce type de pièce
+      #vérification qu'on ne 'saute' pas au dessus d'autres pièces
+      pas = 1
+      if x<self.x: pas = -1 #parcourir de gauche à droite
+      for i in range(self.x+pas, x, pas):
+          if (i,y) in Echiquier:
+            return False
+      else: return True
+    #déplacement comme un fou
+    elif abs(x - self.x) == abs(y - self.y) :
+      #vérification qu'on ne 'saute' pas au dessus d'autres pièces
+      pasx = pasy = 1
+      if x<self.x: pasx =-1 #parcours de gauche à droite
+      if y<self.y: pasy =-1 #parcours de haut en bas
+      xn = self.x + pasx #on part de la position initiale + 1 case
+      yn = self.y + pasy 
+      while xn!=x and yn!=y:
+        if (xn,yn) in Echiquier:
+          return False
+        xn += pasx
+        yn += pasy
+      else : return True
     else : return False
-    
+
 class roi(Piece):
   def __init__(self, couleur, positionix, positioniy, nom='roi'):
     Piece.__init__(self, couleur,positionix, positioniy, nom)
@@ -200,10 +232,6 @@ class pion(Piece):
     
     
  
-    
- 
- 
-    
     
  
  
