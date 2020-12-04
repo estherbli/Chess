@@ -13,14 +13,8 @@ class Piece:
     self.nom = nom
     
   def deplacement(self, position):
-    #traduit position entrée par joueur (on considère qu'il n'entre que des positions possibles c'est à dire de a à h et de 1 à 7
-    #sera traité autre part (lors du clic) finalement
-    #essai de prise en compte des bords de l'échiquier
-    if (x not in X) or (y not in Y):
-      return 'Déplacement impossible'
-    else:
-      x = X[position[0]]  #mettre le lien entre le déplacement sur le plateau et les coordonnées 
-      y = Y[position [1]]
+    x = X[position[0]]  #mettre le lien entre le déplacement sur le plateau et les coordonnées 
+    y = Y[position [1]]
     #vérifier que le déplacement est possible pour la pièce
     if dpossible(self, x, y):
       #change la position de la pièce
@@ -190,7 +184,6 @@ class roi(Piece):
       dcoté1case = (( y == self.y and ((x == self.x + 1) or (x == self.x-1)) ))
       if davant_arriere1case or dcoté1case or ddiagonale1case:
         return True
-    
     else : return False
     
 
