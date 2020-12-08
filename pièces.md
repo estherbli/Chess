@@ -1,83 +1,36 @@
 # Chess
-#dictionnaire permettant traduction de lettre à position
-#plus besoin 
-X = {'a':0, 'b':1, 'c':2, 'd':3, 'e':4, 'f':5, 'g':6, 'h':7}
-Y = {1:0, 2:1, 3:2, 4:3, 5:4, 6:5, 7:6, 8:7}
-
+import pygame
 class Piece:
   def __init__(self, couleur, positionix, positioniy, nom):
     self.couleur = couleur
     self.x = positionix
     self.y = positioniy
     #nom est le type de pièce
-    self.nom = nom
+    self.nom = nom #nom est le type de pièce
+    self.image = self.images_pieces[i]=pygame.image.load(f'C:\\Users\\emili\\OneDrive\\Documents\\CPES-2\\informatique\\chess\\pièces\\{​​​​nomimage}​​​​.png')
+    self.cloué = False
     
-  def deplacement(self, position):
+  def deplacement(self, position): #change la position de la pièce et supprime la pièce mangée du dictionnaire 
     x = X[position[0]]  #mettre le lien entre le déplacement sur le plateau et les coordonnées 
     y = Y[position [1]]
     #vérifier que le déplacement est possible pour la pièce
-    if dpossible(self, x, y):
-      #change la position de la pièce
-      if (x,y) in Echiquier and self.tour_de_jouer==couleur.Echiquier[(x,y)]:  #vérifie la couleur de la pièce si la case est occupée
-        if (Echiquier[(self.x,self.y)]==roiB) and (roiB.self.joué==False):  #vérifie que le roi n'a pas été joué
-          if (Echiquier[(x,y)]==tourB1) and (tourB1.self.joué==False): #vérifie que la tour n'a pas été jouée
-            entre=False
-            for i in range(self.x-1,-1,-1):  #vérifie si il y a des pièces entre
-              if (i,0) in Echiquier:
-                entre=True
-            if entre==False:
-              Echiquier[(self.x,self.y)],Echiquier[(x,y)]=Echiquier[(self.x-2,self.y)],Echiquier[(x+2,y)]  #échange le roi et la tour
-              tourB1.self.joué=roiB.self.joué=True
-              return 'Roque effectué'
-            else: return 'Déplacement impossible'  #peut-être inutile selon les cases atteintes possibles 
-          if (Echiquier[(x,y)]==tourB2) and (tourB2.self.joué==False):
-            entre=False
-            for i in range(self.x+1,7):
-              if (i,0) in Echiquier:
-                entre=True
-            if entre==False:
-              Echiquier[(self.x,self.y)],Echiquier[(x,y)]=Echiquier[(self.x+2,self.y)],Echiquier[(x-3,y)]
-              tourB2.self.joué=roiB.self.joué=True
-              return 'Roque effectué'
-            else: return 'Déplacement impossible'
-        if (Echiquier[(self.x,self.y)]==roiN) and (roiN.self.joué==False):
-          if (Echiquier[(x,y)]==tourN1) and (tourN1.self.joué==False):
-            entre=False
-            for i in range(self.x-1,-1,-1):
-              if (i,7) in Echiquier:
-                entre=True
-            if entre==False:
-              Echiquier[(self.x,self.y)],Echiquier[(x,y)]=Echiquier[(self.x-2,self.y)],Echiquier[(x+2,y)]
-              tourN1.self.joué=roiN.self.joué=True
-              return 'Roque effectué'
-            else: return 'Déplacement impossible'
-          if (Echiquier[(x,y)]==tourN2) and (tourN2.self.joué==False):
-            entre=False
-            for i in range(self.x+1,7):
-              if (i,7) in Echiquier:
-                entre=True
-            if entre==False:
-              Echiquier[(self.x,self.y)],Echiquier[(x,y)]=Echiquier[(self.x+2,self.y)],Echiquier[(x-3,y)]
-              tourN2.self.joué=roiN.self.joué=True
-              return 'Roque effectué'
-            else: return 'Déplacement impossible'
-        else :
-          return 'Déplacement impossible (case déjà occupée)'
-      else:
-        #prendre une pièce
-        if (x,y) in Echiquier and self.tour_de_jouer!=couleur.Echiquier[(x,y)]:
+    if roi in self.nom or tour in self.nom:
+      roque(self, x, y) #fonction qui déplace les pièces si le roque est possible sinon ne fait rien
+    if dpossible(self, x, y) and self.cloué = False: 
+      if (x,y) in Echiquier: #prendre une pièce
+        if self.couleur == couleur.Echiquier[(x,y)]:  #vérifie que la pièce qui va être prise est bien de la couleur adverse
           if roi in Echiquier[(x,y)].nom: #on ne peut pas manger le roi
-           return 'Déplacement impossible' 
+            return 'Déplacement impossible' 
           else : 
             Echiquier.pop((x,y))  #pièce prise = supprimée de l'échiquier
-        #bouge la pièce 
-        a=(self.x,self.y)
-        self.x = x
-        self.y = y
-        #on bouge la pièce en la rajoutant dans le dictionnaire avec comme clé sa nouvelle position
-        Echiquier[(x,y)] = self
-        #on supprime l'ancienne clé (position) de la pièce
-        Echiquier.pop((self.x, self.y))                                      # ajouter indication graphique
+        else : return 'Déplacement impossible' #on ne peut pas manger un de ses propres pions
+      #bouger la pièce 
+      ancienxy = (self.x,self.y)
+      self.x = x #changer les coordonnées de la pièce
+      self.y = y
+      Echiquier[(x,y)] = self #on bouge la pièce en la rajoutant dans le dictionnaire avec comme clé sa nouvelle position
+      Echiquier.pop(ancienxy) #on supprime l'ancienne clé (position) de la pièce                                     
+      # ajouter indication graphique????
     else : return 'Déplacement impossible' #à changer?
     
   def dpossible(self):
@@ -94,7 +47,7 @@ class Piece:
  
     
 class fou(Piece):
-  def __init__(self, couleur, positionix, positioniy, nom='fou'):
+  def __init__(self, couleur, positionix, positioniy, nom):
     Piece.__init__(self, couleur,positionix, positioniy, nom)
   
   def dpossible(self, x, y):
@@ -115,7 +68,7 @@ class fou(Piece):
 
 
 class tour(Piece):
-  def __init__(self, couleur, positionix, positioniy, nom='tour'):
+  def __init__(self, couleur, positionix, positioniy, nom):
     Piece.__init__(self, couleur,positionix, positioniy, nom)
     #variable bool pour le roque
     self.joué = False
@@ -139,9 +92,13 @@ class tour(Piece):
             return False
       else : return True
     else : return False
+  
+  def roque(self, x,y):
+    #code a copier du roi puis à ajuster
+    return None
 
 class dame(Piece):
-  def __init__(self, couleur, positionix, positioniy, nom='dame'):
+  def __init__(self, couleur, positionix, positioniy, nom):
     Piece.__init__(self, couleur,positionix, positioniy, nom)
     
   def dpossible(self, x, y):
@@ -179,7 +136,7 @@ class dame(Piece):
     else : return False
 
 class roi(Piece):
-  def __init__(self, couleur, positionix, positioniy, nom='roi'):
+  def __init__(self, couleur, positionix, positioniy, nom):
     Piece.__init__(self, couleur,positionix, positioniy, nom)
     #variable bool pour vérifier si le roque est possible
     self.joué = False
@@ -193,10 +150,58 @@ class roi(Piece):
       if davant_arriere1case or dcoté1case or ddiagonale1case:
         return True
     else : return False
-    
+  
+  def roque(self, x, y):
+    #truc spécifique au roque
+    #modifier le code pour ajuster
+    if (Echiquier[(self.x,self.y)]==roiB) and (roiB.self.joué==False):  #vérifie que le roi n'a pas été joué
+          if (Echiquier[(x,y)]==tourB1) and (tourB1.self.joué==False): #vérifie que la tour n'a pas été jouée
+            entre=False
+            for i in range(self.x-1,-1,-1):  #vérifie si il y a des pièces entre
+              if (i,0) in Echiquier:
+                entre=True
+            if entre==False:
+              Echiquier[(self.x,self.y)],Echiquier[(x,y)]=Echiquier[(self.x-2,self.y)],Echiquier[(x+2,y)]  #échange le roi et la tour
+              tourB1.self.joué=roiB.self.joué=True
+              return 'Roque effectué'
+            else: return 'Déplacement impossible'  #peut-être inutile selon les cases atteintes possibles 
+          if (Echiquier[(x,y)]==tourB2) and (tourB2.self.joué==False):
+            entre=False
+            for i in range(self.x+1,7):
+              if (i,0) in Echiquier:
+                entre=True
+            if entre==False:
+              Echiquier[(self.x,self.y)],Echiquier[(x,y)]=Echiquier[(self.x+2,self.y)],Echiquier[(x-3,y)]
+              tourB2.self.joué=roiB.self.joué=True
+              return 'Roque effectué'
+            else: return 'Déplacement impossible'
+        if (Echiquier[(self.x,self.y)]==roiN) and (roiN.self.joué==False):
+            if (Echiquier[(x,y)]==tourN1) and (tourN1.self.joué==False):
+            entre=False
+            for i in range(self.x-1,-1,-1):
+              if (i,7) in Echiquier:
+                entre=True
+            if entre==False:
+              Echiquier[(self.x,self.y)],Echiquier[(x,y)]=Echiquier[(self.x-2,self.y)],Echiquier[(x+2,y)]
+              tourN1.self.joué=roiN.self.joué=True
+              return 'Roque effectué'
+            else: return 'Déplacement impossible'
+          if (Echiquier[(x,y)]==tourN2) and (tourN2.self.joué==False):
+            entre=False
+            for i in range(self.x+1,7):
+              if (i,7) in Echiquier:
+                entre=True
+            if entre==False:
+              Echiquier[(self.x,self.y)],Echiquier[(x,y)]=Echiquier[(self.x+2,self.y)],Echiquier[(x-3,y)]
+              tourN2.self.joué=roiN.self.joué=True
+              return 'Roque effectué'
+            else: return 'Déplacement impossible'
+        else :
+          return 'Déplacement impossible (case déjà occupée)'
+    return None
 
 class cavalier(Piece):
-  def __init__(self, couleur, positionix, positioniy, nom='cavalier'):
+  def __init__(self, couleur, positionix, positioniy, nom):
     Piece.__init__(self, couleur,positionix, positioniy, nom)
   
   def dpossible(x,y):
@@ -209,7 +214,7 @@ class cavalier(Piece):
     else : return false
     
 class pion(Piece):
-  def __init__(self, couleur, positionix, positioniy, nom='pion'):
+  def __init__(self, couleur, positionix, positioniy, nom):
     Piece.__init__(self, couleur, positionix, positioniy, nom)
     #variable pour savoir si l'avancée de 2 cases est possible
     self.joué = False
@@ -217,23 +222,10 @@ class pion(Piece):
     self.peutchanger = False
   def dpossible(self, x, y):
     #cas de prise en diagonale à considérer
+    #cas de prise en passant à considérer aussi
     if not(self.joué):
       if (y == self.y +2) or (y == self.y +1) or (prise and y == self.y +1 and x == self.x +1) or (prise and y == self.y +1 and x == self.x -1):
         return True
     if (y == self.y +1) or (prise and y == self.y +1 and x == self.x +1) or (prise and y == self.y +1 and x == self.x -1): return True
     else : return false
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
- 
-    
- 
- 
     
