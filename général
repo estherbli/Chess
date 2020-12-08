@@ -1,50 +1,59 @@
 import pygame
 
+Echiquier ={(0,0) : tourB1, (7,0) : tourB2, (1,0) : cavalierB1, (6,0) : cavalierB2, (2,0) : fouB1, (7,0) : fouB2, (3,0) : dameB, (4,0) : roiB, (1,0) : pionB1, (1,1): pionB2, (2,1) : pionB3, (3,1) : pionB4, (4,1) : pionB5, (5,1): pionB6, (6,1): pionB7, (7,1) : pionB8, (0,7) : tourN1, (7,7) : tourN2, (1,7) : cavalierN1, (6,7) : cavalierN2, (2,7) : fouN1, (5,7) : fouN2, (3,7) : dameN, (4,7) : roiN, (1,6) : pionN1, (1,6): pionN2, (2,6) : pionN3, (3,6) : pionN4, (4,6) : pionN5, (5,6): pionN6, (6,6): pionN7, (7,6) : pionN8}
+
 class general() :
     def __init__(self):
-        self.echequier=[["tourN", "cavalierN", "fouN", "ReineN","RoiN", "fouN", "cavalierN", "tourN"],
+        self.echiquier=[["tourN", "cavalierN", "fouN", "ReineN","RoiN", "fouN", "cavalierN", "tourN"],
         ["pionN","pionN","pionN","pionN","pionN","pionN","pionN","pionN"],
-        [""]*8,
-        [""]*8,
-        [""]*8,
-        [""]*8,
+        ["Empty"]*8,
+        ["Empty"]*8,
+        ["Empty"]*8,
+        ["Empty"]*8,
         ["pionB","pionB","pionB","pionB","pionB","pionB","pionB","pionB"],
         ["tourB", "cavalierB", "fouB", "ReineB","RoiB", "fouB", "cavalierB", "tourB"]]
+
+        self.vrai_echiquier="mettre objets"
         self.tour_de_jouer="Blanc"
         
-        self.largeur_echequier=560 #multiple de 8, mis ici pour pouvoir le changer facilement à loisir
-        self.main_surface=pygame.display.set_mode((900,self.largeur_echequier))
+        self.largeur_echiquier=560 #multiple de 8, mis ici pour pouvoir le changer facilement à loisir
+        self.main_surface=pygame.display.set_mode((900,self.largeur_echiquier)) # 900 -> largeur de la fenêtre
         
-        self.setup_board()
         
         #on charge les pièces ici pour n'avoir à le faire qu'une seule fois (c'est une opération lourde)
-        pieces=["tourN", "cavalierN", "fouN", "ReineN","RoiN", "pionN", "pionB", "tourB", "cavalierB", "fouB", "ReineB","RoiB"]
+        pieces=["tourN", "cavalierN", "fouN", "ReineN","RoiN", "pionN", "pionB", "tourB", "cavalierB", "fouB", "ReineB","RoiB","Empty"]
         self.images_pieces={}
         for i in pieces:
             self.images_pieces[i]=pygame.image.load(f'C:\\Users\\emili\\OneDrive\\Documents\\CPES-2\\informatique\\chess\\pièces\\{i}.png')
+
         
+        
+        self.echiquier_image=[]
+        print(self.echiquier_image)
+
+        #for i in range(8):
+            #for j in range(8):
+                #if self.echiquier[i][j]=="":
+                    #self.echiquier_image[i][j]=""
+
+                #else : 
+                    #piece=self.echiquier[i][j]
+                    #self.echiquier_image[i][j]=self.images_pieces[piece]
+                    #print(self.echiquier_image)
+        
+        #crée un échiquier d'images
+
+
+        self.setup_board()
         self.setup_pieces()
-        self.turn()
-
-    def setup_pieces(self):
-        y=0
-        for i in range(8):
-            x=0
-            for j in range(8):
-                piece=self.echequier[i][j]
-                if piece!="":
-                    image=self.images_pieces[piece]
-                    self.main_surface.blit(image, (x,y)) 
-                x=70*j+70
-            y=70*i+70
-
-        pygame.display.flip() #met à jour l'écran
+        self.__main__()
     
     def setup_board(self):
-        self.largeur_echequier=LARGEUR=LONGUEUR=560 #multiple de 8
+
+        LARGEUR=LONGUEUR=self.largeur_echiquier #=560 #multiple de 8
         
         pygame.init()
-        #FPS=20 #frame per second ?????????????????????????????????????????????????????????????
+        #FPS=20 #frame per second ??????????????????????????????????????????????????????????????????????????????????????????????
         self.main_surface.fill((200, 200, 200))
         pygame.display.set_caption('Chess') #titre de la fenêtre
         
@@ -53,9 +62,11 @@ class general() :
         
         #main_surface.blit(surface, (100,200))
 
-        echequier=pygame.image.load('C:\\Users\\emili\\OneDrive\\Documents\\CPES-2\\informatique\\chess\\echequier2.png')
-        echequier=pygame.transform.scale(echequier, (LARGEUR,LONGUEUR)) #REDIMENSION
-        self.main_surface.blit(echequier, (0,0))
+        echiquier=pygame.image.load('C:\\Users\\emili\\OneDrive\\Documents\\CPES-2\\informatique\\chess\\echequier2.png')
+        echiquier=pygame.transform.scale(echiquier, (LARGEUR,LONGUEUR)) #REDIMENSION
+        self.main_surface.blit(echiquier, (0,0))
+
+
 
 #rectangle gris en haut à droite
         rect = pygame.Rect((LARGEUR, 0), (20, 900-LONGUEUR)) # premier tuple=position, deuxième la taille
@@ -64,8 +75,8 @@ class general() :
         image.fill((200,200,200))  # rectangle gris en heut à droite pour écrire
 
         self.main_surface.blit(image, rect)
-
-#texte
+        
+        #texte
         # pick a font you have and set its size
         myfont = pygame.font.SysFont("Spectral", 40)
         # apply it to text on a label
@@ -84,13 +95,30 @@ class general() :
         #Permet de garder la fenêtre ouverte jusqu'à ce que l'utilisateur veuille la fermer
         #Par défaut l'evennement QUIT correspond à cliquer sur la croix
 
-    def turn(self):
-        #clock = pg.time.Clock()
-        image_vide=pygame.image.load('C:\\Users\\emili\\OneDrive\\Documents\\CPES-2\\informatique\\chess\\Empty.png')
-        image_vide=pygame.transform.scale(image_vide, (70, 70))
-        boutton=image_vide
+    def setup_pieces(self):
+        y=0
+        for i in range(8):
+            x=0
+            for j in range(8):
+                piece=self.echiquier[i][j]
 
+                image=self.images_pieces[piece]
+                self.main_surface.blit(image, (x,y)) 
+
+                self.echiquier[i][j]=self.echiquier[i][j],image
+                x=70*j+70
+            y=70*i+70
+
+        pygame.display.flip() #met à jour l'écran
+
+
+    
+    def __main__(self):
+        clock = pygame.time.Clock()
         running = True
+        case=()
+        memoire=[]
+
         while running:
             a=0
             b=0
@@ -98,22 +126,53 @@ class general() :
             for i in range(8):
                 for j in range(8):
                     bouttons[i,j]=pygame.Rect(a+j*70,b+i*70,70,70)
+    
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+                    #Permet de garder la fenêtre ouverte jusqu'à ce que l'utilisateur veuille la fermer
+                    #Par défaut l'evennement QUIT correspond à cliquer sur la croix
                 
                 if event.type == pygame.MOUSEBUTTONDOWN:
-            # Set the x, y postions of the mouse click
-                    x, y = event.pos
+                    # Set the x, y postions of the mouse click 
+                    x, y = pygame.mouse.get_pos()
+                    j=x//70 #correspnd à la collonne
+                    i=y//70 #correspond à la ligne
 
+                    if (j,i) == case:
+                        case=()
+                        memoire=[]
+                    else :
+                        case=(j,i)
+                        memoire+=[case]
 
+                    if len(memoire)==1:
+                        myfont2 = pygame.font.SysFont("Spectral", 25)
+                        message = myfont2.render(f"where do you want to move {self.echiquier[case[0]][case[1]][0]}", 1, (0,0,0))
+                        self.main_surface.blit(message, (570,50))
 
-                    for key in bouttons :
-                        if bouttons[key].collidepoint(x, y):
-                            print(f'clicked on coordinates{key}')
+                    if len(memoire)==2:
+                        coordonnees_1=memoire[0][0],memoire[0][1]
+                        coordonnees_2=case[0],case[1]
 
+                        piece1=self.echiquier[memoire[0][0]][memoire[0][1]]
+                        piece2=self.echiquier[case[0]][case[1]]
+                        self.echiquier[memoire[0][0]][memoire[0][1]], self.echiquier[case[0]][case[1]]= piece2, piece1
+                        
+
+                        self.main_surface.blit(piece1[1], (70*coordonnees_1[0],70*coordonnees_1[1]))
+                        self.main_surface.blit(piece2[1], (70*coordonnees_2[0],70*coordonnees_2[1]))
+                        pygame.display.flip() 
+                                                    
+                                                    
+                    pygame.display.flip() 
+                clock.tick(40)
+                    #détermine le nombre de fois que cette boucle est exécutée par seconde
         pygame.quit()
-        #clock.tick(30)
+        
 
-    
+
+b=general()
+
+
     
