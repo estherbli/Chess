@@ -1,7 +1,7 @@
 import pieces 
 
 #crée les pions
-pionB1= pieces.pion( "blanc", 0, 0, 'pionB')
+pionB1= pieces.pion( "blanc", 0, 1, 'pionB')
 pionB2 = pieces.pion( "blanc", 1, 1, 'pionB')
 pionB3= pieces.pion( "blanc", 2, 1, 'pionB')
 pionB4 = pieces.pion( "blanc", 3, 1, 'pionB')
