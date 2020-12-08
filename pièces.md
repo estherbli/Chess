@@ -77,7 +77,7 @@ class Piece:
         #on bouge la pièce en la rajoutant dans le dictionnaire avec comme clé sa nouvelle position
         Echiquier[(x,y)] = self
         #on supprime l'ancienne clé (position) de la pièce
-        Echiquier.pop((self.x, self.y))
+        Echiquier.pop((self.x, self.y))                                      # ajouter indication graphique
     else : return 'Déplacement impossible' #à changer?
     
   def dpossible(self):
