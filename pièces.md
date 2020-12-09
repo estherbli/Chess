@@ -48,9 +48,13 @@ class Piece:
 
     
   def echec(self):  #à appeler après chaque tour : restreint les mvts possibles
-    if Echiquier[(self.x,self.y)].dpossible((roiN.x,roiN.y)):   #self.x et y : coordonnées de la pièce bougée
+    if Echiquier[(self.x,self.y)].dpossible((roiN.x,roiN.y)) and self.couleur=="blanc":   #self.x et y : coordonnées de la pièce bougée
       print("Échec") #est-ce qu'on ajoute la couleur du roi et/ou une indication graphique ?
       return True
+    if Echiquier[(self.x,self.y)].dpossible((roiB.x,roiB.y)) and self.couleur=="noir":
+      print("Échec")
+      return True
+    else: return False
  
     
 class fou(Piece):
