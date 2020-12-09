@@ -56,6 +56,91 @@ class Piece:
       return True
     else: return False
  
+ def cloue(self):
+    #trouve une pièce entre le roi et la pièce jouée (ajouter "if echec==False" ?)
+    if Echiquier[(self.x,self.y)].dlegal((roiN.x,roiN.y)) and self.couleur=="blanc":
+        entre=0
+        i=self.x
+        if self.x<roiN.x:
+            while i<roiN.x:
+                j=self.y
+                if self.y<roiN.y:
+                    while j<roiN.y:
+                        if Echiquier[(self.x,self.y)].dlegal(i,j):
+                            if (i,j) in Echiquier:
+                                o=(i,j)
+                                entre+=1
+                        j+=1
+                else:
+                    while j>=roiN.y:
+                        if Echiquier[(self.x,self.y)].dlegal(i,j):
+                            if (i,j) in Echiquier:
+                                o=(i,j)
+                                entre+=1
+                        j-=1
+                i+=1
+        else:
+            while i>=roiN.x:
+                j=self.y
+                if self.y<roiN.y:
+                    while j<roiN.y and entre=False:
+                        if Echiquier[(self.x,self.y)].dlegal(i,j):
+                            if (i,j) in Echiquier:
+                                o=(i,j)
+                                entre+=1
+                        j+=1
+                else:
+                    while j>=roiN.y:
+                        if Echiquier[(self.x,self.y)].dlegal(i,j):
+                            if (i,j) in Echiquier:
+                                o=(i,j)
+                                entre+=1
+                        j-=1
+                i-=1
+    if Echiquier[(self.x,self.y)].dlegal((roiB.x,roiB.y)) and self.couleur=="noir":
+        entre=0
+        i=self.x
+        if self.x<roiB.x:
+            while i<roiB.x:
+                j=self.y
+                if self.y<roiB.y:
+                    while j<roiB.y and entre=False:
+                        if Echiquier[(self.x,self.y)].dlegal(i,j):
+                            if (i,j) in Echiquier:
+                                o=(i,j)
+                                entre+=1
+                        j+=1
+                else:
+                    while j>=roiB.y:
+                        if Echiquier[(self.x,self.y)].dlegal(i,j):
+                            if (i,j) in Echiquier:
+                                o=(i,j)
+                                entre+=1
+                        j-=1
+                i+=1
+        else:
+            while i>=roiB.x:
+                j=self.y
+                if self.y<roiB.y:
+                    while j<roiB.y:
+                        if Echiquier[(self.x,self.y)].dlegal(i,j):
+                            if (i,j) in Echiquier:
+                                o=(i,j)
+                                entre+=1
+                        j+=1
+                else:
+                    while j>=roiB.y:
+                        if Echiquier[(self.x,self.y)].dlegal(i,j):
+                            if (i,j) in Echiquier:
+                                o=(i,j)
+                                entre+=1
+                        j-=1
+                i-=1
+    #teste si la pièce doit être clouée
+    if entre==1:
+        Echiquier[o].cloue=True #ajouter un self.cloue=False pour chaque pièce .
+
+ 
     
 class fou(Piece):
   def __init__(self, couleur, positionix, positioniy, nom):
