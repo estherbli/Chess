@@ -151,7 +151,6 @@ class fou(Piece):
   
   def dlegal(self, x, y):
     if (abs(x - self.x) == abs(y - self.y)): #déplacement autorisé pour ce type de pièce
-      #vérification qu'on ne 'saute' pas au dessus d'autres pièces
       return True
     else : return False
     
