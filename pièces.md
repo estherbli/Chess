@@ -42,9 +42,12 @@ class Piece:
     
   def dpossible(self,x,y):
     #vérifie que le déplacement est un bon déplacement pour le type de pièce
+    # à rajouter vérification de pas mise en échec de son propre roi (fait avec cloué)
+    return True or False
+  
+  def dlegal(self, x,y):
     #vérifie qu'on ne 'saute' pas au dessus de pièce
-    # à rajouter vérification de pas mise en échec de son propre roi
-      return True or False
+    return True or False
 
     
   def echec(self):  #à appeler après chaque tour : restreint les mvts possibles
@@ -146,9 +149,14 @@ class fou(Piece):
   def __init__(self, couleur, positionix, positioniy, nom):
     Piece.__init__(self, couleur,positionix, positioniy, nom)
   
-  def dpossible(self, x, y):
+  def dlegal(self, x, y):
     if (abs(x - self.x) == abs(y - self.y)): #déplacement autorisé pour ce type de pièce
       #vérification qu'on ne 'saute' pas au dessus d'autres pièces
+      return True
+    else : return False
+    
+  def dpossible(self, x, y):
+    if (abs(x - self.x) == abs(y - self.y)):
       pasx = pasy = 1
       if x<self.x: pasx =-1 #parcours de gauche à droite
       if y<self.y: pasy =-1 #parcours de haut en bas
@@ -159,7 +167,7 @@ class fou(Piece):
           return False
         xn += pasx
         yn += pasy
-      else : return True
+      return True
     else : return False
 
 
@@ -188,6 +196,12 @@ class tour(Piece):
             return False
       else : return True
     else : return False
+
+  def dlegal(self, x,y):
+    if (x == self.x and y!=self.y) or (x!=self.x and y == self.y): #déplacement vertical ou horizontal #déplacement autorisé pour ce type de pièce
+      return True
+    else : return False
+
 
 class dame(Piece):
   def __init__(self, couleur, positionix, positioniy, nom):
@@ -226,6 +240,12 @@ class dame(Piece):
         yn += pasy
       else : return True
     else : return False
+  
+  def dlegal(self, x, y):
+    if (x == self.x and y!=self.y) or (x!=self.x and y == self.y) or (abs(x - self.x) == abs(y - self.y)):
+      return True
+    else : return False
+
 
 class roi(Piece):
   def __init__(self, couleur, positionix, positioniy, nom):
@@ -243,6 +263,10 @@ class roi(Piece):
       if davant_arriere1case or dcoté1case or ddiagonale1case:
         return True
     else : return False
+  
+  def dlegal(self, x,y):
+    if self.dpossible(x,y) or self.roque(x,y): #roque on regarde s'il y a des pièces entre donc pas le mieux
+      return True
   
   def roque(self, x, y):
     #truc spécifique au roque
@@ -345,6 +369,11 @@ class cavalier(Piece):
     if dLavant or dLarriere or dLdroite or dLgauche :
       return True
     else : return False
+  
+  def dlegal(self,x,y):
+    if self.dpossible(x,y):
+      return True
+    else: return False
     
 class pion(Piece):
   def __init__(self, couleur, positionix, positioniy, nom):
@@ -362,6 +391,22 @@ class pion(Piece):
       return True
     elif (y == self.y +1) and not((self.x, self.y +1) in Echiquier): #avance d'une case
       return True
+    elif ((y == self.y +1 and x == self.x +1) or (y == self.y +1 and x == self.x -1)) and ((x,y) in Echiquier): #prise en diagonale
+      return True
+    elif self.cloué == False and ((self.x-1, self.y) in Echiquier) and (Echiquier[(self.x-1,self.y)].eppossible): #prise en passant à gauche
+      Echiquier[(self.x-1,self.y)].pop() #prend la pièce en passant
+      return True
+    elif self.cloué == False and ((self.x+1, self.y) in Echiquier) and (Echiquier[(self.x+1,self.y)].eppossible): #pris en passant à droite
+      Echiquier[(self.x+1,self.y)].pop() #prend la pièce en passant
+      return True
+    else : return False
+  
+  def dlegal(self, x, y):
+    if not(self.joué) and (y == self.y +2): #avance de 2 cases
+      return True
+    elif (y == self.y +1): #avance d'une case
+      return True
+    #mais si on considère que le plateau est vide 3 autre cas à supprimer?????
     elif ((y == self.y +1 and x == self.x +1) or (y == self.y +1 and x == self.x -1)) and ((x,y) in Echiquier): #prise en diagonale
       return True
     elif self.cloué == False and ((self.x-1, self.y) in Echiquier) and (Echiquier[(self.x-1,self.y)].eppossible): #prise en passant à gauche
