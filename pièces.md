@@ -34,7 +34,7 @@ class Piece:
       Echiquier.pop(ancienxy) #on supprime l'ancienne clé (position) de la pièce                                     
       # ajouter indication graphique????
       #changer eppossible False sauf le self
-      if self.couleur == blanc : yep = 3
+      if self.couleur == "blanc" : yep = 3
       else : yep = 4
       for i in range(0,8):
         if (i, yep) in Echiquier and (i, yep) != (x,y):
