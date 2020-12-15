@@ -7,6 +7,7 @@ import dictionnaire_pieces
 
 class general() :
     def __init__(self):
+        pygame.init()
         self.largeur_echiquier=560 #multiple de 8, mis ici pour pouvoir le changer facilement à loisir
         
         self.echiquier=pygame.image.load('C:\\Users\\emili\\OneDrive\\Documents\\CPES-2\\informatique\\chess\\echequier2.png')
@@ -14,6 +15,7 @@ class general() :
         self.tour_des_blancs=True
         
         self.main_surface=pygame.display.set_mode((900,self.largeur_echiquier)) # 900 -> largeur de la fenêtre
+        pygame.display.set_caption('Chess') #titre de la fenêtre
         
         #on charge l'echiquier ici pour n'avoir à le faire qu'une seule fois (opération plutôt lourde)
 
@@ -22,32 +24,26 @@ class general() :
         self.__main__()
     
     def setup_board(self):
-        
-        pygame.init()
-
         self.main_surface.fill((200, 200, 200))
-        pygame.display.set_caption('Chess') #titre de la fenêtre
-        
         self.main_surface.blit(self.echiquier, (0,0))
 
 
-    def ecrire(message,position):
-        
+    def ecrire(self, message, position, taille_ecriture=20, taille=(20,100), ecriture="Spectral"):
         #rectangle gris en haut à droite
-        rect = pygame.Rect((LARGEUR, 0), (20, 900-LONGUEUR)) # premier tuple=position, deuxième la taille
+        #rect = pygame.Rect(position, taille) # premier tuple=position, deuxième la taille
 
-        image = pygame.Surface((900-LONGUEUR, 27))  # The tuple represent size.
-        image.fill((200,200,200))  # rectangle gris en heut à droite pour écrire
+        #image = pygame.Surface(taille)  # Surface(size: tuple) est une class, Surface pygame object for representing images
+        #image.fill((200,200,200))  # rectangle gris en haut à droite pour écrire
 
-        self.main_surface.blit(image, rect)
+        #self.main_surface.blit(image, rect)
 
         #texte
         # pick a font you have and set its size
-        myfont = pygame.font.SysFont("Spectral", 40)
+        myfont = pygame.font.SysFont(ecriture, taille_ecriture)
         # apply it to text on a label
-        label = myfont.render("WELCOME PLAYER", 1, (0,0,0))
+        label = myfont.render(message, 1, (0,0,0))
         # put the label object on the screen at point x=570, y=2
-        self.main_surface.blit(label, (570,2))
+        self.main_surface.blit(label, position)
 
         pygame.display.flip() #met à jour l'écran
 
@@ -74,6 +70,20 @@ class general() :
         memoire=[]
 
         while running:
+            #bouton abandonner
+            couleur_bouton1 = (100,100,100) 
+            couleur_bouton2 = (210,200,80)
+            mouse = pygame.mouse.get_pos() 
+
+            if self.largeur_echiquier+20 <= mouse[0] <= self.largeur_echiquier+120 and 60 <= mouse[1] <= 120 : 
+                pygame.draw.rect(self.main_surface,couleur_bouton1,[self.largeur_echiquier+20,60,100,60]) 
+                pygame.display.flip()
+          
+            else: 
+                pygame.draw.rect(self.main_surface,couleur_bouton2,[self.largeur_echiquier+20,60,100,60])
+                pygame.display.flip() 
+
+            
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -83,34 +93,47 @@ class general() :
                 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     # Set the x, y postions of the mouse click 
-                    x, y = pygame.mouse.get_pos()
-                    i=x//70 #correspnd à la collonne
-                    j=y//70 #correspond à la ligne
+                    x, y = mouse
 
-                    if (i,j) == case:
-                        case=()
-                        memoire=[]
-                    else :
-                        case=(i,j)
-                        memoire+=[case]
+                    if x<=560 and y<=560: #ie si on clique sur l'échiquier
+                        i=x//70 #correspnd à la colonne
+                        j=y//70 #correspond à la ligne
 
-                    if len(memoire)==1:
-                        myfont2 = pygame.font.SysFont("Spectral", 25)
-                        message = myfont2.render("where do you want to move", 1, (0,0,0))
-                        self.main_surface.blit(message, (570,50))
+                        if (i,j) == case:
+                            case=()
+                            memoire=[]
+                        else :
+                            case=(i,j)
+                            memoire+=[case]
 
-                    if len(memoire)==2:
-                        position_depart=memoire[0][0],memoire[0][1]
-                        position_arrivee=case[0],case[1]
+                        if len(memoire)==1:
+                            self.ecrire("where do you want to move?",(570,300) )
 
-                        if position_depart in dictionnaire_pieces.Echiquier:
-                            dictionnaire_pieces.Echiquier[position_arrivee]=dictionnaire_pieces.Echiquier.pop(position_depart)
-                            self.setup_board()
-                            self.setup_pieces()
-                        
-                        #self.main_surface.blit(piece1.image, (70*position_arrivee[0],70*position_arrivee[1]))
-                        
-                        pygame.display.flip()                      
+                        if len(memoire)==2:
+                            position_depart=memoire[0][0],memoire[0][1]
+                            position_arrivee=case[0],case[1]
+
+                            if position_depart in dictionnaire_pieces.Echiquier:
+                                dictionnaire_pieces.Echiquier[position_arrivee]=dictionnaire_pieces.Echiquier.pop(position_depart)
+                                self.setup_board()
+                                self.setup_pieces()
+    
+                            #self.main_surface.blit(piece1.image, (70*position_arrivee[0],70*position_arrivee[1]))
+                            
+                            pygame.display.flip()
+
+                    if self.largeur_echiquier+20 <= x <= self.largeur_echiquier+120 and 60 <= y <= 120 : 
+
+                        self.ecrire("les blancs ont déclaré forfait", (570, 200))
+                        self.main_surface.fill((200, 200, 200))
+                        self.ecrire("Les noirs ont gagné !", (50,250))
+
+
+                        pygame.time.delay(3000) #pause for a given number of milliseconds based on the CPU clock 
+                        running=False
+
+
+                
                                                     
                     pygame.display.flip() 
                     
@@ -121,3 +144,4 @@ class general() :
 
 
 b=general()
+
