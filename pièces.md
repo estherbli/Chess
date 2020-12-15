@@ -15,7 +15,8 @@ class Piece:
     y = position [1]
     #vérifier que le déplacement est possible pour la pièce
     if 'roi' in self.nom or 'tour' in self.nom:
-      if self.roque(x, y) == 'roque effectué' : return None #fonction qui déplace les pièces si le roque (et return None) est possible sinon ne fait rien
+      if self.notEchec() == True:
+        if self.roque(x, y) == 'roque effectué' : return None #fonction qui déplace les pièces si le roque (et return None) est possible sinon ne fait rien
     if self.dpossible(x, y) and self.cloué == False: 
       if (x,y) in Echiquier: #prendre une pièce
         if self.couleur == couleur.Echiquier[(x,y)]:  #vérifie que la pièce qui va être prise est bien de la couleur adverse
