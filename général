@@ -14,6 +14,13 @@ class general() :
         
         self.main_surface=pygame.display.set_mode((1240,self.largeur_echiquier)) # 900 -> largeur de la fenêtre
         pygame.display.set_caption('Chess') #titre de la fenêtre
+
+        running1=True
+        while running1:
+            self.main_surface.fill((255, 203, 96))
+            self.ecrire("Jouons !", (510,230), taille_ecriture=60)
+            pygame.time.delay(1500)
+            running1=False
         
         #on charge l'echiquier ici pour n'avoir à le faire qu'une seule fois (opération plutôt lourde)
 
@@ -27,8 +34,13 @@ class general() :
         self.ecrire("BLANC",(115,10), taille_ecriture=40)
         self.ecrire("NOIR",(self.largeur_echiquier+470,10), taille_ecriture=40)
 
+        if self.tour_des_blancs:
+            self.ecrire("C'est ton tour.", (10,60))
+        else:
+            self.ecrire("C'est ton tour.", (910,60))
 
-    def ecrire(self, message, position, taille_ecriture=20, taille=(20,100), ecriture="Playfair display"):
+
+    def ecrire(self, message, position, taille_ecriture=25, taille=(20,100), ecriture="Playfair display"):
         # pick a font you have and set its size
         myfont = pygame.font.SysFont(ecriture, taille_ecriture)
         # apply it to text on a label
@@ -56,40 +68,60 @@ class general() :
     
     def __main__(self):
         clock = pygame.time.Clock()
-        running = True
+        running2 = True
         case=()
         memoire=[]
         fin_de_partie=False
 
-        while running:
-            #bouton abandonner
+
+        while running2:
+            #boutons abandonner
             couleur_bouton1 = (100,100,100) 
             couleur_bouton2 = (210,200,80)
             mouse = pygame.mouse.get_pos() 
 
-            if 110 <= mouse[0] <= 210 and 450 <= mouse[1] <= 510 : 
-                pygame.draw.rect(self.main_surface,couleur_bouton1,[110,450,100,60]) 
-                self.ecrire("Abandonner", (122, 472))
+            if 20 <= mouse[0] <= 120 and 450 <= mouse[1] <= 510 : 
+                pygame.draw.rect(self.main_surface,couleur_bouton1,[20,450,100,60]) 
+                self.ecrire("Abandonner", (32, 472), taille_ecriture=20)
                 pygame.display.flip()
           
             else: 
-                pygame.draw.rect(self.main_surface,couleur_bouton2,[110,450,100,60])
-                self.ecrire("Abandonner",(122, 472))
+                pygame.draw.rect(self.main_surface,couleur_bouton2,[20,450,100,60])
+                self.ecrire("Abandonner",(32, 472), taille_ecriture=20)
                 pygame.display.flip() 
             
-            if self.largeur_echiquier+450 <= mouse[0] <= self.largeur_echiquier+550 and 450 <= mouse[1] <= 510 : 
-                pygame.draw.rect(self.main_surface,couleur_bouton1,[self.largeur_echiquier+450,450,100,60]) 
-                self.ecrire("Abandonner", (self.largeur_echiquier+461, 472))
+            if self.largeur_echiquier+360 <= mouse[0] <= self.largeur_echiquier+460 and 450 <= mouse[1] <= 510 : 
+                pygame.draw.rect(self.main_surface,couleur_bouton1,[self.largeur_echiquier+360,450,100,60]) 
+                self.ecrire("Abandonner", (self.largeur_echiquier+371, 472), taille_ecriture=20)
           
             else: 
-                pygame.draw.rect(self.main_surface,couleur_bouton2,[self.largeur_echiquier+450,450,100,60])
-                self.ecrire("Abandonner", (self.largeur_echiquier+461, 472))
+                pygame.draw.rect(self.main_surface,couleur_bouton2,[self.largeur_echiquier+360,450,100,60])
+                self.ecrire("Abandonner", (self.largeur_echiquier+371, 472), taille_ecriture=20)
+
+            #boutons la nulle
+            if 140 <= mouse[0] <= 260 and 450 <= mouse[1] <= 510 : 
+                pygame.draw.rect(self.main_surface,couleur_bouton1,[140,450,120,60]) 
+                self.ecrire("Proposer la nulle", (152, 472), taille_ecriture=20)
+                pygame.display.flip()
+          
+            else: 
+                pygame.draw.rect(self.main_surface,couleur_bouton2,[140,450,120,60])
+                self.ecrire("Proposer la nulle",(152, 472), taille_ecriture=20)
+                pygame.display.flip() 
+            
+            if self.largeur_echiquier+480 <= mouse[0] <= self.largeur_echiquier+600 and 450 <= mouse[1] <= 510 : 
+                pygame.draw.rect(self.main_surface,couleur_bouton1,[self.largeur_echiquier+480,450,120,60]) 
+                self.ecrire("Proposer la nulle", (self.largeur_echiquier+490, 472), taille_ecriture=20)
+          
+            else: 
+                pygame.draw.rect(self.main_surface,couleur_bouton2,[self.largeur_echiquier+480,450,120,60])
+                self.ecrire("Proposer la nulle", (self.largeur_echiquier+490, 472), taille_ecriture=20)
 
             
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    running = False
+                    running2 = False
                     #Permet de garder la fenêtre ouverte jusqu'à ce que l'utilisateur veuille la fermer
                     #Par défaut l'evennement QUIT correspond à cliquer sur la croix
                 
@@ -110,7 +142,12 @@ class general() :
                             memoire+=[case]
 
                         if len(memoire)==1:
-                            self.ecrire("Où veux-tu aller ?",(360+self.largeur_echiquier,100) )
+                            if self.tour_des_blancs:
+                                self.ecrire("Où veux-tu aller?",(10,90) )
+                            else:
+                                self.ecrire("Où veux-tu aller?",(910,90) )
+
+                            
 
                         if len(memoire)==2:
                             position_depart=memoire[0][0],memoire[0][1]
@@ -122,51 +159,61 @@ class general() :
 
                                 if result=="Déplacement impossible": 
                                     if self.tour_des_blancs:
-                                        self.ecrire("Déplacement impossible", (10,130))
-                                        pygame.display.flip()
+                                        self.ecrire("Déplacement impossible", (10,110))
                                         pygame.time.delay(1000)
                                     else :
-                                        self.ecrire("Déplacement impossible", (self.largeur_echiquier+370, 130))
-                                        pygame.display.flip()
+                                        self.ecrire("Déplacement impossible", (910, 110))
                                         pygame.time.delay(1000)
+                                
+                                else :
+                                    if self.tour_des_blancs:
+                                        self.tour_des_blancs=False
+                                    else :
+                                        self.tour_des_blancs=True
 
                                 self.setup_board()
                                 self.setup_pieces()
                             
                             pygame.display.flip()
 
-                    if 110 <= mouse[0] <= 210 and 450 <= mouse[1] <= 510:
+                    if 20 <= mouse[0] <= 120 and 450 <= mouse[1] <= 510:
 
-                        self.ecrire("les blancs ont déclaré forfait", (self.largeur_echiquier+370, 200))
+                        self.ecrire("Les blancs ont déclaré forfait.", (910, 200))
                         pygame.time.delay(2000) #pause for a given number of milliseconds based on the CPU clock 
 
                         self.main_surface.fill((131, 166, 151))
-                        self.ecrire("Les noirs ont gagné !", (300,250), taille_ecriture=35)
+                        self.ecrire("Les noirs ont gagné !", (460,250), taille_ecriture=35)
                         pygame.time.delay(2000)
 
                         fin_de_partie=True
 
                     
-                    if self.largeur_echiquier+450 <= mouse[0] <= self.largeur_echiquier+550 and 450 <= mouse[1] <= 510:
+                    if self.largeur_echiquier+360 <= mouse[0] <= self.largeur_echiquier+460 and 450 <= mouse[1] <= 510:
 
-                        self.ecrire("les noirs ont déclaré forfait", (50, 200))
+                        self.ecrire("Les noirs ont déclaré forfait.", (10, 200))
                         pygame.time.delay(2000)
 
                         self.main_surface.fill((131, 166, 151))
-                        self.ecrire("Les blancs ont gagné !", (300,250), taille_ecriture=35)
+                        self.ecrire("Les blancs ont gagné !", (460,250), taille_ecriture=35)
                         pygame.time.delay(2000) 
                         fin_de_partie=True
                                                   
                     pygame.display.flip() 
 
+                    if 140 <= mouse[0] <= 260 and 450 <= mouse[1] <= 510 : #ie les blancs demandent match nul
+                        self.ecrire("Les noirs ont déclaré forfait.", (10, 200))
+
+
+
+
                 
                 #la partie qui suit code la fin de partie laissant aux joueurs le choix de rejouer ou de quitter                
                 if fin_de_partie==True:
 
-                    running2=True
+                    running3=True
                     self.main_surface.fill((131, 166, 151))
 
-                    while running2:
+                    while running3:
                         self.ecrire("Voulez-vous rejouer ?", (430,150), taille_ecriture=60)
                         couleur_bouton1 = (100,100,100) 
                         couleur_bouton2 = (210,200,80)
@@ -192,8 +239,8 @@ class general() :
                         
                         for event in pygame.event.get():
                             if event.type == pygame.QUIT:
-                                running=False
-                                running2 = False
+                                running2=False
+                                running3 = False
                                 #Permet de garder la fenêtre ouverte jusqu'à ce que l'utilisateur veuille la fermer
                                 #Par défaut l'evennement QUIT correspond à cliquer sur la croix
                     
@@ -201,14 +248,14 @@ class general() :
                             # Set the x, y postions of the mouse click 
                                 x, y = mouse
                                 if 300 <= x <= 600 and 350 <= y <= 410 : 
-                                    running2=False
+                                    running3=False
                                     #on réinitialise le dictionnaire
                                     dictionnaire_pieces.Echiquier={(0,0) : dictionnaire_pieces.tourB1, (7,0) : dictionnaire_pieces.tourB2, (1,0) : dictionnaire_pieces.cavalierB1, (6,0) : dictionnaire_pieces.cavalierB2, (2,0) : dictionnaire_pieces.fouB1, (5,0) : dictionnaire_pieces.fouB2, (3,0) : dictionnaire_pieces.dameB, (4,0) : dictionnaire_pieces.roiB, (0,1) : dictionnaire_pieces.pionB1, (1,1): dictionnaire_pieces.pionB2, (2,1) : dictionnaire_pieces.pionB3, (3,1) : dictionnaire_pieces.pionB4, (4,1) : dictionnaire_pieces.pionB5, (5,1): dictionnaire_pieces.pionB6, (6,1): dictionnaire_pieces.pionB7, (7,1) : dictionnaire_pieces.pionB8, (0,7) : dictionnaire_pieces.tourN1, (7,7) : dictionnaire_pieces.tourN2, (1,7) : dictionnaire_pieces.cavalierN1, (6,7) : dictionnaire_pieces.cavalierN2, (2,7) : dictionnaire_pieces.fouN1, (5,7) : dictionnaire_pieces.fouN2, (3,7) : dictionnaire_pieces.dameN, (4,7) : dictionnaire_pieces.roiN, (0,6) : dictionnaire_pieces.pionN1, (1,6): dictionnaire_pieces.pionN2, (2,6) : dictionnaire_pieces.pionN3, (3,6) : dictionnaire_pieces.pionN4, (4,6) : dictionnaire_pieces.pionN5, (5,6): dictionnaire_pieces.pionN6, (6,6): dictionnaire_pieces.pionN7, (7,6) : dictionnaire_pieces.pionN8}
                                     self.__init__()
 
                                 if 700 <= x <= 900 and 350 <= y <= 410 : 
-                                    running=False
-                                    running2 = False
+                                    running2=False
+                                    running3 = False
 
 
         clock.tick(200)
