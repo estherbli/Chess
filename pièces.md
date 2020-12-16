@@ -1,6 +1,7 @@
 import pygame
 import dictionnaire_pieces
-esther = ["C:\\Users\\esthe\\OneDrive\\Bureau\\CPES-L2\\Info\\projet\\{nom}.png"]
+
+print(dictionnaire_pieces.Echiquier[(0,0)])
 class Piece:
   def __init__(self, couleur, positionix, positioniy, nom):
     pygame.init()
@@ -9,7 +10,7 @@ class Piece:
     self.y = positioniy
     #nom est le type de pièce
     self.nom = nom #nom est le type de pièce
-    self.image = pygame.image.load(esther[0])
+    self.image = pygame.image.load(f"C:\\Users\\esthe\\OneDrive\\Bureau\\CPES-L2\\Info\\projet\\{nom}.png")
     self.cloué = False
     
   def deplacement(self, position): #change la position de la pièce et supprime la pièce mangée du dictionnaire 
