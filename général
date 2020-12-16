@@ -80,6 +80,7 @@ class general() :
             couleur_bouton2 = (210,200,80)
             mouse = pygame.mouse.get_pos() 
 
+            #boutons abandonner
             if 20 <= mouse[0] <= 120 and 450 <= mouse[1] <= 510 : 
                 pygame.draw.rect(self.main_surface,couleur_bouton1,[20,450,100,60]) 
                 self.ecrire("Abandonner", (32, 472), taille_ecriture=20)
@@ -146,9 +147,7 @@ class general() :
                             if self.tour_des_blancs:
                                 self.ecrire("Où veux-tu aller?",(10,90) )
                             else:
-                                self.ecrire("Où veux-tu aller?",(910,90) )
-
-                            
+                                self.ecrire("Où veux-tu aller?",(910,90) )                            
 
                         if len(memoire)==2:
                             position_depart=memoire[0][0],memoire[0][1]
@@ -201,7 +200,7 @@ class general() :
                                                   
                     pygame.display.flip() 
 
-#proposer la nulle
+#proposer la nulleen cliquant sur l'un des boutons proposer la nulle
                     if 140 <= mouse[0] <= 260 and 450 <= mouse[1] <= 510 : #ie les blancs demandent match nul
                         self.ecrire("Les blancs proposent la nulle.", (910, 300))
                         self.ecrire("Acceptes-tu?", (910, 330))
@@ -240,7 +239,7 @@ class general() :
                                     if self.largeur_echiquier+360 <= x <= self.largeur_echiquier+460 and 450 <= y <= 510 :
                                         pause=False
                                         self.main_surface.fill((131, 166, 151))
-                                        self.ecrire("Partie nulle", (460,250), taille_ecriture=35)
+                                        self.ecrire("Partie nulle", (510,250), taille_ecriture=50)
                                         pygame.time.delay(2000) 
                                         fin_de_partie=True
                                     
@@ -289,7 +288,7 @@ class general() :
                                     if 20 <= x <= 120 and 450 <= y <= 510 :
                                         pause1=False
                                         self.main_surface.fill((131, 166, 151))
-                                        self.ecrire("Partie nulle", (460,250), taille_ecriture=35)
+                                        self.ecrire("Partie nulle", (510,250), taille_ecriture=50)
                                         pygame.time.delay(2000) 
                                         fin_de_partie=True
                                     
@@ -311,7 +310,7 @@ class general() :
                         couleur_bouton2 = (210,200,80)
                         mouse = pygame.mouse.get_pos() 
 
-                        if 300 <= mouse[0] <= 600 and 350 <= mouse[1] <= 410 : 
+                        if 300 <= mouse[0] <= 500 and 350 <= mouse[1] <= 410 : 
                             pygame.draw.rect(self.main_surface,couleur_bouton1,[300,350,200,60]) 
                             self.ecrire("Pour sûr", (310, 360), taille_ecriture=40)
                             pygame.display.flip()
@@ -339,7 +338,7 @@ class general() :
                             if event.type == pygame.MOUSEBUTTONDOWN:
                             # Set the x, y postions of the mouse click 
                                 x, y = mouse
-                                if 300 <= x <= 600 and 350 <= y <= 410 : 
+                                if 300 <= x <= 500 and 350 <= y <= 410 : 
                                     running3=False
                                     #on réinitialise le dictionnaire
                                     dictionnaire_pieces.Echiquier={(0,0) : dictionnaire_pieces.tourB1, (7,0) : dictionnaire_pieces.tourB2, (1,0) : dictionnaire_pieces.cavalierB1, (6,0) : dictionnaire_pieces.cavalierB2, (2,0) : dictionnaire_pieces.fouB1, (5,0) : dictionnaire_pieces.fouB2, (3,0) : dictionnaire_pieces.dameB, (4,0) : dictionnaire_pieces.roiB, (0,1) : dictionnaire_pieces.pionB1, (1,1): dictionnaire_pieces.pionB2, (2,1) : dictionnaire_pieces.pionB3, (3,1) : dictionnaire_pieces.pionB4, (4,1) : dictionnaire_pieces.pionB5, (5,1): dictionnaire_pieces.pionB6, (6,1): dictionnaire_pieces.pionB7, (7,1) : dictionnaire_pieces.pionB8, (0,7) : dictionnaire_pieces.tourN1, (7,7) : dictionnaire_pieces.tourN2, (1,7) : dictionnaire_pieces.cavalierN1, (6,7) : dictionnaire_pieces.cavalierN2, (2,7) : dictionnaire_pieces.fouN1, (5,7) : dictionnaire_pieces.fouN2, (3,7) : dictionnaire_pieces.dameN, (4,7) : dictionnaire_pieces.roiN, (0,6) : dictionnaire_pieces.pionN1, (1,6): dictionnaire_pieces.pionN2, (2,6) : dictionnaire_pieces.pionN3, (3,6) : dictionnaire_pieces.pionN4, (4,6) : dictionnaire_pieces.pionN5, (5,6): dictionnaire_pieces.pionN6, (6,6): dictionnaire_pieces.pionN7, (7,6) : dictionnaire_pieces.pionN8}
@@ -348,7 +347,6 @@ class general() :
                                 if 700 <= x <= 900 and 350 <= y <= 410 : 
                                     running2=False
                                     running3 = False
-
 
         clock.tick(200)
         #détermine le nombre de fois que cette boucle est exécutée par seconde
