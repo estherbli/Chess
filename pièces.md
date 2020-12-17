@@ -1,7 +1,8 @@
 import pygame
 import dictionnaire_pieces
-path_milo="C:\Users\emili\OneDrive\Documents\CPES-2\informatique\chess\"
-path_esther="C:\Users\esthe\OneDrive\Bureau\CPES-L2\Info\projet\"
+path_milo = "C:\\Users\\emili\\OneDrive\\Documents\\CPES-2\\informatique\\chess"
+path_esther="C:\\Users\\esthe\\OneDrive\\Bureau\\CPES-L2\\Info\\projet"
+
 class Piece:
   def __init__(self, couleur, positionix, positioniy, nom):
     pygame.init()
@@ -10,7 +11,7 @@ class Piece:
     self.y = positioniy
     #nom est le type de pièce
     self.nom = nom #nom est le type de pièce
-    self.image = pygame.image.load(f"{path_esther}{nom}.png")
+    self.image = pygame.image.load(f"{path_esther}\\{nom}.png")
     self.cloué = False
     
   def deplacement(self, position): #change la position de la pièce et supprime la pièce mangée du dictionnaire 
