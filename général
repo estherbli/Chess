@@ -2,12 +2,13 @@ import pygame
 import dictionnaire_pieces
 import pieces
 
+
 class general() :
     def __init__(self):
 
         self.largeur_echiquier=560 #multiple de 8, mis ici pour pouvoir le changer facilement à loisir
         
-        self.echiquier=pygame.image.load('C:\\Users\\emili\\OneDrive\\Documents\\CPES-2\\informatique\\chess\\echiquier2.png')
+        self.echiquier=pygame.image.load(f'{pieces.path_milo}\\echiquier2.png')
         self.echiquier=pygame.transform.scale(self.echiquier, (self.largeur_echiquier,self.largeur_echiquier)) #on redimensionne l'image
         
         self.tour_des_blancs=True
@@ -309,8 +310,7 @@ class general() :
                                                     if event.type == pygame.QUIT:
                                                         en_attente_de_decision = False
                                                         running2=False
-                                                        #Permet de garder la fenêtre ouverte jusqu'à ce que l'utilisateur veuille la fermer
-                                                        #Par défaut l'evennement QUIT correspond à cliquer sur la croix
+                                                        #l'utilisateur peut encore fermer la fenêtre sans problème
                     
                                                     if event.type == pygame.MOUSEBUTTONDOWN:
                                                         # Set the x, y postions of the mouse click 
@@ -521,3 +521,4 @@ class general() :
 
 
 b=general()
+
