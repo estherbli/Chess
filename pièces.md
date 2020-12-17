@@ -23,8 +23,8 @@ class Piece:
         if self.roque(x, y) == 'roque effectué' : return None #fonction qui déplace les pièces si le roque (et return None) est possible sinon ne fait rien
     if self.dpossible(x, y) and self.cloué == False: 
       if (x,y) in dictionnaire_pieces.Echiquier: #prendre une pièce
-        if self.couleur == dictionnaire_pieces.Echiquier[(x,y)].couleur:  #vérifie que la pièce qui va être prise est bien de la couleur adverse
-          if roi in dictionnaire_pieces.Echiquier[(x,y)].nom: #on ne peut pas manger le roi
+        if self.couleur != dictionnaire_pieces.Echiquier[(x,y)].couleur:  #vérifie que la pièce qui va être prise est bien de la couleur adverse
+          if 'roi' in dictionnaire_pieces.Echiquier[(x,y)].nom: #on ne peut pas manger le roi
             return 'Déplacement impossible' 
           else : 
             dictionnaire_pieces.Echiquier.pop((x,y))  #pièce prise = supprimée de l'échiquier
@@ -342,5 +342,6 @@ class pion(Piece):
       dictionnaire_pieces.Echiquier[(self.x+pas,self.y)].pop() #prend la pièce en passant
       return True
     else : return False
+
 
 
