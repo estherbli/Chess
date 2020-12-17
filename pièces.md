@@ -319,11 +319,11 @@ class pion(Piece):
       return True
     elif ((y == self.y +pas and x == self.x +pas) or (y == self.y +pas and x == self.x -pas)) and ((x,y) in dictionnaire_pieces.Echiquier): #prise en diagonale
       return True
-    elif self.cloué == False and ((self.x-pas, self.y) in dictionnaire_pieces.Echiquier) and (dictionnaire_pieces.Echiquier[(self.x-pas,self.y)].eppossible): #prise en passant à gauche
-      dictionnaire_pieces.Echiquier[(self.x-pas,self.y)].pop() #prend la pièce en passant
+    elif self.cloué == False and ((self.x-pas, self.y) in dictionnaire_pieces.Echiquier) and ('pion' in dictionnaire_pieces.Echiquier[(self.x-pas,self.y)].nom) and (dictionnaire_pieces.Echiquier[(self.x-pas,self.y)].eppossible): #prise en passant à gauche
+      dictionnaire_pieces.Echiquier.pop((self.x-pas,self.y)) #prend la pièce en passant
       return True
-    elif self.cloué == False and ((self.x+pas, self.y) in dictionnaire_pieces.Echiquier) and (dictionnaire_pieces.Echiquier[(self.x+pas,self.y)].eppossible): #pris en passant à droite
-      dictionnaire_pieces.Echiquier[(self.x+pas,self.y)].pop() #prend la pièce en passant
+    elif self.cloué == False and ((self.x+pas, self.y) in dictionnaire_pieces.Echiquier) and ('pion' in dictionnaire_pieces.Echiquier[(self.x+pas,self.y)].nom) and (dictionnaire_pieces.Echiquier[(self.x+pas,self.y)].eppossible): #pris en passant à droite
+      dictionnaire_pieces.Echiquier.pop((self.x+pas,self.y)) #prend la pièce en passant
       return True
     else : return False
   
@@ -335,11 +335,11 @@ class pion(Piece):
     #mais si on considère que le plateau est vide 3 autre cas à supprimer?????
     elif ((y == self.y +pas and x == self.x +pas) or (y == self.y +pas and x == self.x -pas)) and ((x,y) in dictionnaire_pieces.Echiquier): #prise en diagonale
       return True
-    elif self.cloué == False and ((self.x-pas, self.y) in dictionnaire_pieces.Echiquier) and (dictionnaire_pieces.Echiquier[(self.x-pas,self.y)].eppossible): #prise en passant à gauche
-      dictionnaire_pieces.Echiquier[(self.x-pas,self.y)].pop() #prend la pièce en passant
+    elif self.cloué == False and ((self.x-pas, self.y) in dictionnaire_pieces.Echiquier) and ('pion' in dictionnaire_pieces.Echiquier[(self.x-pas,self.y)].nom) and (dictionnaire_pieces.Echiquier[(self.x-pas,self.y)].eppossible): #prise en passant à gauche
+      dictionnaire_pieces.Echiquier.pop((self.x-pas,self.y)) #prend la pièce en passant
       return True
-    elif self.cloué == False and ((self.x+pas, self.y) in dictionnaire_pieces.Echiquier) and (dictionnaire_pieces.Echiquier[(self.x+pas,self.y)].eppossible): #pris en passant à droite
-      dictionnaire_pieces.Echiquier[(self.x+pas,self.y)].pop() #prend la pièce en passant
+    elif self.cloué == False and ((self.x+pas, self.y) in dictionnaire_pieces.Echiquier) and ('pion' in dictionnaire_pieces.Echiquier[(self.x+pas,self.y)].nom) and (dictionnaire_pieces.Echiquier[(self.x+pas,self.y)].eppossible): #pris en passant à droite
+      dictionnaire_pieces.Echiquier.pop((self.x+pas,self.y)) #prend la pièce en passant
       return True
     else : return False
 
