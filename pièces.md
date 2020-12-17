@@ -282,10 +282,10 @@ class cavalier(Piece):
     Piece.__init__(self, couleur,positionix, positioniy, nom)
   
   def dpossible(self, x,y):
-    dLavant = ( y == self.y + 2  and ((x == self.x + 1) or (x == self.x - 1)))
-    dLarriere = (y == self.x - 1 and ((x == self.x + 1) or (x == self.x - 1)))
-    dLdroite = (( x == self.x + 2 and ((y == self.y + 1) or (y == self.y - 1))))
-    dLgauche = (( x == self.x - 2 and ((y == self.y + 1) or (y == self.y - 1))))
+    dLavant = ((y == self.y + 2)  and ((x == self.x + 1) or (x == self.x - 1)))
+    dLarriere = ((y == self.y - 2) and ((x == self.x + 1) or (x == self.x - 1)))
+    dLdroite = ((x == self.x + 2) and ((y == self.y + 1) or (y == self.y - 1)))
+    dLgauche = ((x == self.x - 2) and ((y == self.y + 1) or (y == self.y - 1)))
     if dLavant or dLarriere or dLdroite or dLgauche :
       return True
     else : return False
@@ -294,7 +294,8 @@ class cavalier(Piece):
     if self.dpossible(x,y):
       return True
     else: return False
-    
+
+
 class pion(Piece):
   def __init__(self, couleur, positionix, positioniy, nom):
     Piece.__init__(self, couleur, positionix, positioniy, nom)
