@@ -8,9 +8,10 @@ class general() :
 
         self.largeur_echiquier=560 #multiple de 8, mis ici pour pouvoir le changer facilement à loisir
         
-        self.echiquier=pygame.image.load(f'{pieces.path_milo}\\echiquier2.png')
+        self.echiquier=pygame.image.load(f'{pieces.path_milo}echiquier2.png') #on charge l'echiquier ici pour n'avoir à le faire qu'une seule fois (opération plutôt lourde)
         self.echiquier=pygame.transform.scale(self.echiquier, (self.largeur_echiquier,self.largeur_echiquier)) #on redimensionne l'image
         
+
         self.tour_des_blancs=True
         
         self.main_surface=pygame.display.set_mode((1240,self.largeur_echiquier)) # 900 -> largeur de la fenêtre
@@ -34,8 +35,6 @@ class general() :
             self.ecrire(self.pseudo_noir, (12,12))
 
             running1=False
-        
-        #on charge l'echiquier ici pour n'avoir à le faire qu'une seule fois (opération plutôt lourde)
 
         self.setup_board()
         self.setup_pieces()
@@ -50,13 +49,13 @@ class general() :
             for event in pygame.event.get():
                 if event.type==pygame.QUIT:
                     pygame.quit()
-                    quit()
                 if event.type == pygame.KEYDOWN:
                     if event.key ==pygame.K_RETURN:
                         done=False
                     else :
-                        word+=str(chr(event.key))
-                        self.ecrire(word, (25,30))
+                        if len(word)<8:
+                            word+=str(chr(event.key))
+                            self.ecrire(word, (25,30))
         return word
     
     def setup_board(self):
@@ -81,7 +80,7 @@ class general() :
                     piece=dictionnaire_pieces.Echiquier[(i,j)]
                     image_piece=piece.image
 
-                    self.main_surface.blit(image_piece, (i*70+340,j*70)) # +340 pour mettre les pièces sur l'échiquier
+                    self.main_surface.blit(image_piece, (i*70+340,560-j*70-70)) # +340 pour mettre les pièces sur l'échiquier
 
         pygame.display.flip() #met à jour l'écran
 
@@ -163,7 +162,7 @@ class general() :
 #si on clique sur l'echiquier
                     if 340<=x<=self.largeur_echiquier+340 and y<=560: 
                         i=(x-340)//70 #correspnd à la colonne
-                        j=y//70 #correspond à la ligne
+                        j=(560-y)//70 #correspond à la ligne
 
                         if (i,j) == case:
                             case=()
@@ -551,3 +550,4 @@ class general() :
 
 
 b=general()
+
