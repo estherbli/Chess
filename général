@@ -8,7 +8,7 @@ class general() :
 
         self.largeur_echiquier=560 #multiple de 8, mis ici pour pouvoir le changer facilement à loisir
         
-        self.echiquier=pygame.image.load(f'{pieces.path_milo}echiquier2.png')
+        self.echiquier=pygame.image.load(f'{pieces.path_milo}\\echiquier2.png')
         self.echiquier=pygame.transform.scale(self.echiquier, (self.largeur_echiquier,self.largeur_echiquier)) #on redimensionne l'image
         
         self.tour_des_blancs=True
@@ -16,11 +16,23 @@ class general() :
         self.main_surface=pygame.display.set_mode((1240,self.largeur_echiquier)) # 900 -> largeur de la fenêtre
         pygame.display.set_caption('Chess') #titre de la fenêtre
 
+#page de démarrage
         running1=True
         while running1:
             self.main_surface.fill((255, 203, 96))
             self.ecrire("Jouons !", (510,230), taille_ecriture=60)
             pygame.time.delay(1500)
+
+            self.main_surface.fill((255, 203, 96))
+
+            self.pseudo_blanc = self.input("Joueur blanc, quel est ton nom ?")
+            self.ecrire(self.pseudo_blanc,(12,12))
+
+            self.main_surface.fill((255, 203, 96))
+
+            self.pseudo_noir = self.input("Joueur noir, quel est ton nom ?")
+            self.ecrire(self.pseudo_noir, (12,12))
+
             running1=False
         
         #on charge l'echiquier ici pour n'avoir à le faire qu'une seule fois (opération plutôt lourde)
@@ -29,11 +41,29 @@ class general() :
         self.setup_pieces()
         self.__main__()
     
+    def input(self, message):
+        word=""
+        self.ecrire(message,(24,12)) #example asking name
+        pygame.display.flip()
+        done = True
+        while done:
+            for event in pygame.event.get():
+                if event.type==pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key ==pygame.K_RETURN:
+                        done=False
+                    else :
+                        word+=str(chr(event.key))
+                        self.ecrire(word, (25,30))
+        return word
+    
     def setup_board(self):
         self.main_surface.fill((128, 208, 208))
         self.main_surface.blit(self.echiquier, (340,0))
-        self.ecrire("BLANC",(115,10), taille_ecriture=40)
-        self.ecrire("NOIR",(self.largeur_echiquier+470,10), taille_ecriture=40)
+        self.ecrire(f"BLANC : --- {self.pseudo_blanc} ---",(10,10), taille_ecriture=40)
+        self.ecrire(f"NOIR : --- {self.pseudo_noir} ---",(self.largeur_echiquier+350,10), taille_ecriture=40)
 
         if self.tour_des_blancs:
             self.ecrire("C'est ton tour.", (10,60))
@@ -521,4 +551,3 @@ class general() :
 
 
 b=general()
-
