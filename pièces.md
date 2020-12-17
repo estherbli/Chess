@@ -33,7 +33,9 @@ class Piece:
       ancienxy = (self.x,self.y)
       self.x = x #changer les coordonnées de la pièce
       self.y = y
-      if ('roi' or 'tour' or 'pion') in self.nom: self.joué = True
+      if True: #('roi' in self.nom) or ('pion' in self.nom) or ('tour' in self.nom)
+        self.joué = True
+
       dictionnaire_pieces.Echiquier[(x,y)] = self #on bouge la pièce en la rajoutant dans le dictionnaire avec comme clé sa nouvelle position
       dictionnaire_pieces.Echiquier.pop(ancienxy) #on supprime l'ancienne clé (position) de la pièce                                     
       # ajouter indication graphique????
@@ -64,7 +66,7 @@ class Piece:
       return True
     else: return False
  
- 
+
     
 class fou(Piece):
   def __init__(self, couleur, positionix, positioniy, nom):
@@ -307,34 +309,38 @@ class pion(Piece):
   
   def dpossible(self, x, y):
     #cas de prise en passant à considérer aussi
-    if not(self.joué) and (y == self.y +2) and not((self.x, self.y +1) in dictionnaire_pieces.Echiquier): #avance de 2 cases
+    if self.couleur == 'blanc':
+      pas = 1
+    else : pas = -1
+    if not(self.joué) and (x == self.x and y == self.y +2*pas) and not((self.x, self.y +pas) in dictionnaire_pieces.Echiquier): #avance de 2 cases
       self.eppossible = True
       return True
-    elif (y == self.y +1) and not((self.x, self.y +1) in dictionnaire_pieces.Echiquier): #avance d'une case
+    elif (x == self.x and y == self.y +pas) and not((self.x, self.y +pas) in dictionnaire_pieces.Echiquier): #avance d'une case
       return True
-    elif ((y == self.y +1 and x == self.x +1) or (y == self.y +1 and x == self.x -1)) and ((x,y) in dictionnaire_pieces.Echiquier): #prise en diagonale
+    elif ((y == self.y +pas and x == self.x +pas) or (y == self.y +pas and x == self.x -pas)) and ((x,y) in dictionnaire_pieces.Echiquier): #prise en diagonale
       return True
-    elif self.cloué == False and ((self.x-1, self.y) in dictionnaire_pieces.Echiquier) and (dictionnaire_pieces.Echiquier[(self.x-1,self.y)].eppossible): #prise en passant à gauche
-      dictionnaire_pieces.Echiquier[(self.x-1,self.y)].pop() #prend la pièce en passant
+    elif self.cloué == False and ((self.x-pas, self.y) in dictionnaire_pieces.Echiquier) and (dictionnaire_pieces.Echiquier[(self.x-pas,self.y)].eppossible): #prise en passant à gauche
+      dictionnaire_pieces.Echiquier[(self.x-pas,self.y)].pop() #prend la pièce en passant
       return True
-    elif self.cloué == False and ((self.x+1, self.y) in dictionnaire_pieces.Echiquier) and (dictionnaire_pieces.Echiquier[(self.x+1,self.y)].eppossible): #pris en passant à droite
-      dictionnaire_pieces.Echiquier[(self.x+1,self.y)].pop() #prend la pièce en passant
+    elif self.cloué == False and ((self.x+pas, self.y) in dictionnaire_pieces.Echiquier) and (dictionnaire_pieces.Echiquier[(self.x+pas,self.y)].eppossible): #pris en passant à droite
+      dictionnaire_pieces.Echiquier[(self.x+pas,self.y)].pop() #prend la pièce en passant
       return True
     else : return False
   
   def dlegal(self, x, y):
-    if not(self.joué) and (y == self.y +2): #avance de 2 cases
+    if not(self.joué) and (x == self.x and y == self.y +2*pas): #avance de 2*pas cases
       return True
-    elif (y == self.y +1): #avance d'une case
+    elif (x == self.x and y == self.y +pas): #avance d'une case
       return True
     #mais si on considère que le plateau est vide 3 autre cas à supprimer?????
-    elif ((y == self.y +1 and x == self.x +1) or (y == self.y +1 and x == self.x -1)) and ((x,y) in dictionnaire_pieces.Echiquier): #prise en diagonale
+    elif ((y == self.y +pas and x == self.x +pas) or (y == self.y +pas and x == self.x -pas)) and ((x,y) in dictionnaire_pieces.Echiquier): #prise en diagonale
       return True
-    elif self.cloué == False and ((self.x-1, self.y) in dictionnaire_pieces.Echiquier) and (dictionnaire_pieces.Echiquier[(self.x-1,self.y)].eppossible): #prise en passant à gauche
-      dictionnaire_pieces.Echiquier[(self.x-1,self.y)].pop() #prend la pièce en passant
+    elif self.cloué == False and ((self.x-pas, self.y) in dictionnaire_pieces.Echiquier) and (dictionnaire_pieces.Echiquier[(self.x-pas,self.y)].eppossible): #prise en passant à gauche
+      dictionnaire_pieces.Echiquier[(self.x-pas,self.y)].pop() #prend la pièce en passant
       return True
-    elif self.cloué == False and ((self.x+1, self.y) in dictionnaire_pieces.Echiquier) and (dictionnaire_pieces.Echiquier[(self.x+1,self.y)].eppossible): #pris en passant à droite
-      dictionnaire_pieces.Echiquier[(self.x+1,self.y)].pop() #prend la pièce en passant
+    elif self.cloué == False and ((self.x+pas, self.y) in dictionnaire_pieces.Echiquier) and (dictionnaire_pieces.Echiquier[(self.x+pas,self.y)].eppossible): #pris en passant à droite
+      dictionnaire_pieces.Echiquier[(self.x+pas,self.y)].pop() #prend la pièce en passant
       return True
     else : return False
+
 
