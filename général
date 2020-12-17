@@ -8,7 +8,7 @@ class general() :
 
         self.largeur_echiquier=560 #multiple de 8, mis ici pour pouvoir le changer facilement à loisir
         
-        self.echiquier=pygame.image.load(f'{pieces.path_milo}\\echiquier2.png')
+        self.echiquier=pygame.image.load(f'{pieces.path_milo}echiquier2.png')
         self.echiquier=pygame.transform.scale(self.echiquier, (self.largeur_echiquier,self.largeur_echiquier)) #on redimensionne l'image
         
         self.tour_des_blancs=True
