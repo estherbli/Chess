@@ -18,7 +18,7 @@ class Piece:
     x = position[0]  #mettre le lien entre le déplacement sur le plateau et les coordonnées 
     y = position [1]
     #vérifier que le déplacement est possible pour la pièce
-    if 'roi' in self.nom in self.nom:
+    if 'roi' in self.nom:
       if True: #self.echec() == True
         if self.roque(x, y) == 'roque effectué' : return None #fonction qui déplace les pièces si le roque (et return None) est possible sinon ne fait rien
     if self.dpossible(x, y) and self.cloué == False: 
@@ -33,7 +33,6 @@ class Piece:
       ancienxy = (self.x,self.y)
       self.x = x #changer les coordonnées de la pièce
       self.y = y
-      breakpoint()
       if (('roi' in self.nom) or ('pion' in self.nom) or ('tour' in self.nom)):
         self.joué = True
 
@@ -195,10 +194,9 @@ class roi(Piece):
     #truc spécifique au roque
     #vérifier la couleur
     if self.couleur == 'blanc':
-      breakpoint()
-      if self.joué == False and (x,y) == (self.x+2, self.y) and ('tour' in dictionnaire_pieces.Echiquier[(0,7)].nom) and dictionnaire_pieces.Echiquier[(0,7)].joué==False: #roque à droite (petit roque)
+      if self.joué == False and (x,y) == (self.x+2, self.y) and ('tour' in dictionnaire_pieces.Echiquier[(7,0)].nom) and dictionnaire_pieces.Echiquier[(7,0)].joué==False: #roque à droite (petit roque)
         entre=False
-        for i in range(self.x+1,self.x+3,1):  #vérifie si il y a des pièces entre
+        for i in range(self.x+1,self.x+3):  #vérifie si il y a des pièces entre
           if (i,0) in dictionnaire_pieces.Echiquier:
             entre=True
         if entre==False:
@@ -216,7 +214,7 @@ class roi(Piece):
           dictionnaire_pieces.Echiquier.pop(ancienxytour)
           return 'roque effectué'
 
-      elif self.joué == False and (x,y) == (self.x-2, self.y) and dictionnaire_pieces.tourB1.joué==False: #roque à gauche (grand roque)
+      elif self.joué == False and (x,y) == (self.x-2, self.y) and ('tour' in dictionnaire_pieces.Echiquier[(0,0)].nom) and dictionnaire_pieces.Echiquier[(0,0)].joué==False: #roque à gauche (grand roque)
         entre=False
         for i in range(self.x-1,self.x-4,-1):  #vérifie si il y a des pièces entre
           if (i,0) in dictionnaire_pieces.Echiquier:
@@ -234,14 +232,13 @@ class roi(Piece):
           dictionnaire_pieces.Echiquier[ancienxytour].x = 3
           dictionnaire_pieces.Echiquier[(3,0)] = dictionnaire_pieces.Echiquier[(ancienxytour)]
           dictionnaire_pieces.Echiquier.pop(ancienxytour)
-          print('bouger')
           return 'roque effectué'
       else : return None
 
     if self.couleur == 'noir':
-      if self.joué == False and (x,y) == (self.x+2, self.y) and dictionnaire_pieces.tourN1.joué==False: #roque à droite (petit roque)
+      if self.joué == False and (x,y) == (self.x+2, self.y) and ('tour' in dictionnaire_pieces.Echiquier[(7,7)].nom) and dictionnaire_pieces.Echiquier[(7,7)].joué==False: #roque à droite (petit roque)
         entre=False
-        for i in range(self.x,self.x+3,1):  #vérifie si il y a des pièces entre
+        for i in range(self.x+1,self.x+3):  #vérifie si il y a des pièces entre
           if (i,7) in dictionnaire_pieces.Echiquier:
             entre=True
         if entre==False:
@@ -255,11 +252,11 @@ class roi(Piece):
           ancienxytour = ((7,7))
           dictionnaire_pieces.Echiquier[ancienxytour].joué = True
           dictionnaire_pieces.Echiquier[(ancienxytour)].x = 7 
-          dictionnaire_pieces.Echiquier[(7,7)] = dictionnaire_pieces.Echiquier[(ancienxytour)]
+          dictionnaire_pieces.Echiquier[(5,7)] = dictionnaire_pieces.Echiquier[(ancienxytour)]
           dictionnaire_pieces.Echiquier.pop(ancienxytour)
           return 'roque effectué'
 
-      elif self.joué == False and (x,y) == (self.x-2, self.y) and dictionnaire_pieces.tourB1.joué==False: #roque à gauche (grand roque)
+      elif self.joué == False and (x,y) == (self.x-2, self.y) and ('tour' in dictionnaire_pieces.Echiquier[(0,7)].nom) and dictionnaire_pieces.Echiquier[(0,7)].joué==False: #roque à gauche (grand roque)
         entre=False
         for i in range(self.x-1, self.x-4,-1):  #vérifie si il y a des pièces entre
           if (i,7) in dictionnaire_pieces.Echiquier:
@@ -347,6 +344,3 @@ class pion(Piece):
       dictionnaire_pieces.Echiquier.pop((self.x+pas,self.y)) #prend la pièce en passant
       return True
     else : return False
-
-
-
