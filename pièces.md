@@ -66,6 +66,16 @@ class Piece:
       return True
     else: return False
  
+def echec(self):  #teste les mouvements de toutes les pièces adverses 
+  echec=False
+  for i in Echiquier:
+    if self.tour_des_blancs and Echiquier[i].couleur=="Blanc":
+      if Echiquier[i].dlegal(roiN.x,roiN.y):
+        echec=True
+    if (not self.tour_des_blancs) and Echiquier[i].couleur=="Noir":
+      if Echiquier[i].dlegal(roiB.x,roiB.y):
+        echec=True
+  return echec
 
     
 class fou(Piece):
