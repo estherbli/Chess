@@ -79,7 +79,22 @@ def echec(self): #à appeler sur une pièce qqconque (qui vient d'être déplac�
         echec=True
         L+=[i]
   return echec,L
-
+ def pat(self) #vérifie que la couleur de la piece peut encore jouer sans mettre le roi en echec
+  for piece in dictionnaire_pieces.Echiquier:
+    if self.couleur == piece.couleur :
+      if 'cavalier' in self.nom :
+        #teste position
+        for (x,y) in [(piece.x+1, piece.y+2), (piece.x-1, piece.y+2), (piece.x+1, piece.y-2), (piece.x-1, piece.y-2), (piece.x+2, piece.y-1), (piece.x+2, piece.y-1), (piece.x-2, piece.y-1), (piece.x-2, piece.y+1)]
+          if dlegal(x,y):
+            return False
+      else : 
+        #teste des positions
+        for x in [self.x, self.x+1, self.x-1]:
+          for y in [self.y, self.y-1, self.y+1]:
+            if self.y != self.x
+            if dlegal(x,y):
+              return False
+  return True
     
 class fou(Piece):
   def __init__(self, couleur, positionix, positioniy, nom):
