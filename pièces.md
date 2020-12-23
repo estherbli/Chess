@@ -19,8 +19,34 @@ class Piece:
     y = position [1]
     #vérifier que le déplacement est possible pour la pièce
     if 'roi' in self.nom:
-      if True: #self.echec() == True
-        if self.roque(x, y) == 'roque effectué' : return None #fonction qui déplace les pièces si le roque (et return None) est possible sinon ne fait rien
+      if self.roque == True:
+        if self.couleur == 'blanc': #test pour savoir quel type de roque
+          if (x,y) == (self.x+2, self.y): 
+            ancienxytour = (7,0)
+            nouveauxytour = (5,0)
+          else :
+            ancienxytour = (0,0)
+            nouveauxytour = (3,0)
+        if self.couleur == 'noir':
+          if (x,y) == (self.x+2, self.y):
+            ancienxytour = (7,7)
+            nouveauxytour = (5,7)   
+          else :
+            ancienxytour = (0,7)
+            nouveauxytour = (3,7)
+        #bouger le roi
+        ancienxyroi = (self.x,self.y)
+        self.x = x #changer les coordonnées de la pièce
+        self.joué = True
+        dictionnaire_pieces.Echiquier[(x,y)] = self #on bouge la pièce en la rajoutant dans le dictionnaire avec comme clé sa nouvelle position
+        dictionnaire_pieces.Echiquier.pop(ancienxyroi) #on supprime l'ancienne pièce
+        #bouger la tour
+        ancienxytour = ((7,0))
+        dictionnaire_pieces.Echiquier[ancienxytour].joué = True
+        dictionnaire_pieces.Echiquier[(ancienxytour)].x = nouveauxytour[1]
+        dictionnaire_pieces.Echiquier[nouveauxytour] = dictionnaire_pieces.Echiquier[(ancienxytour)]
+        dictionnaire_pieces.Echiquier.pop(ancienxytour)
+        return None #le déplacement est fini   
     if self.dpossible(x, y) and self.cloué == False: 
       if (x,y) in dictionnaire_pieces.Echiquier: #prendre une pièce
         if self.couleur != dictionnaire_pieces.Echiquier[(x,y)].couleur:  #vérifie que la pièce qui va être prise est bien de la couleur adverse
@@ -66,35 +92,36 @@ class Piece:
       return True
     else: return False
  
-def echec(self): #à appeler sur une pièce qqconque (qui vient d'être déplacée)
-  echec=False
-  L=[]
-  for i in Echiquier:
-    if self.couleur=="Blanc" and dictionnaire_pieces.Echiquier[i].couleur=="Blanc":
-      if Echiquier[i].dlegal(roiN.x,roiN.y):   #vérifie si la pièce adverse atteint le roi
-        echec=True
-        L+=[i]   #garde la position des pièces qui mettent en échec (utile pour mat)
-    if self.couleur=="Noir" and dictionnaire_pieces.Echiquier[i].couleur=="Noir":
-      if Echiquier[i].dlegal(roiB.x,roiB.y):
-        echec=True
-        L+=[i]
-  return echec,L
- def pat(self) #vérifie que la couleur de la piece peut encore jouer sans mettre le roi en echec
-  for piece in dictionnaire_pieces.Echiquier:
-    if self.couleur == piece.couleur :
-      if 'cavalier' in self.nom :
-        #teste position
-        for (x,y) in [(piece.x+1, piece.y+2), (piece.x-1, piece.y+2), (piece.x+1, piece.y-2), (piece.x-1, piece.y-2), (piece.x+2, piece.y-1), (piece.x+2, piece.y-1), (piece.x-2, piece.y-1), (piece.x-2, piece.y+1)]
-          if dlegal(x,y):
-            return False
-      else : 
-        #teste des positions
-        for x in [self.x, self.x+1, self.x-1]:
-          for y in [self.y, self.y-1, self.y+1]:
-            if self.y != self.x
+  def echec(self): #à appeler sur une pièce qqconque (qui vient d'être déplacée)
+    echec=False
+    L=[]
+    for i in Echiquier:
+      if self.couleur=="Blanc" and dictionnaire_pieces.Echiquier[i].couleur=="Blanc":
+        if Echiquier[i].dlegal(roiN.x,roiN.y):   #vérifie si la pièce adverse atteint le roi
+          echec=True
+          L+=[i]   #garde la position des pièces qui mettent en échec (utile pour mat)
+      if self.couleur=="Noir" and dictionnaire_pieces.Echiquier[i].couleur=="Noir":
+        if Echiquier[i].dlegal(roiB.x,roiB.y):
+          echec=True
+          L+=[i]
+    return echec,L
+
+  def pat(self): #vérifie que la couleur de la piece peut encore jouer sans mettre le roi en echec
+    for piece in dictionnaire_pieces.Echiquier:
+      if self.couleur == piece.couleur :
+        if 'cavalier' in self.nom :
+          #teste position
+          for (x,y) in [(piece.x+1, piece.y+2), (piece.x-1, piece.y+2), (piece.x+1, piece.y-2), (piece.x-1, piece.y-2), (piece.x+2, piece.y-1), (piece.x+2, piece.y-1), (piece.x-2, piece.y-1), (piece.x-2, piece.y+1)]
             if dlegal(x,y):
               return False
-  return True
+        else : 
+          #teste des positions
+          for x in [self.x, self.x+1, self.x-1]:
+            for y in [self.y, self.y-1, self.y+1]:
+              if self.y != self.x
+              if dlegal(x,y):
+                return False
+    return True
     
 class fou(Piece):
   def __init__(self, couleur, positionix, positioniy, nom):
@@ -228,19 +255,7 @@ class roi(Piece):
           if (i,0) in dictionnaire_pieces.Echiquier:
             entre=True
         if entre==False:
-          #bouger le roi
-          ancienxyroi = (self.x,self.y)
-          self.x = x #changer les coordonnées de la pièce
-          self.joué = True
-          dictionnaire_pieces.Echiquier[(x,y)] = self #on bouge la pièce en la rajoutant dans le dictionnaire avec comme clé sa nouvelle position
-          dictionnaire_pieces.Echiquier.pop(ancienxyroi) #on supprime l'ancienne pièce
-          #bouger la tour
-          ancienxytour = ((7,0))
-          dictionnaire_pieces.Echiquier[ancienxytour].joué = True
-          dictionnaire_pieces.Echiquier[(ancienxytour)].x = 5 
-          dictionnaire_pieces.Echiquier[(5,0)] = dictionnaire_pieces.Echiquier[(ancienxytour)]
-          dictionnaire_pieces.Echiquier.pop(ancienxytour)
-          return 'roque effectué'
+          return True
 
       elif self.joué == False and (x,y) == (self.x-2, self.y) and ('tour' in dictionnaire_pieces.Echiquier[(0,0)].nom) and dictionnaire_pieces.Echiquier[(0,0)].joué==False: #roque à gauche (grand roque)
         entre=False
@@ -248,19 +263,7 @@ class roi(Piece):
           if (i,0) in dictionnaire_pieces.Echiquier:
             entre=True
         if entre==False:
-          #bouger le roi
-          ancienxyroi = (self.x,self.y)
-          self.x = x #changer les coordonnées de la pièce
-          self.joué = True
-          dictionnaire_pieces.Echiquier[(x,y)] = self #on bouge la pièce en la rajoutant dans le dictionnaire avec comme clé sa nouvelle position
-          dictionnaire_pieces.Echiquier.pop(ancienxyroi) #on supprime l'ancienne pièce
-          #bouger la tour
-          ancienxytour = (0,0)
-          dictionnaire_pieces.Echiquier[ancienxytour].joué = True
-          dictionnaire_pieces.Echiquier[ancienxytour].x = 3
-          dictionnaire_pieces.Echiquier[(3,0)] = dictionnaire_pieces.Echiquier[(ancienxytour)]
-          dictionnaire_pieces.Echiquier.pop(ancienxytour)
-          return 'roque effectué'
+          return True
       else : return None
 
     if self.couleur == 'noir':
@@ -270,19 +273,7 @@ class roi(Piece):
           if (i,7) in dictionnaire_pieces.Echiquier:
             entre=True
         if entre==False:
-          #bouger le roi
-          ancienxyroi = (self.x,self.y)
-          self.x = x #changer les coordonnées de la pièce
-          self.joué = True
-          dictionnaire_pieces.Echiquier[(x,y)] = self #on bouge la pièce en la rajoutant dans le dictionnaire avec comme clé sa nouvelle position
-          dictionnaire_pieces.Echiquier.pop(ancienxyroi) #on supprime l'ancienne pièce
-          #bouger la tour
-          ancienxytour = ((7,7))
-          dictionnaire_pieces.Echiquier[ancienxytour].joué = True
-          dictionnaire_pieces.Echiquier[(ancienxytour)].x = 7 
-          dictionnaire_pieces.Echiquier[(5,7)] = dictionnaire_pieces.Echiquier[(ancienxytour)]
-          dictionnaire_pieces.Echiquier.pop(ancienxytour)
-          return 'roque effectué'
+          return True
 
       elif self.joué == False and (x,y) == (self.x-2, self.y) and ('tour' in dictionnaire_pieces.Echiquier[(0,7)].nom) and dictionnaire_pieces.Echiquier[(0,7)].joué==False: #roque à gauche (grand roque)
         entre=False
@@ -290,20 +281,8 @@ class roi(Piece):
           if (i,7) in dictionnaire_pieces.Echiquier:
             entre=True
         if entre==False:
-          #bouger le roi
-          ancienxyroi = (self.x,self.y)
-          self.x = x #changer les coordonnées de la pièce
-          self.joué = True
-          dictionnaire_pieces.Echiquier[(x,y)] = self #on bouge la pièce en la rajoutant dans le dictionnaire avec comme clé sa nouvelle position
-          dictionnaire_pieces.Echiquier.pop(ancienxyroi) #on supprime l'ancienne pièce
-          #bouger la tour
-          ancienxytour = ((0,7))
-          dictionnaire_pieces.Echiquier[ancienxytour].joué = True
-          dictionnaire_pieces.Echiquier[(ancienxytour)].x = 3
-          dictionnaire_pieces.Echiquier[(3,7)] = dictionnaire_pieces.Echiquier[(ancienxytour)]
-          dictionnaire_pieces.Echiquier.pop(ancienxytour)
-          return 'roque effectué'
-      else : return None
+          return True
+      else : return False
 
 
 class cavalier(Piece):
@@ -347,11 +326,11 @@ class pion(Piece):
     elif ((y == self.y +pas and x == self.x +pas) or (y == self.y +pas and x == self.x -pas)) and ((x,y) in dictionnaire_pieces.Echiquier): #prise en diagonale
       return True
     elif self.cloué == False and (x == self.x-1) and (y == self.y +pas) and ((self.x-pas, self.y) in dictionnaire_pieces.Echiquier) and ('pion' in dictionnaire_pieces.Echiquier[(self.x-pas,self.y)].nom) and (dictionnaire_pieces.Echiquier[(self.x-pas,self.y)].eppossible): #prise en passant à gauche
-      dictionnaire_pieces.Echiquier.pop((self.x-pas,self.y)) #prend la pièce en passant
-      return True
+      dictionnaire_pieces.Echiquier.pop((self.x-1,self.y)) #prend la pièce en passant
+      return 'pepg' #prise en passant gauche
     elif self.cloué == False and (x == self.x+1) and (y == self.y +pas) and ((self.x+pas, self.y) in dictionnaire_pieces.Echiquier) and ('pion' in dictionnaire_pieces.Echiquier[(self.x+pas,self.y)].nom) and (dictionnaire_pieces.Echiquier[(self.x+pas,self.y)].eppossible): #pris en passant à droite
-      dictionnaire_pieces.Echiquier.pop((self.x+pas,self.y)) #prend la pièce en passant
-      return True
+      dictionnaire_pieces.Echiquier.pop((self.x+1,self.y)) #prend la pièce en passant
+      return 'pepd' #prise en passant droite
     else : return False
   
   def dlegal(self, x, y):
