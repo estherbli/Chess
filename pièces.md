@@ -66,16 +66,19 @@ class Piece:
       return True
     else: return False
  
-def echec(self):   #à appliquer à la pièce qui vient d'être jouée
+def echec(self): #à appeler sur une pièce qqconque (qui vient d'être déplacée)
   echec=False
-  for i in Echiquier:               #teste les mouvements de toutes les pièces adverses
-    if self.couleur=="Blanc" and Echiquier[i].couleur=="Blanc":
-      if Echiquier[i].dlegal(roiN.x,roiN.y):
+  L=[]
+  for i in Echiquier:
+    if self.couleur=="Blanc" and dictionnaire_pieces.Echiquier[i].couleur=="Blanc":
+      if Echiquier[i].dlegal(roiN.x,roiN.y):   #vérifie si la pièce adverse atteint le roi
         echec=True
-    if self.couleur=="Noir" and Echiquier[i].couleur=="Noir":
+        L+=[i]   #garde la position des pièces qui mettent en échec (utile pour mat)
+    if self.couleur=="Noir" and dictionnaire_pieces.Echiquier[i].couleur=="Noir":
       if Echiquier[i].dlegal(roiB.x,roiB.y):
         echec=True
-  return echec
+        L+=[i]
+  return echec,L
 
     
 class fou(Piece):
