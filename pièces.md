@@ -18,7 +18,8 @@ class Piece:
     y = position [1]
     #vérifier que le déplacement est possible pour la pièce
     if 'roi' in self.nom:
-      if self.roque == True:
+      breakpoint()
+      if self.roque(x,y) == True:
         if self.couleur == 'blanc': #test pour savoir quel type de roque
           if (x,y) == (self.x+2, self.y): 
             ancienxytour = (7,0)
@@ -40,10 +41,9 @@ class Piece:
         dictionnaire_pieces.Echiquier[(x,y)] = self #on bouge la pièce en la rajoutant dans le dictionnaire avec comme clé sa nouvelle position
         dictionnaire_pieces.Echiquier.pop(ancienxyroi) #on supprime l'ancienne pièce
         #bouger la tour
-        ancienxytour = ((7,0))
         dictionnaire_pieces.Echiquier[ancienxytour].joué = True
-        dictionnaire_pieces.Echiquier[(ancienxytour)].x = nouveauxytour[1]
-        dictionnaire_pieces.Echiquier[nouveauxytour] = dictionnaire_pieces.Echiquier[(ancienxytour)]
+        dictionnaire_pieces.Echiquier[ancienxytour].x = nouveauxytour[0]
+        dictionnaire_pieces.Echiquier[nouveauxytour] = dictionnaire_pieces.Echiquier[ancienxytour]
         dictionnaire_pieces.Echiquier.pop(ancienxytour)
         return None #le déplacement est fini, le roque a été fait
     if self.dpossible(x, y): 
@@ -326,7 +326,6 @@ class pion(Piece):
   
   def dpossible(self, x, y):
     #rajouter la vérification de pas cloué=mise en échec de son propre roi par le déplacement
-    breakpoint()
     if self.couleur == 'blanc':
       pas = 1
     else : pas = -1
