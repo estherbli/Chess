@@ -8,7 +8,7 @@ class general() :
 
         self.largeur_echiquier=560 #multiple de 8, mis ici pour pouvoir le changer facilement à loisir
         
-        self.echiquier=pygame.image.load(f'{pieces.path_milo}\\echiquier2.png') #on charge l'echiquier ici pour n'avoir à le faire qu'une seule fois (opération plutôt lourde)
+        self.echiquier=pygame.image.load(f'{pieces.path_esther}\\echiquier2.png') #on charge l'echiquier ici pour n'avoir à le faire qu'une seule fois (opération plutôt lourde)
         self.echiquier=pygame.transform.scale(self.echiquier, (self.largeur_echiquier,self.largeur_echiquier)) #on redimensionne l'image
         
 
@@ -373,7 +373,15 @@ class general() :
                                                             if 340+self.largeur_echiquier +250 <= mouse[0] <= 340+self.largeur_echiquier +310 and 250 <= mouse[1] <= 310: #le joueur choisit un cavalier
                                                                 dictionnaire_pieces.Echiquier[position_arrivee]=pieces.cavalier('noir', position_arrivee[0],position_arrivee[1], 'cavalierN')
                                                                 en_attente_de_decision=False
-
+                                    #appeler echec sur la piece qui vient de bouger
+                                    #piece_a_deplacer.pieces.echec() 
+                                    #est ce que un pion promu est aussi sous le nom piece_a déplacer ?
+                                    #appeler pat 
+                                    #if piece_a_deplacer.pieces.pat() == False:
+                                    #finir le jeu et afficher pat
+                                    #else : continuer normalement
+                                
+                                                                    
                                 case=()
                                 memoire=[]
                                 self.setup_board()
@@ -511,7 +519,7 @@ class general() :
                     self.main_surface.fill((131, 166, 151))
 
                     while running3:
-                        self.ecrire("Voulez-vous rejouer ?", (430,150), taille_ecriture=60)
+                        self.ecrire("Voulez-vous rejouer ?", (400,150), taille_ecriture=60)
                         couleur_bouton1 = (100,100,100) 
                         couleur_bouton2 = (210,200,80)
                         mouse = pygame.mouse.get_pos() 
@@ -548,42 +556,6 @@ class general() :
                                     running3=False
                                     #on réinitialise le dictionnaire
                                     dictionnaire_pieces.Echiquier={(0,0) : dictionnaire_pieces.tourB1, (7,0) : dictionnaire_pieces.tourB2, (1,0) : dictionnaire_pieces.cavalierB1, (6,0) : dictionnaire_pieces.cavalierB2, (2,0) : dictionnaire_pieces.fouB1, (5,0) : dictionnaire_pieces.fouB2, (3,0) : dictionnaire_pieces.dameB, (4,0) : dictionnaire_pieces.roiB, (0,1) : dictionnaire_pieces.pionB1, (1,1): dictionnaire_pieces.pionB2, (2,1) : dictionnaire_pieces.pionB3, (3,1) : dictionnaire_pieces.pionB4, (4,1) : dictionnaire_pieces.pionB5, (5,1): dictionnaire_pieces.pionB6, (6,1): dictionnaire_pieces.pionB7, (7,1) : dictionnaire_pieces.pionB8, (0,7) : dictionnaire_pieces.tourN1, (7,7) : dictionnaire_pieces.tourN2, (1,7) : dictionnaire_pieces.cavalierN1, (6,7) : dictionnaire_pieces.cavalierN2, (2,7) : dictionnaire_pieces.fouN1, (5,7) : dictionnaire_pieces.fouN2, (3,7) : dictionnaire_pieces.dameN, (4,7) : dictionnaire_pieces.roiN, (0,6) : dictionnaire_pieces.pionN1, (1,6): dictionnaire_pieces.pionN2, (2,6) : dictionnaire_pieces.pionN3, (3,6) : dictionnaire_pieces.pionN4, (4,6) : dictionnaire_pieces.pionN5, (5,6): dictionnaire_pieces.pionN6, (6,6): dictionnaire_pieces.pionN7, (7,6) : dictionnaire_pieces.pionN8}
-
-                                    #on change les coordonnées dans les propriétés des objets
-                                    dictionnaire_pieces.tourB1.x , dictionnaire_pieces.tourB1.y = 0, 0
-                                    dictionnaire_pieces.tourB2.x , dictionnaire_pieces.tourB2.y = 7, 0
-                                    dictionnaire_pieces.cavalierB1.x , dictionnaire_pieces.cavalierB1.y = 1 , 0
-                                    dictionnaire_pieces.cavalierB2.x , dictionnaire_pieces.cavalierB2.y = 6 , 0
-                                    dictionnaire_pieces.fouB1.x , dictionnaire_pieces.fouB1.y = 2 , 0
-                                    dictionnaire_pieces.fouB2.x , dictionnaire_pieces.fouB2.y = 5 , 0
-                                    dictionnaire_pieces.dameB.x , dictionnaire_pieces.dameB.y = 3 , 0
-                                    dictionnaire_pieces.roiB.x , dictionnaire_pieces.roiB.y = 4 , 0
-                                    dictionnaire_pieces.pionB1.x , dictionnaire_pieces.pionB1.y = 0 , 1
-                                    dictionnaire_pieces.pionB2.x , dictionnaire_pieces.pionB2.y = 1 , 1
-                                    dictionnaire_pieces.pionB3.x , dictionnaire_pieces.pionB3.y = 2 , 1
-                                    dictionnaire_pieces.pionB4.x , dictionnaire_pieces.pionB4.y = 3 , 1
-                                    dictionnaire_pieces.pionB5.x , dictionnaire_pieces.pionB5.y = 4 , 1
-                                    dictionnaire_pieces.pionB6.x , dictionnaire_pieces.pionB6.y = 5 , 1
-                                    dictionnaire_pieces.pionB7.x , dictionnaire_pieces.pionB7.y = 6 , 1
-                                    dictionnaire_pieces.pionB8.x , dictionnaire_pieces.pionB8.y = 7 , 1
-
-                                    dictionnaire_pieces.tourN1.x , dictionnaire_pieces.tourN1.y = 0, 7
-                                    dictionnaire_pieces.tourN2.x , dictionnaire_pieces.tourN2.y = 7, 7
-                                    dictionnaire_pieces.cavalierN1.x , dictionnaire_pieces.cavalierN1.y = 1 , 7
-                                    dictionnaire_pieces.cavalierN2.x , dictionnaire_pieces.cavalierN2.y = 6 , 7
-                                    dictionnaire_pieces.fouN1.x , dictionnaire_pieces.fouN1.y = 2 , 7
-                                    dictionnaire_pieces.fouN2.x , dictionnaire_pieces.fouN2.y = 5 , 7
-                                    dictionnaire_pieces.dameN.x , dictionnaire_pieces.dameN.y = 3 , 7
-                                    dictionnaire_pieces.roiN.x , dictionnaire_pieces.roiN.y = 4 , 7
-                                    dictionnaire_pieces.pionN1.x , dictionnaire_pieces.pionN1.y = 0 , 6
-                                    dictionnaire_pieces.pionN2.x , dictionnaire_pieces.pionN2.y = 1 , 6
-                                    dictionnaire_pieces.pionN3.x , dictionnaire_pieces.pionN3.y = 2 , 6
-                                    dictionnaire_pieces.pionN4.x , dictionnaire_pieces.pionN4.y = 3 , 6
-                                    dictionnaire_pieces.pionN5.x , dictionnaire_pieces.pionN5.y = 4 , 6
-                                    dictionnaire_pieces.pionN6.x , dictionnaire_pieces.pionN6.y = 5 , 6
-                                    dictionnaire_pieces.pionN7.x , dictionnaire_pieces.pionN7.y = 6 , 6
-                                    dictionnaire_pieces.pionN8.x , dictionnaire_pieces.pionN8.y = 7 , 6
-
                                     self.__init__()
 
                                 if 700 <= x <= 900 and 350 <= y <= 410 : 
