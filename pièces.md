@@ -107,10 +107,12 @@ class Piece:
       if self.couleur=="Blanc" and dictionnaire_pieces.Echiquier[i].couleur=="Blanc":
         if dictionnaire_pieces.Echiquier[i].dlegal(roiN.x,roiN.y):   #vérifie si la pièce adverse atteint le roi
           echec=True
+          self.mat(L)
           L+=[i]   #garde la position des pièces qui mettent en échec (utile pour mat)
       if self.couleur=="Noir" and dictionnaire_pieces.Echiquier[i].couleur=="Noir":
         if dictionnaire_pieces.Echiquier[i].dlegal(roiB.x,roiB.y):
           echec=True
+          self.mat(L)
           L+=[i]
     return echec,L
   
