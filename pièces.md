@@ -92,15 +92,8 @@ class Piece:
   def dlegal(self, x,y):
     #deplacement autorisé pour ce type de pièce
     return True or False
-
-  def mise_en_echec(self):
-    if dictionnaire_pieces.Echiquier[(self.x,self.y)].dpossible(dictionnaire_pieces.roiN.x,dictionnaire_pieces.roiN.y) and self.couleur=="blanc":   #self.x et y : coordonnées de la pièce bougée
-      return True
-    if dictionnaire_pieces.Echiquier[(self.x,self.y)].dpossible(dictionnaire_pieces.roiB.x,dictionnaire_pieces.roiB.y) and self.couleur=="noir":
-      return True
-    else: return False
     
-  def cloue(self):  #/!\ pb d'indentation (je sais pas comment le régler)
+  def cloue(self):
     if self.couleur=="blanc":   #couleur de la pièce sur laquelle on applique
       if self.x==roiB.x or self.y==roiB.y:   #déplacement en colonnes et lignes
         if self.x<roiB.x:
@@ -192,21 +185,24 @@ class Piece:
     return echec
 
     
-  def echec(self): #à appeler sur une pièce qqconque (qui vient d'être déplacée)
+  def echecetmat(self): #à appeler sur une pièce qqconque (qui vient d'être déplacée) #renvoie True
     echec=False
-    L=[]
+    L=[] #garde la position des pièces qui mettent en échec (utile pour mat)
     for i in dictionnaire_pieces.Echiquier:
       if self.couleur=="blanc" and dictionnaire_pieces.Echiquier[i].couleur=="blanc":
         if dictionnaire_pieces.Echiquier[i].dlegal(roiN.x,roiN.y):   #vérifie si la pièce adverse atteint le roi
           echec=True
-          self.mat(L)
-          L+=[i]   #garde la position des pièces qui mettent en échec (utile pour mat)
+          roiB.echec = True
+          L+=[i]
       if self.couleur=="noir" and dictionnaire_pieces.Echiquier[i].couleur=="noir":
         if dictionnaire_pieces.Echiquier[i].dlegal(roiB.x,roiB.y):
           echec=True
-          self.mat(L)
+          roiN.echec = True
           L+=[i]
-    return echec,L
+    if echec:
+      if self.mat():
+        return 'mat'
+      else : return echec
   
   def mat(self, L):    #appel sur la même pièce que echec  #vérifier si le roi est en échec : on peut mettre la condition ailleurs
     mat=True          #part du principe que c'est vrai : plus facile à manipuler
@@ -217,13 +213,15 @@ class Piece:
           for y in [roiN.y, roiN.y-1, roiN.y+1]:
             if (x,y) != (a,b) and roiN.dlegal(x,y):
               if self.echectest() == False:
-                return False
+                mat=False
+                return mat
       if self.couleur=="noir":
         (a,b)=(roiB.x,roiB.y)
         for x in [roiB.x, roiB.x+1, roiB.x-1]:
           for y in [roiB.y, roiB.y-1, roiB.y+1]:
             if (x,y) != (a,b) and roiB.dlegal(x,y):
               if self.echectest() == False:
+                mat=False
                 return False
     else:   #transformer en fct° "parcours" pr réutiliser ds fct° "cloué" ?
       P=[L[0]]   #trajectoire entre pièce qui met en échec et le roi
@@ -318,19 +316,19 @@ class fou(Piece):
     else : return False
     
   def dpossible(self, x, y):
-    #rajouter le cas de cloué mise en échec de son propre roi
-    if (abs(x - self.x) == abs(y - self.y)):
-      pasx = pasy = 1
-      if x<self.x: pasx =-1 #parcours de gauche à droite
-      if y<self.y: pasy =-1 #parcours de haut en bas
-      xn = self.x + pasx #on part de la position initiale + 1 case
-      yn = self.y + pasy 
-      while xn!=x and yn!=y:
-        if (xn,yn) in dictionnaire_pieces.Echiquier:
-          return False
-        xn += pasx
-        yn += pasy
-      return True
+    if self.cloue == False : 
+      if (abs(x - self.x) == abs(y - self.y)):
+        pasx = pasy = 1
+        if x<self.x: pasx =-1 #parcours de gauche à droite
+        if y<self.y: pasy =-1 #parcours de haut en bas
+        xn = self.x + pasx #on part de la position initiale + 1 case
+        yn = self.y + pasy 
+        while xn!=x and yn!=y:
+          if (xn,yn) in dictionnaire_pieces.Echiquier:
+            return False
+          xn += pasx
+          yn += pasy
+        return True
     else : return False
 
 
@@ -341,25 +339,25 @@ class tour(Piece):
     self.joué = False
   
   def dpossible(self, x, y):
-    #rajouter la vérification de pas cloué=mise en échec de son propre roi par le déplacement
-    if (x == self.x and y!=self.y): #déplacement vertical #déplacement autorisé pour ce type de pièce
-      #vérification qu'on ne 'saute' pas au dessus d'autres pièces
-      #Pour cela on parcourt case entre la position initiale et finale
-      pas = 1
-      if y<self.y: pas = -1 #parcourir de haut en bas
-      for i in range(self.y+pas, y,pas):
-          if (x,i) in dictionnaire_pieces.Echiquier:
-            return False
-      else: return True
-    elif (x!=self.x and y == self.y): #déplacement horizontal #déplacement autorisé pour ce type de pièce
-      #vérification qu'on ne 'saute' pas au dessus d'autres pièces
-      pas = 1
-      if x<self.x: pas = -1 #parcourir de gauche à droite
-      for i in range(self.x+pas, x, pas):
-          if (i,y) in dictionnaire_pieces.Echiquier:
-            return False
-      else : return True
-    else : return False
+    if self.cloue == False : 
+      if (x == self.x and y!=self.y): #déplacement vertical #déplacement autorisé pour ce type de pièce
+        #vérification qu'on ne 'saute' pas au dessus d'autres pièces
+        #Pour cela on parcourt case entre la position initiale et finale
+        pas = 1
+        if y<self.y: pas = -1 #parcourir de haut en bas
+        for i in range(self.y+pas, y,pas):
+            if (x,i) in dictionnaire_pieces.Echiquier:
+              return False
+        else: return True
+      elif (x!=self.x and y == self.y): #déplacement horizontal #déplacement autorisé pour ce type de pièce
+        #vérification qu'on ne 'saute' pas au dessus d'autres pièces
+        pas = 1
+        if x<self.x: pas = -1 #parcourir de gauche à droite
+        for i in range(self.x+pas, x, pas):
+            if (i,y) in dictionnaire_pieces.Echiquier:
+              return False
+        else : return True
+      else : return False
 
   def dlegal(self, x,y):
     if (x == self.x and y!=self.y) or (x!=self.x and y == self.y): #déplacement vertical ou horizontal #déplacement autorisé pour ce type de pièce
@@ -372,38 +370,38 @@ class dame(Piece):
     Piece.__init__(self, couleur,positionix, positioniy, nom)
     
   def dpossible(self, x, y):
-    #rajouter la vérification de pas cloué=mise en échec de son propre roi par le déplacement
-    #déplacement comme une tour
-    if (x == self.x and y!=self.y):  #déplacement vertical
-      #vérification qu'on ne 'saute' pas au dessus d'autres pièces
-      pas = 1
-      if y<self.y: pas = -1 #parcourir de haut en bas
-      for i in range(self.y+pas, y,pas):
-          if (x,i) in dictionnaire_pieces.Echiquier:
+    if self.cloue == False : 
+      #déplacement comme une tour
+      if (x == self.x and y!=self.y):  #déplacement vertical
+        #vérification qu'on ne 'saute' pas au dessus d'autres pièces
+        pas = 1
+        if y<self.y: pas = -1 #parcourir de haut en bas
+        for i in range(self.y+pas, y,pas):
+            if (x,i) in dictionnaire_pieces.Echiquier:
+              return False
+        else: return True
+      elif (x!=self.x and y == self.y): #déplacement horizontal autorisé pour ce type de pièce
+        #vérification qu'on ne 'saute' pas au dessus d'autres pièces
+        pas = 1
+        if x<self.x: pas = -1 #parcourir de gauche à droite
+        for i in range(self.x+pas, x, pas):
+            if (i,y) in dictionnaire_pieces.Echiquier:
+              return False
+        else: return True
+      #déplacement comme un fou
+      elif abs(x - self.x) == abs(y - self.y) :
+        #vérification qu'on ne 'saute' pas au dessus d'autres pièces
+        pasx = pasy = 1
+        if x<self.x: pasx =-1 #parcours de gauche à droite
+        if y<self.y: pasy =-1 #parcours de haut en bas
+        xn = self.x + pasx #on part de la position initiale + 1 case
+        yn = self.y + pasy 
+        while xn!=x and yn!=y:
+          if (xn,yn) in dictionnaire_pieces.Echiquier:
             return False
-      else: return True
-    elif (x!=self.x and y == self.y): #déplacement horizontal autorisé pour ce type de pièce
-      #vérification qu'on ne 'saute' pas au dessus d'autres pièces
-      pas = 1
-      if x<self.x: pas = -1 #parcourir de gauche à droite
-      for i in range(self.x+pas, x, pas):
-          if (i,y) in dictionnaire_pieces.Echiquier:
-            return False
-      else: return True
-    #déplacement comme un fou
-    elif abs(x - self.x) == abs(y - self.y) :
-      #vérification qu'on ne 'saute' pas au dessus d'autres pièces
-      pasx = pasy = 1
-      if x<self.x: pasx =-1 #parcours de gauche à droite
-      if y<self.y: pasy =-1 #parcours de haut en bas
-      xn = self.x + pasx #on part de la position initiale + 1 case
-      yn = self.y + pasy 
-      while xn!=x and yn!=y:
-        if (xn,yn) in dictionnaire_pieces.Echiquier:
-          return False
-        xn += pasx
-        yn += pasy
-      else : return True
+          xn += pasx
+          yn += pasy
+        else : return True
     else : return False
   
   def dlegal(self, x, y):
@@ -421,8 +419,7 @@ class roi(Piece):
   
   #sans prendre en compte l'échec
   def dpossible(self, x,y):
-    NotEchec = True #à retirer juste pour que mes essais marchent bien
-    if NotEchec:
+    if self.echec == False and self.echectest() == False:
       davant_arriere1case = ( x == self.x and ((y == self.y + 1) or (y == self.y-1)))
       ddiagonale1case = (x == self.x + 1 or x == self.x - 1) and ((y == self.y + 1) or (y == self.y - 1))
       dcoté1case = (( y == self.y and ((x == self.x + 1) or (x == self.x-1)) ))
@@ -479,13 +476,13 @@ class cavalier(Piece):
     Piece.__init__(self, couleur,positionix, positioniy, nom)
   
   def dpossible(self, x,y):
-    #rajouter la vérification de pas cloué=mise en échec de son propre roi par le déplacement
-    dLavant = ((y == self.y + 2)  and ((x == self.x + 1) or (x == self.x - 1)))
-    dLarriere = ((y == self.y - 2) and ((x == self.x + 1) or (x == self.x - 1)))
-    dLdroite = ((x == self.x + 2) and ((y == self.y + 1) or (y == self.y - 1)))
-    dLgauche = ((x == self.x - 2) and ((y == self.y + 1) or (y == self.y - 1)))
-    if dLavant or dLarriere or dLdroite or dLgauche :
-      return True
+    if self.cloue() == False :
+      dLavant = ((y == self.y + 2)  and ((x == self.x + 1) or (x == self.x - 1)))
+      dLarriere = ((y == self.y - 2) and ((x == self.x + 1) or (x == self.x - 1)))
+      dLdroite = ((x == self.x + 2) and ((y == self.y + 1) or (y == self.y - 1)))
+      dLgauche = ((x == self.x - 2) and ((y == self.y + 1) or (y == self.y - 1)))
+      if dLavant or dLarriere or dLdroite or dLgauche :
+        return True
     else : return False
   
   def dlegal(self,x,y):
@@ -503,24 +500,24 @@ class pion(Piece):
     self.pepg = self.pepd = False #peut prendre en passant
   
   def dpossible(self, x, y):
-    #rajouter la vérification de pas cloué=mise en échec de son propre roi par le déplacement
-    if self.couleur == 'blanc':
-      pas = 1
-    else : pas = -1
-    if not(self.joué) and (x == self.x and y == self.y +2*pas) and not((self.x, self.y +pas) in dictionnaire_pieces.Echiquier): #avance de 2 cases
-      self.eppossible = True
-      return True
-    elif (x == self.x and y == self.y +pas) and not((self.x, self.y +pas) in dictionnaire_pieces.Echiquier): #avance d'une case
-      return True
-    elif ((y == self.y +pas and x == self.x +pas) or (y == self.y +pas and x == self.x -pas)) and ((x,y) in dictionnaire_pieces.Echiquier): #prise en diagonale
-      return True
-    elif (x == self.x-1) and (y == self.y +pas) and ((self.x-1, self.y) in dictionnaire_pieces.Echiquier) and ('pion' in dictionnaire_pieces.Echiquier[(self.x-1,self.y)].nom) and (dictionnaire_pieces.Echiquier[(self.x-1,self.y)].eppossible): #prise en passant à gauche
-      self.pepg = True
-      return True #prise en passant gauche
-    elif (x == self.x+1) and (y == self.y +pas) and ((self.x+1, self.y) in dictionnaire_pieces.Echiquier) and ('pion' in dictionnaire_pieces.Echiquier[(self.x+1,self.y)].nom) and (dictionnaire_pieces.Echiquier[(self.x+1,self.y)].eppossible): #pris en passant à droite
-      self.pepd = True
-      return True #prise en passant droite
-    else : return False
+    if self.cloue() == False :
+      if self.couleur == 'blanc':
+        pas = 1
+      else : pas = -1 #noir
+      if not(self.joué) and (x == self.x and y == self.y +2*pas) and not((self.x, self.y +pas) in dictionnaire_pieces.Echiquier): #avance de 2 cases
+        self.eppossible = True
+        return True
+      elif (x == self.x and y == self.y +pas) and not((self.x, self.y +pas) in dictionnaire_pieces.Echiquier): #avance d'une case
+        return True
+      elif ((y == self.y +pas and x == self.x +pas) or (y == self.y +pas and x == self.x -pas)) and ((x,y) in dictionnaire_pieces.Echiquier): #prise en diagonale
+        return True
+      elif (x == self.x-1) and (y == self.y +pas) and ((self.x-1, self.y) in dictionnaire_pieces.Echiquier) and ('pion' in dictionnaire_pieces.Echiquier[(self.x-1,self.y)].nom) and (dictionnaire_pieces.Echiquier[(self.x-1,self.y)].eppossible): #prise en passant à gauche
+        self.pepg = True
+        return True #prise en passant gauche
+      elif (x == self.x+1) and (y == self.y +pas) and ((self.x+1, self.y) in dictionnaire_pieces.Echiquier) and ('pion' in dictionnaire_pieces.Echiquier[(self.x+1,self.y)].nom) and (dictionnaire_pieces.Echiquier[(self.x+1,self.y)].eppossible): #pris en passant à droite
+        self.pepd = True
+        return True #prise en passant droite
+      else : return False
 
   def dlegal(self, x, y):
     if self.couleur == 'blanc':
