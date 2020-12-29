@@ -93,16 +93,6 @@ class Piece:
     #deplacement autorisé pour ce type de pièce
     return True or False
 
-    
-  def echec(self):  #à appeler après chaque tour : restreint les mvts possibles
-    if dictionnaire_pieces.Echiquier[(self.x,self.y)].dpossible(dictionnaire_pieces.roiN.x,dictionnaire_pieces.roiN.y) and self.couleur=="blanc":   #self.x et y : coordonnées de la pièce bougée
-      print("Échec") #est-ce qu'on ajoute la couleur du roi et/ou une indication graphique ?
-      return True
-    if dictionnaire_pieces.Echiquier[(self.x,self.y)].dpossible(dictionnaire_pieces.roiB.x,dictionnaire_pieces.roiB.y) and self.couleur=="noir":
-      print("Échec")
-      return True
-    else: return False
-
   def mise_en_echec(self):
     if dictionnaire_pieces.Echiquier[(self.x,self.y)].dpossible(dictionnaire_pieces.roiN.x,dictionnaire_pieces.roiN.y) and self.couleur=="blanc":   #self.x et y : coordonnées de la pièce bougée
       return True
