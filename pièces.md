@@ -114,89 +114,89 @@ class Piece:
           L+=[i]
     return echec,L
   
-  def mat(self):    #appel sur la même pièce que echec
-    if echec[0]==True:  #vérifie si le roi est en échec : on peut mettre la condition ailleurs
-      mat=True          #part du principe que c'est vrai : plus facile à manipuler
-      if len(echec[1])>1 or "cavalier" in dictionnaire_pieces.Echiquier[echec[1][0]].nom:  #seul le roi peut se sauver
-        if dictionnaire_pieces.Echiquier[echec[1][0]].couleur=="Blanc":
-          (a,b)=(roiN.x,roiN.y)
-          for x in [roiN.x, roiN.x+1, roiN.x-1]:
-            for y in [roiN.y, roiN.y-1, roiN.y+1]:
-              if (roiN.x,roiN.y) != (a,b) and roiN.dlegal(x,y):
-                self.echec       #pb : ça prend en compte les anciennes coordonnées du roi ou les nouvelles ?
-                if echec[0]==False:
-                  return False
-        if self.couleur=="Noir":
-          (a,b)=(roiB.x,roiB.y)
-          for x in [roiB.x, roiB.x+1, roiB.x-1]:
-            for y in [roiB.y, roiB.y-1, roiB.y+1]:
-              if (roiB.x,roiB.y) != (a,b) and roiB.dlegal(x,y):
-                self.echec
-                if echec[0]==False:
-                  return False
-      else:   #transformer en fct° "parcours" pr réutiliser ds fct° "cloué" ?
-        P=[echec[1][0]]   #trajectoire entre pièce qui met en échec et le roi
-        if dictionnaire_pieces.Echiquier[echec[1][0]].couleur=="Blanc":  #roi noir en échec
-          if dictionnaire_pieces.Echiquier[echec[1][0]].x==roiN.x or dictionnaire_pieces.Echiquier[echec[1][0]].y==roiN.y:   #cas de la tour et de la dame (ligne droite)
-            if dictionnaire_pieces.Echiquier[echec[1][0]].x<roiN.x:
-              for i in range(dictionnaire_pieces.Echiquier[echec[1][0]].x,roiN.x):
-                P+=[(i,dictionnaire_pieces.Echiquier[echec[1][0]].y)]
-            if dictionnaire_pieces.Echiquier[echec[1][0]].x>roiN.x:
-              for i in range(dictionnaire_pieces.Echiquier[echec[1][0]].x,roiN.x,-1):
-                P+=[(i,dictionnaire_pieces.Echiquier[echec[1][0]].y)]
-            if dictionnaire_pieces.Echiquier[echec[1][0]].y<roiN.y:
-              for i in range(dictionnaire_pieces.Echiquier[echec[1][0]].y,roiN.y):
-                P+=[(dictionnaire_pieces.Echiquier[echec[1][0]].x,i)]
-            if dictionnaire_pieces.Echiquier[echec[1][0]].y>roiN.y:
-              for i in range(dictionnaire_pieces.Echiquier[echec[1][0]].y,roiN.y,-1):
-                P+=[(dictionnaire_pieces.Echiquier[echec[1][0]].y,i)]
-          if abs(dictionnaire_pieces.Echiquier[echec[1][0]].x-roiN.x)==abs(dictionnaire_pieces.Echiquier[echec[1][0]].y-roiN.y):   #cas de la dame, du pion et du fou (diagonale)
-            pasx = pasy = 1
-            if dictionnaire_pieces.Echiquier[echec[1][0]].x>roiN.x: pasx =-1
-            if dictionnaire_pieces.Echiquier[echec[1][0]].y>roiN.y: pasy =-1
-            xn = dictionnaire_pieces.Echiquier[echec[1][0]].x + pasx
-            yn = dictionnaire_pieces.Echiquier[echec[1][0]].y + pasy
-            while xn!=roiN.x and yn!=roiN.y:
-              P+=[(xn,yn)]
-              xn+=pasx
-              yn+=pasy
-          for i in dictionnaire_pieces.Echiquier:  #teste quelle(s) pièce(s) peuvent s'intercaler/manger
-            if dictionnaire_pieces.Echiquier[i].couleur=="Noir":
-              for j in P:
-                if dictionnaire_pieces.Echiquier[i].dpossible(j):
-                  mat=False
-                  return mat   #sort dès qu'on trouve une pièce pour bloquer
-        if dictionnaire_pieces.Echiquier[echec[1][0]].couleur=="Noir":   #roi blanc en échec
-          if dictionnaire_pieces.Echiquier[echec[1][0]].x==roiB.x or dictionnaire_pieces.Echiquier[echec[1][0]].y==roiB.y:   #cas de la tour et de la dame (ligne droite)
-            if dictionnaire_pieces.Echiquier[echec[1][0]].x<roiB.x:
-              for i in range(dictionnaire_pieces.Echiquier[echec[1][0]].x,roiB.x):
-                P+=[(i,dictionnaire_pieces.Echiquier[echec[1][0]].y)]
-            if dictionnaire_pieces.Echiquier[echec[1][0]].x>roiB.x:
-              for i in range(dictionnaire_pieces.Echiquier[echec[1][0]].x,roiB.x,-1):
-                P+=[(i,dictionnaire_pieces.Echiquier[echec[1][0]].y)]
-            if dictionnaire_pieces.Echiquier[echec[1][0]].y<roiB.y:
-              for i in range(dictionnaire_pieces.Echiquier[echec[1][0]].y,roiB.y):
-                P+=[(dictionnaire_pieces.Echiquier[echec[1][0]].x,i)]
-            if dictionnaire_pieces.Echiquier[echec[1][0]].y>roiB.y:
-              for i in range(dictionnaire_pieces.Echiquier[echec[1][0]].y,roiB.y,-1):
-                P+=[(dictionnaire_pieces.Echiquier[echec[1][0]].y,i)]
-          if abs(dictionnaire_pieces.Echiquier[echec[1][0]].x-roiB.x)==abs(dictionnaire_pieces.Echiquier[echec[1][0]].y-roiB.y):   #cas de la dame, du pion et du fou (diagonale)
-            pasx = pasy = 1
-            if dictionnaire_pieces.Echiquier[echec[1][0]].x>roiB.x: pasx =-1
-            if dictionnaire_pieces.Echiquier[echec[1][0]].y>roiB.y: pasy =-1
-            xn = dictionnaire_pieces.Echiquier[echec[1][0]].x + pasx
-            yn = dictionnaire_pieces.Echiquier[echec[1][0]].y + pasy
-            while xn!=roiB.x and yn!=roiB.y:
-              P+=[(xn,yn)]
-              xn+=pasx
-              yn+=paxy
-          for i in dictionnaire_pieces.Echiquier:  #teste quelle(s) pièce(s) peuvent s'intercaler/manger
-            if dictionnaire_pieces.Echiquier[i].couleur=="Blanc":
-              for j in P:
-                if dictionnaire_pieces.Echiquier[i].dpossible(j):
-                  mat=False
-                  return mat   #sort dès qu'on trouve une pièce pour bloquer
-    return mat
+  
+  def mat(self):    #appel sur la même pièce que echec : que si echec est vrai
+  mat=True          #part du principe que c'est vrai : plus facile à manipuler
+  if len(echec[1])>1 or "cavalier" in dictionnaire_pieces.Echiquier[echec[1][0]].nom:  #seul le roi peut se sauver
+    if dictionnaire_pieces.Echiquier[echec[1][0]].couleur=="Blanc":
+      (a,b)=(roiN.x,roiN.y)
+      for x in [roiN.x, roiN.x+1, roiN.x-1]:
+        for y in [roiN.y, roiN.y-1, roiN.y+1]:
+          if (roiN.x,roiN.y) != (a,b) and roiN.dlegal(x,y):
+            self.echec       #pb : ça prend en compte les anciennes coordonnées du roi ou les nouvelles ?
+            if echec[0]==False:
+              return False
+    if self.couleur=="Noir":
+      (a,b)=(roiB.x,roiB.y)
+      for x in [roiB.x, roiB.x+1, roiB.x-1]:
+        for y in [roiB.y, roiB.y-1, roiB.y+1]:
+          if (roiB.x,roiB.y) != (a,b) and roiB.dlegal(x,y):
+            self.echec
+            if echec[0]==False:
+              return False
+  else:   #transformer en fct° "parcours" pr réutiliser ds fct° "cloué" ?
+    P=[echec[1][0]]   #trajectoire entre pièce qui met en échec et le roi
+    if dictionnaire_pieces.Echiquier[echec[1][0]].couleur=="Blanc":  #roi noir en échec
+      if dictionnaire_pieces.Echiquier[echec[1][0]].x==roiN.x or dictionnaire_pieces.Echiquier[echec[1][0]].y==roiN.y:   #cas de la tour et de la dame (ligne droite)
+        if dictionnaire_pieces.Echiquier[echec[1][0]].x<roiN.x:
+          for i in range(dictionnaire_pieces.Echiquier[echec[1][0]].x,roiN.x):
+            P+=[(i,dictionnaire_pieces.Echiquier[echec[1][0]].y)]
+        if dictionnaire_pieces.Echiquier[echec[1][0]].x>roiN.x:
+          for i in range(dictionnaire_pieces.Echiquier[echec[1][0]].x,roiN.x,-1):
+            P+=[(i,dictionnaire_pieces.Echiquier[echec[1][0]].y)]
+        if dictionnaire_pieces.Echiquier[echec[1][0]].y<roiN.y:
+          for i in range(dictionnaire_pieces.Echiquier[echec[1][0]].y,roiN.y):
+            P+=[(dictionnaire_pieces.Echiquier[echec[1][0]].x,i)]
+        if dictionnaire_pieces.Echiquier[echec[1][0]].y>roiN.y:
+          for i in range(dictionnaire_pieces.Echiquier[echec[1][0]].y,roiN.y,-1):
+            P+=[(dictionnaire_pieces.Echiquier[echec[1][0]].y,i)]
+      if abs(dictionnaire_pieces.Echiquier[echec[1][0]].x-roiN.x)==abs(dictionnaire_pieces.Echiquier[echec[1][0]].y-roiN.y):   #cas de la dame, du pion et du fou (diagonale)
+        pasx = pasy = 1
+        if dictionnaire_pieces.Echiquier[echec[1][0]].x>roiN.x: pasx =-1
+        if dictionnaire_pieces.Echiquier[echec[1][0]].y>roiN.y: pasy =-1
+        xn = dictionnaire_pieces.Echiquier[echec[1][0]].x + pasx
+        yn = dictionnaire_pieces.Echiquier[echec[1][0]].y + pasy
+        while xn!=roiN.x and yn!=roiN.y:
+          P+=[(xn,yn)]
+          xn+=pasx
+          yn+=paxy
+      for i in dictionnaire_pieces.Echiquier:  #teste quelle(s) pièce(s) peuvent s'intercaler/manger
+        if dictionnaire_pieces.Echiquier[i].couleur=="Noir":
+          for j in P:
+            if dictionnaire_pieces.Echiquier[i].dpossible(j):
+              mat=False
+              return mat   #sort dès qu'on trouve une pièce pour bloquer
+    if dictionnaire_pieces.Echiquier[echec[1][0]].couleur=="Noir":   #roi blanc en échec
+      if dictionnaire_pieces.Echiquier[echec[1][0]].x==roiB.x or dictionnaire_pieces.Echiquier[echec[1][0]].y==roiB.y:   #cas de la tour et de la dame (ligne droite)
+        if dictionnaire_pieces.Echiquier[echec[1][0]].x<roiB.x:
+          for i in range(dictionnaire_pieces.Echiquier[echec[1][0]].x,roiB.x):
+            P+=[(i,dictionnaire_pieces.Echiquier[echec[1][0]].y)]
+        if dictionnaire_pieces.Echiquier[echec[1][0]].x>roiB.x:
+          for i in range(dictionnaire_pieces.Echiquier[echec[1][0]].x,roiB.x,-1):
+            P+=[(i,dictionnaire_pieces.Echiquier[echec[1][0]].y)]
+        if dictionnaire_pieces.Echiquier[echec[1][0]].y<roiB.y:
+          for i in range(dictionnaire_pieces.Echiquier[echec[1][0]].y,roiB.y):
+            P+=[(dictionnaire_pieces.Echiquier[echec[1][0]].x,i)]
+        if dictionnaire_pieces.Echiquier[echec[1][0]].y>roiB.y:
+          for i in range(dictionnaire_pieces.Echiquier[echec[1][0]].y,roiB.y,-1):
+            P+=[(dictionnaire_pieces.Echiquier[echec[1][0]].y,i)]
+      if abs(dictionnaire_pieces.Echiquier[echec[1][0]].x-roiB.x)==abs(dictionnaire_pieces.Echiquier[echec[1][0]].y-roiB.y):   #cas de la dame, du pion et du fou (diagonale)
+        pasx = pasy = 1
+        if dictionnaire_pieces.Echiquier[echec[1][0]].x>roiB.x: pasx =-1
+        if dictionnaire_pieces.Echiquier[echec[1][0]].y>roiB.y: pasy =-1
+        xn = dictionnaire_pieces.Echiquier[echec[1][0]].x + pasx
+        yn = dictionnaire_pieces.Echiquier[echec[1][0]].y + pasy
+        while xn!=roiB.x and yn!=roiB.y:
+          P+=[(xn,yn)]
+          xn+=pasx
+          yn+=paxy
+      for i in dictionnaire_pieces.Echiquier:  #teste quelle(s) pièce(s) peuvent s'intercaler/manger
+        if dictionnaire_pieces.Echiquier[i].couleur=="Blanc":
+          for j in P:
+            if dictionnaire_pieces.Echiquier[i].dpossible(j):
+              mat=False
+              return mat   #sort dès qu'on trouve une pièce pour bloquer
+return mat
   
 
   def pat(self): #vérifie qu'une pièce de la couleur de la piece peut encore jouer sans mettre le roi en echec
