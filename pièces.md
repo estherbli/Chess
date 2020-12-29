@@ -100,6 +100,85 @@ class Piece:
       return True
     else: return False
     
+  def cloue(self):  #/!\ pb d'indentation (je sais pas comment le régler)
+  if self.couleur=="blanc":   #couleur de la pièce sur laquelle on applique
+    if self.x==roiB.x or self.y==roiB.y:   #déplacement en colonnes et lignes
+      if self.x<roiB.x:
+        xn=self.x-1
+        while not (xn,self.y) in dictionnaire_pieces.Echiquier:   #parcours entre pièce à clouer et suivante
+          xn-=1
+        if dictionnaire_pieces.Echiquier[(xn,self.y)].couleur=="noir" and dictionnaire_pieces.Echiquier[(xn,self.y)].dlegal(roiB.x,roiB.y):
+          return True
+      if self.x>roiB.x:
+        xn=self.x+1
+        while not (xn,self.y) in dictionnaire_pieces.Echiquier:
+          xn+=1
+        if dictionnaire_pieces.Echiquier[(xn,self.y)].couleur=="noir" and dictionnaire_pieces.Echiquier[(xn,self.y)].dlegal(roiB.x,roiB.y):
+          return True
+      if self.y<roiB.y:
+        yn=self.y-1
+        while not (self.x,yn) in dictionnaire_pieces.Echiquier:
+          yn-=1
+        if dictionnaire_pieces.Echiquier[(self.x,yn)].couleur=="noir" and dictionnaire_pieces.Echiquier[(self.x,yn)].dlegal(roiB.x,roiB.y):
+          return True
+      if self.y>roiB.y:
+        yn=self.y+1
+        while not (self.x,yn) in dictionnaire_pieces.Echiquier:
+          yn+=1
+        if dictionnaire_pieces.Echiquier[(self.x,yn)].couleur=="noir" and dictionnaire_pieces.Echiquier[(self.x,yn)].dlegal(roiB.x,roiB.y):
+          return True
+    if abs(self.x-roiB.x)==abs(self.y-roiB.y):    #déplacement en diagonales
+      pasx = pasy = 1
+      if self.x<roiB.x: pasx =-1
+      if self.y<roiB.y: pasy =-1
+      xn = self.x + pasx
+      yn = self.y + pasy
+      while not (xn,yn) in dictionnaire_pieces.Echiquier:   #parcours entre pièce à clouer et suivante
+        xn+=pasx
+        yn+=paxy
+      if dictionnaire_pieces.Echiquier[(xn,yn)].couleur=="noir" and dictionnaire_pieces.Echiquier[(xn,yn)].dlegal(roiB.x,roiB.y):
+        return True   #ds dpossible : si cloué=True => dpossible=False
+    return False
+  if self.couleur=="noir":   #couleur de la pièce sur laquelle on applique
+    if self.x==roiN.x or self.y==roiN.y:   #déplacement en colonnes et lignes
+      if self.x<roiN.x:
+        xn=self.x-1
+        while not (xn,self.y) in dictionnaire_pieces.Echiquier:   #parcours entre pièce à clouer et suivante
+          xn-=1
+        if dictionnaire_pieces.Echiquier[(xn,self.y)].couleur=="blanc" and dictionnaire_pieces.Echiquier[(xn,self.y)].dlegal(roiN.x,roiN.y):
+          return True
+      if self.x>roiN.x:
+        xn=self.x+1
+        while not (xn,self.y) in dictionnaire_pieces.Echiquier:
+          xn+=1
+        if dictionnaire_pieces.Echiquier[(xn,self.y)].couleur=="blanc" and dictionnaire_pieces.Echiquier[(xn,self.y)].dlegal(roiN.x,roiN.y):
+          return True
+      if self.y<roiN.y:
+        yn=self.y-1
+        while not (self.x,yn) in dictionnaire_pieces.Echiquier:
+          yn-=1
+        if dictionnaire_pieces.Echiquier[(self.x,yn)].couleur=="blanc" and dictionnaire_pieces.Echiquier[(self.x,yn)].dlegal(roiN.x,roiN.y):
+          return True
+      if self.y>roiN.y:
+        yn=self.y+1
+        while not (self.x,yn) in dictionnaire_pieces.Echiquier:
+          yn+=1
+        if dictionnaire_pieces.Echiquier[(self.x,yn)].couleur=="blanc" and dictionnaire_pieces.Echiquier[(self.x,yn)].dlegal(roiN.x,roiN.y):
+          return True
+    if abs(self.x-roiN.x)==abs(self.y-roiN.y):    #déplacement en diagonales
+      pasx = pasy = 1
+      if self.x<roiN.x: pasx =-1
+      if self.y<roiN.y: pasy =-1
+      xn = self.x + pasx
+      yn = self.y + pasy
+      while not (xn,yn) in dictionnaire_pieces.Echiquier:   #parcours entre pièce à clouer et suivante
+        xn+=pasx
+        yn+=paxy
+      if dictionnaire_pieces.Echiquier[(xn,yn)].couleur=="blanc" and dictionnaire_pieces.Echiquier[(xn,yn)].dlegal(roiN.x,roiN.y):
+        return True   #ds dpossible : si cloué=True => dpossible=False
+    return False
+
+    
   def echec(self): #à appeler sur une pièce qqconque (qui vient d'être déplacée)
     echec=False
     L=[]
