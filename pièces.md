@@ -76,11 +76,6 @@ class Piece:
       for i in range(0,8):
         if (i, yep) in dictionnaire_pieces.Echiquier and (i, yep) != (x,y):
           dictionnaire_pieces.Echiquier[(i,yep)].eppossible = False
-      
-      #on vérifie si cette pièce ne met pas en échec
-      if self.mise_en_echec():
-        if self.couleur == 'blanc': dictionnaire_pieces.roiN.echec = True
-        else : dictionnaire_pieces.roiB.echec = True
     else : return 'Déplacement impossible' #à changer?
     
   def dpossible(self,x,y):
@@ -171,7 +166,7 @@ class Piece:
           return True   #ds dpossible : si cloué=True => dpossible=False
       return False
 
-  def echectest(self): #à appeler sur une pièce qqconque (qui vient d'être déplacée)
+  def echectest(self): #a appeler pour vérifier si echec sur roi de la même couleur sans changer propriété ni vérifier mat #renvoie True
     echec=False
     for i in dictionnaire_pieces.Echiquier:
       if self.couleur=="blanc" and dictionnaire_pieces.Echiquier[i].couleur=="blanc":
@@ -185,7 +180,7 @@ class Piece:
     return echec
 
     
-  def echecetmat(self): #à appeler sur une pièce qqconque (qui vient d'être déplacée) #renvoie True
+  def echec_et_mat(self): #à appeler sur une pièce qqconque (qui vient d'être déplacée) #renvoie True ou 'mat'
     echec=False
     L=[] #garde la position des pièces qui mettent en échec (utile pour mat)
     for i in dictionnaire_pieces.Echiquier:
