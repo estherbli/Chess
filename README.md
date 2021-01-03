@@ -1,5 +1,5 @@
 # Chess
-Projet de jeu d'Echecs avec python
+Projet de jeu d'échecs avec python
 
 #intallation
 
