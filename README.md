@@ -1,7 +1,10 @@
 # Chess
-Projet d'Echecs
+Projet de jeu d'Echecs avec python
 
 #intallation
 
-Pour coder l'interface graphique, nous avons utilisé pygame. Si vous ne l'avez pas déjà installé, vous pouver utiliser pip en passant par la commande python -m pip install pygame. Après avoir téléchargé le projet, il suffit de créer une 
-mettre les pièces dans le même dossier que le reste ou changer le path
+Pour coder l'interface graphique, nous avons utilisé pygame. Si vous ne l'avez pas déjà installé, vous pouver utiliser pip en passant par la commande python -m pip install pygame. 
+
+#usage
+
+Après avoir téléchargé le projet, allez dans le document pieces.py. Là, il suffit de mettre l'adresse du fichier contenant le projet dans la variable path. Pour lancer le code, il faut lancer le document general.py. 
