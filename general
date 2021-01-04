@@ -229,7 +229,6 @@ class general() :
 
                                                 mouse = pygame.mouse.get_pos()
     
-
                                                 #différentes options de promotion
                                                 if 10 <= mouse[0] <= 80 and 250 <= mouse[1] <= 310 : 
                                                     pygame.draw.rect(self.main_surface,couleur_bouton1,[10,250,70,60]) 
@@ -288,12 +287,10 @@ class general() :
                                                             piece_a_deplacer=dpieces.Echiquier[position_arrivee]
                                                             en_attente_de_decision=False
 
-
                                                         if 170 <= mouse[0] <= 240 and 250 <= mouse[1] <= 310: #le joueur choisit une tour 
                                                             dpieces.Echiquier[position_arrivee]=pieces.tour('blanc', position_arrivee[0],position_arrivee[1], 'tourB')
                                                             piece_a_deplacer=dpieces.Echiquier[position_arrivee]
                                                             en_attente_de_decision=False
-
 
                                                         if 250 <= mouse[0] <= 320 and 250 <= mouse[1] <= 310: #le joueur choisit un cavalier
                                                             dpieces.Echiquier[position_arrivee]=pieces.cavalier('blanc', position_arrivee[0],position_arrivee[1], 'cavalierB')
@@ -301,7 +298,6 @@ class general() :
                                                             en_attente_de_decision=False
                                                         
                                                 
-
 
 
                                         else:
@@ -374,12 +370,10 @@ class general() :
                                                                 piece_a_deplacer=dpieces.Echiquier[position_arrivee]
                                                                 en_attente_de_decision=False
 
-
                                                             if 340+self.largeur_echiquier +170 <= mouse[0] <= 340+self.largeur_echiquier +240 and 250 <= mouse[1] <= 310: #le joueur choisit une tour 
                                                                 dpieces.Echiquier[position_arrivee]=pieces.tour('noir', position_arrivee[0],position_arrivee[1], 'tourN')
                                                                 piece_a_deplacer=dpieces.Echiquier[position_arrivee]
                                                                 en_attente_de_decision=False
-
 
                                                             if 340+self.largeur_echiquier +250 <= mouse[0] <= 340+self.largeur_echiquier +310 and 250 <= mouse[1] <= 310: #le joueur choisit un cavalier
                                                                 dpieces.Echiquier[position_arrivee]=pieces.cavalier('noir', position_arrivee[0],position_arrivee[1], 'cavalierN')
@@ -393,6 +387,7 @@ class general() :
                                     if resultat == "mat": #on est dans un cas d'échec et mat, c'est la fin de la partie
                                         self.main_surface.fill((131, 166, 151))
                                         self.ecrire(f"Les {piece_a_deplacer.couleur}s ont gagné !", (460,250), taille_ecriture=35)
+                                        pygame.time.delay(2000)
                                         fin_de_partie=True
                                     
                                     elif resultat == True: #correspond au cas où il y seulement échec
@@ -405,6 +400,7 @@ class general() :
                                     if piece_a_deplacer.pat :
                                         self.main_surface.fill((131, 166, 151))
                                         self.ecrire("Pat", (460,250), taille_ecriture=35)
+                                        pygame.time.delay(2000)
                                         fin_de_partie=True
 
                                 case=()
