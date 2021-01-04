@@ -13,13 +13,12 @@ class Piece:
     #nom est le type de pièce
     self.nom = nom #nom est le type de pièce
     self.image = pygame.image.load(f"{path}\\{nom}.png")
-    
   def deplacement(self, position): #change la position de la pièce et supprime la pièce mangée du dictionnaire 
     x = position[0] #transforme le tuple en deux coordonnées distinctes
     y = position [1]
     #vérifier que le déplacement est possible pour la pièce
     if 'roi' in self.nom:
-      if self.roque(x,y) == True:
+      if self.dpossible() and self.roque(x,y) == True:
         if self.couleur == 'blanc': #test pour savoir quel type de roque
           if (x,y) == (self.x+2, self.y): 
             ancienxytour = (7,0)
@@ -47,30 +46,47 @@ class Piece:
         dpieces.Echiquier.pop(ancienxytour)
         return None #le déplacement est fini, le roque a été fait
     #on vérifie que le déplacement est possible
-    if self.dpossible(x,y): 
+    if self.dpossible(x,y):
+      piece_prise = None
       if (x,y) in dpieces.Echiquier: #prendre une pièce
         if self.couleur != dpieces.Echiquier[(x,y)].couleur:  #vérifie que la pièce qui va être prise est bien de la couleur adverse
           if 'roi' in dpieces.Echiquier[(x,y)].nom: #on ne peut pas manger le roi
             return 'Déplacement impossible' 
           else : 
+            piece_prise = dpieces.Echiquier[(x,y)]
             dpieces.Echiquier.pop((x,y))  #pièce prise = supprimée de l'échiquier
         else : return 'Déplacement impossible' #on ne peut pas manger un de ses propres pions
       else : #cas de la prise en passant
         if 'pion' in self.nom:
           if self.pepg == True:
+            piece_prise = dpieces.Echiquier((self.x-1,self.y))
             dpieces.Echiquier.pop((self.x-1,self.y)) #prend la pièce en passant à gauche
             self.pepg = False
           if self.pepd == True:
+            piece_prise = dpieces.Echiquier((self.x+1,self.y))
             dpieces.Echiquier.pop((self.x+1,self.y)) #prend la pièce en passant à droite
             self.pepd = False
       #bouger la pièce 
       ancienxy = (self.x,self.y)
       self.x = x #changer les coordonnées de la pièce
       self.y = y
+      dpieces.Echiquier[(x,y)] = self #on bouge la pièce en la rajoutant dans le dictionnaire avec comme clé sa nouvelle position
+      dpieces.Echiquier.pop(ancienxy) #on supprime l'ancienne clé (position) de la pièce
+
+      if self.couleur == 'blanc' and dpieces.roiB.echec == True or (self.couleur == 'noir' and dpieces.roiN.echec == True): #si on était déjà en échec on doit ne plus être en échec
+        if self.testechec() == True:
+          #remettre la piece prise
+          (self.x,self.y) = ancienxy
+          dpieces.Echiquier[ancienxy] = self #piece dans sa position originale
+          dpieces.Echiquier.pop([x,y]) #enlève la piece déplacée
+          if piece_prise != None :
+            #remettre la piece prise
+            dpieces.Echiquier[(piece_prise.x, piece_prise.y)] = pieces_prise
+          return 'Déplacement impossible'
+
       if (('roi' in self.nom) or ('pion' in self.nom) or ('tour' in self.nom)):
         self.joué = True
-      dpieces.Echiquier[(x,y)] = self #on bouge la pièce en la rajoutant dans le dictionnaire avec comme clé sa nouvelle position
-      dpieces.Echiquier.pop(ancienxy) #on supprime l'ancienne clé (position) de la pièce                                     
+
       #changer eppossible False sauf le self
       if self.couleur == 'blanc' : yep = 3 #yep = y du prise en passant pour les blancs
       else : yep = 4
@@ -286,7 +302,7 @@ class Piece:
                 return mat   #sort dès qu'on trouve une pièce pour bloquer
     return mat
 
-  def pat(self): #vérifie qu'une pièce de la couleur de la piece peut encore jouer sans mettre le roi en echec
+  def pat(self): #vérifie qu'une pièce de la couleur adverse peut encore jouer sans mettre le roi en echec
     for piece in dpieces.Echiquier:
       if self.couleur != piece.couleur : #vérifie que la couleur adverse peut encore jouer
         if 'cavalier' in piece.nom :
