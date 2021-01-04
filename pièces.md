@@ -289,7 +289,7 @@ class Piece:
 
   def pat(self): #vérifie qu'une pièce de la couleur de la piece peut encore jouer sans mettre le roi en echec
     for piece in dpieces.Echiquier:
-      if self.couleur == piece.couleur :
+      if self.couleur != piece.couleur : #vérifie que la couleur adverse peut encore jouer
         if 'cavalier' in piece.nom :
           #teste position
           for (x,y) in [(piece.x+1, piece.y+2), (piece.x-1, piece.y+2), (piece.x+1, piece.y-2), (piece.x-1, piece.y-2), (piece.x+2, piece.y-1), (piece.x+2, piece.y-1), (piece.x-2, piece.y-1), (piece.x-2, piece.y+1)]:
