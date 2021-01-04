@@ -14,7 +14,7 @@ class general() :
         self.tour_des_blancs=True
         
         self.main_surface=pygame.display.set_mode((1240,self.largeur_echiquier)) # 900 -> largeur de la fenêtre
-        pygame.display.set_caption('Chess') #titre de la fenêtre
+        pygame.display.set_caption('Echecs') #titre de la fenêtre
 
 #page de démarrage
         running1=True
@@ -25,12 +25,12 @@ class general() :
 
             self.main_surface.fill((255, 203, 96))
 
-            self.pseudo_blanc = self.input("Joueur blanc, quel est ton nom ?")
+            self.pseudo_blanc = self.input("Joueur blanc, quel est ton nom ? (En minuscule s'il te plaît)")
             self.ecrire(self.pseudo_blanc,(12,12))
 
             self.main_surface.fill((255, 203, 96))
 
-            self.pseudo_noir = self.input("Joueur noir, quel est ton nom ?")
+            self.pseudo_noir = self.input("Joueur noir, quel est ton nom ? (En minuscule s'il te plaît)")
             self.ecrire(self.pseudo_noir, (12,12))
 
             running1=False
