@@ -301,13 +301,13 @@ class Piece:
                 return mat   #sort dès qu'on trouve une pièce pour bloquer
     return mat
 
-  def pat(self): #vérifie qu'une pièce de la couleur adverse peut encore jouer sans mettre le roi en echec
+  def pat(self): #vérifie que la couleur adverse peut encore
     for piece in dpieces.Echiquier:
-      if self.couleur != piece.couleur : #vérifie que la couleur adverse peut encore jouer
-        if 'cavalier' in piece.nom :
+      if self.couleur != dpieces.Echiquier[piece].couleur :
+        if 'cavalier' in dpieces.Echiquier[piece].nom :
           #teste position
-          for (x,y) in [(piece.x+1, piece.y+2), (piece.x-1, piece.y+2), (piece.x+1, piece.y-2), (piece.x-1, piece.y-2), (piece.x+2, piece.y-1), (piece.x+2, piece.y-1), (piece.x-2, piece.y-1), (piece.x-2, piece.y+1)]:
-            if piece.dlegal(x,y):
+          for (x,y) in [(piece[0]+1, piece[1]+2), (piece[0]-1, piece[1]+2), (piece[0]+1, piece[1]-2), (piece[0]-1, piece[1]-2), (piece[0]+2, piece[1]-1), (piece[0]+2, piece[1]-1), (piece[0]-2, piece[1]-1), (piece[0]-2, piece[1]+1)]:
+            if dpieces.Echiquier[piece].dlegal(x,y):
               return False
         else : 
           #teste des positions
@@ -315,7 +315,7 @@ class Piece:
           for x in [self.x, self.x+1, self.x-1]:
             for y in [self.y, self.y-1, self.y+1]:
               if (self.x,self.y) != (a,b):
-                if piece.dlegal(x,y):
+                if dpieces.Echiquier[piece].dlegal(x,y):
                   return False
     return True
 
