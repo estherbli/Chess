@@ -276,20 +276,24 @@ class general() :
 
                                                         if 10 <= mouse[0] <= 80 and 250 <= mouse[1] <= 310: #le joueur choisit une dame
                                                             dpieces.Echiquier[position_arrivee]=pieces.dame('blanc', position_arrivee[0],position_arrivee[1], 'dameB')
+                                                            piece_a_deplacer=dpieces.Echiquier[position_arrivee]
                                                             en_attente_de_decision=False
 
                                                         if 90 <= mouse[0] <= 160 and 250 <= mouse[1] <= 310: #le joueur choisit un fou
                                                             dpieces.Echiquier[position_arrivee]=pieces.fou('blanc', position_arrivee[0],position_arrivee[1], 'fouB')
+                                                            piece_a_deplacer=dpieces.Echiquier[position_arrivee]
                                                             en_attente_de_decision=False
 
 
                                                         if 170 <= mouse[0] <= 240 and 250 <= mouse[1] <= 310: #le joueur choisit une tour 
                                                             dpieces.Echiquier[position_arrivee]=pieces.tour('blanc', position_arrivee[0],position_arrivee[1], 'tourB')
+                                                            piece_a_deplacer=dpieces.Echiquier[position_arrivee]
                                                             en_attente_de_decision=False
 
 
                                                         if 250 <= mouse[0] <= 320 and 250 <= mouse[1] <= 310: #le joueur choisit un cavalier
                                                             dpieces.Echiquier[position_arrivee]=pieces.cavalier('blanc', position_arrivee[0],position_arrivee[1], 'cavalierB')
+                                                            piece_a_deplacer=dpieces.Echiquier[position_arrivee]
                                                             en_attente_de_decision=False
                                                         
                                                 
@@ -358,21 +362,29 @@ class general() :
 
                                                             if 340+self.largeur_echiquier +10 <= mouse[0] <= 340+self.largeur_echiquier +80 and 250 <= mouse[1] <= 310: #le joueur choisit une dame
                                                                 dpieces.Echiquier[position_arrivee]=pieces.dame('noir', position_arrivee[0],position_arrivee[1], 'dameN')
+                                                                piece_a_deplacer=dpieces.Echiquier[position_arrivee]
                                                                 en_attente_de_decision=False
 
                                                             if 340+self.largeur_echiquier +90 <= mouse[0] <= 340+self.largeur_echiquier +160 and 250 <= mouse[1] <= 310: #le joueur choisit un fou
                                                                 dpieces.Echiquier[position_arrivee]=pieces.fou('noir', position_arrivee[0],position_arrivee[1], 'fouN')
+                                                                piece_a_deplacer=dpieces.Echiquier[position_arrivee]
                                                                 en_attente_de_decision=False
 
 
                                                             if 340+self.largeur_echiquier +170 <= mouse[0] <= 340+self.largeur_echiquier +240 and 250 <= mouse[1] <= 310: #le joueur choisit une tour 
                                                                 dpieces.Echiquier[position_arrivee]=pieces.tour('noir', position_arrivee[0],position_arrivee[1], 'tourN')
+                                                                piece_a_deplacer=dpieces.Echiquier[position_arrivee]
                                                                 en_attente_de_decision=False
 
 
                                                             if 340+self.largeur_echiquier +250 <= mouse[0] <= 340+self.largeur_echiquier +310 and 250 <= mouse[1] <= 310: #le joueur choisit un cavalier
                                                                 dpieces.Echiquier[position_arrivee]=pieces.cavalier('noir', position_arrivee[0],position_arrivee[1], 'cavalierN')
+                                                                piece_a_deplacer=dpieces.Echiquier[position_arrivee]
                                                                 en_attente_de_decision=False
+                                                                
+                                                                
+                                    
+                                    resultat= piece_a_deplacer.pieces.echec()
                                     #appeler echec sur la piece qui vient de bouger
                                     #if piece_a_deplacer.pieces.echec():
                                     #   self.ecrire("echec", (trouver l'endroit))
