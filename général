@@ -15,7 +15,7 @@ class general() :
         self.tour_des_blancs=True
         
         self.main_surface=pygame.display.set_mode((1240,self.largeur_echiquier)) # 900 -> largeur de la fenêtre
-        pygame.display.set_caption('Chess') #titre de la fenêtre
+        pygame.display.set_caption('Echecs') #titre de la fenêtre
 
 #page de démarrage
         running1=True
