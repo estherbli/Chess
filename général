@@ -1,5 +1,5 @@
 import pygame
-import dictionnaire_pieces
+import dpieces
 import pieces
 
 
@@ -8,14 +8,14 @@ class general() :
 
         self.largeur_echiquier=560 #multiple de 8, mis ici pour pouvoir le changer facilement à loisir
         
-        self.echiquier=pygame.image.load(f'{pieces.path}\\echiquierabc2.png') #on charge l'echiquier ici pour n'avoir à le faire qu'une seule fois (opération plutôt lourde)
+        self.echiquier=pygame.image.load(f'{pieces.path_esther}\\echiquierabc2.png') #on charge l'echiquier ici pour n'avoir à le faire qu'une seule fois (opération plutôt lourde)
         self.echiquier=pygame.transform.scale(self.echiquier, (self.largeur_echiquier,self.largeur_echiquier)) #on redimensionne l'image
         
 
         self.tour_des_blancs=True
         
         self.main_surface=pygame.display.set_mode((1240,self.largeur_echiquier)) # 900 -> largeur de la fenêtre
-        pygame.display.set_caption('Echecs') #titre de la fenêtre
+        pygame.display.set_caption('Chess') #titre de la fenêtre
 
 #page de démarrage
         running1=True
@@ -75,9 +75,9 @@ class general() :
         for i in range(8):
             for j in range(8):
 
-                if (i,j) in dictionnaire_pieces.Echiquier :
+                if (i,j) in dpieces.Echiquier :
 
-                    piece=dictionnaire_pieces.Echiquier[(i,j)]
+                    piece=dpieces.Echiquier[(i,j)]
                     image_piece=piece.image
 
                     self.main_surface.blit(image_piece, (i*70+340,560-j*70-70)) # +340 pour mettre les pièces sur l'échiquier
@@ -173,15 +173,15 @@ class general() :
                             memoire+=[case]
 
                         if len(memoire)==1:
-                            if (i,j) in dictionnaire_pieces.Echiquier:
+                            if (i,j) in dpieces.Echiquier:
                                 if self.tour_des_blancs:
-                                    if dictionnaire_pieces.Echiquier[case].couleur=="blanc": #on vérifie que la pièce est bien de la couleur de la personne qui doit jouer
+                                    if dpieces.Echiquier[case].couleur=="blanc": #on vérifie que la pièce est bien de la couleur de la personne qui doit jouer
                                         self.ecrire("Où veux-tu aller?",(10,90) )
                                     else:
                                         case=()
                                         memoire=[]
                                 else:
-                                    if dictionnaire_pieces.Echiquier[case].couleur=="noir":
+                                    if dpieces.Echiquier[case].couleur=="noir":
                                         self.ecrire("Où veux-tu aller?",(910,90) ) 
                                     else:
                                         case=()
@@ -194,9 +194,9 @@ class general() :
                         if len(memoire)==2:
                             position_depart=memoire[0][0],memoire[0][1]
                             position_arrivee=case[0],case[1]
-                            piece_a_deplacer=dictionnaire_pieces.Echiquier[position_depart]
+                            piece_a_deplacer=dpieces.Echiquier[position_depart]
 
-                            if position_depart in dictionnaire_pieces.Echiquier:
+                            if position_depart in dpieces.Echiquier:
                                 result=pieces.Piece.deplacement(piece_a_deplacer, position_arrivee)
 
                                 if result=="Déplacement impossible": 
@@ -275,21 +275,21 @@ class general() :
                                                         mouse=pygame.mouse.get_pos()
 
                                                         if 10 <= mouse[0] <= 80 and 250 <= mouse[1] <= 310: #le joueur choisit une dame
-                                                            dictionnaire_pieces.Echiquier[position_arrivee]=pieces.dame('blanc', position_arrivee[0],position_arrivee[1], 'dameB')
+                                                            dpieces.Echiquier[position_arrivee]=pieces.dame('blanc', position_arrivee[0],position_arrivee[1], 'dameB')
                                                             en_attente_de_decision=False
 
                                                         if 90 <= mouse[0] <= 160 and 250 <= mouse[1] <= 310: #le joueur choisit un fou
-                                                            dictionnaire_pieces.Echiquier[position_arrivee]=pieces.fou('blanc', position_arrivee[0],position_arrivee[1], 'fouB')
+                                                            dpieces.Echiquier[position_arrivee]=pieces.fou('blanc', position_arrivee[0],position_arrivee[1], 'fouB')
                                                             en_attente_de_decision=False
 
 
                                                         if 170 <= mouse[0] <= 240 and 250 <= mouse[1] <= 310: #le joueur choisit une tour 
-                                                            dictionnaire_pieces.Echiquier[position_arrivee]=pieces.tour('blanc', position_arrivee[0],position_arrivee[1], 'tourB')
+                                                            dpieces.Echiquier[position_arrivee]=pieces.tour('blanc', position_arrivee[0],position_arrivee[1], 'tourB')
                                                             en_attente_de_decision=False
 
 
                                                         if 250 <= mouse[0] <= 320 and 250 <= mouse[1] <= 310: #le joueur choisit un cavalier
-                                                            dictionnaire_pieces.Echiquier[position_arrivee]=pieces.cavalier('blanc', position_arrivee[0],position_arrivee[1], 'cavalierB')
+                                                            dpieces.Echiquier[position_arrivee]=pieces.cavalier('blanc', position_arrivee[0],position_arrivee[1], 'cavalierB')
                                                             en_attente_de_decision=False
                                                         
                                                 
@@ -357,21 +357,21 @@ class general() :
                                                             mouse=pygame.mouse.get_pos()
 
                                                             if 340+self.largeur_echiquier +10 <= mouse[0] <= 340+self.largeur_echiquier +80 and 250 <= mouse[1] <= 310: #le joueur choisit une dame
-                                                                dictionnaire_pieces.Echiquier[position_arrivee]=pieces.dame('noir', position_arrivee[0],position_arrivee[1], 'dameN')
+                                                                dpieces.Echiquier[position_arrivee]=pieces.dame('noir', position_arrivee[0],position_arrivee[1], 'dameN')
                                                                 en_attente_de_decision=False
 
                                                             if 340+self.largeur_echiquier +90 <= mouse[0] <= 340+self.largeur_echiquier +160 and 250 <= mouse[1] <= 310: #le joueur choisit un fou
-                                                                dictionnaire_pieces.Echiquier[position_arrivee]=pieces.fou('noir', position_arrivee[0],position_arrivee[1], 'fouN')
+                                                                dpieces.Echiquier[position_arrivee]=pieces.fou('noir', position_arrivee[0],position_arrivee[1], 'fouN')
                                                                 en_attente_de_decision=False
 
 
                                                             if 340+self.largeur_echiquier +170 <= mouse[0] <= 340+self.largeur_echiquier +240 and 250 <= mouse[1] <= 310: #le joueur choisit une tour 
-                                                                dictionnaire_pieces.Echiquier[position_arrivee]=pieces.tour('noir', position_arrivee[0],position_arrivee[1], 'tourN')
+                                                                dpieces.Echiquier[position_arrivee]=pieces.tour('noir', position_arrivee[0],position_arrivee[1], 'tourN')
                                                                 en_attente_de_decision=False
 
 
                                                             if 340+self.largeur_echiquier +250 <= mouse[0] <= 340+self.largeur_echiquier +310 and 250 <= mouse[1] <= 310: #le joueur choisit un cavalier
-                                                                dictionnaire_pieces.Echiquier[position_arrivee]=pieces.cavalier('noir', position_arrivee[0],position_arrivee[1], 'cavalierN')
+                                                                dpieces.Echiquier[position_arrivee]=pieces.cavalier('noir', position_arrivee[0],position_arrivee[1], 'cavalierN')
                                                                 en_attente_de_decision=False
                                     #appeler echec sur la piece qui vient de bouger
                                     #if piece_a_deplacer.pieces.echec():
@@ -556,42 +556,42 @@ class general() :
                                 if 300 <= x <= 500 and 350 <= y <= 410 : 
                                     running3=False
                                     #on réinitialise le dictionnaire
-                                    dictionnaire_pieces.Echiquier={(0,0) : dictionnaire_pieces.tourB1, (7,0) : dictionnaire_pieces.tourB2, (1,0) : dictionnaire_pieces.cavalierB1, (6,0) : dictionnaire_pieces.cavalierB2, (2,0) : dictionnaire_pieces.fouB1, (5,0) : dictionnaire_pieces.fouB2, (3,0) : dictionnaire_pieces.dameB, (4,0) : dictionnaire_pieces.roiB, (0,1) : dictionnaire_pieces.pionB1, (1,1): dictionnaire_pieces.pionB2, (2,1) : dictionnaire_pieces.pionB3, (3,1) : dictionnaire_pieces.pionB4, (4,1) : dictionnaire_pieces.pionB5, (5,1): dictionnaire_pieces.pionB6, (6,1): dictionnaire_pieces.pionB7, (7,1) : dictionnaire_pieces.pionB8, (0,7) : dictionnaire_pieces.tourN1, (7,7) : dictionnaire_pieces.tourN2, (1,7) : dictionnaire_pieces.cavalierN1, (6,7) : dictionnaire_pieces.cavalierN2, (2,7) : dictionnaire_pieces.fouN1, (5,7) : dictionnaire_pieces.fouN2, (3,7) : dictionnaire_pieces.dameN, (4,7) : dictionnaire_pieces.roiN, (0,6) : dictionnaire_pieces.pionN1, (1,6): dictionnaire_pieces.pionN2, (2,6) : dictionnaire_pieces.pionN3, (3,6) : dictionnaire_pieces.pionN4, (4,6) : dictionnaire_pieces.pionN5, (5,6): dictionnaire_pieces.pionN6, (6,6): dictionnaire_pieces.pionN7, (7,6) : dictionnaire_pieces.pionN8}
+                                    dpieces.Echiquier={(0,0) : dpieces.tourB1, (7,0) : dpieces.tourB2, (1,0) : dpieces.cavalierB1, (6,0) : dpieces.cavalierB2, (2,0) : dpieces.fouB1, (5,0) : dpieces.fouB2, (3,0) : dpieces.dameB, (4,0) : dpieces.roiB, (0,1) : dpieces.pionB1, (1,1): dpieces.pionB2, (2,1) : dpieces.pionB3, (3,1) : dpieces.pionB4, (4,1) : dpieces.pionB5, (5,1): dpieces.pionB6, (6,1): dpieces.pionB7, (7,1) : dpieces.pionB8, (0,7) : dpieces.tourN1, (7,7) : dpieces.tourN2, (1,7) : dpieces.cavalierN1, (6,7) : dpieces.cavalierN2, (2,7) : dpieces.fouN1, (5,7) : dpieces.fouN2, (3,7) : dpieces.dameN, (4,7) : dpieces.roiN, (0,6) : dpieces.pionN1, (1,6): dpieces.pionN2, (2,6) : dpieces.pionN3, (3,6) : dpieces.pionN4, (4,6) : dpieces.pionN5, (5,6): dpieces.pionN6, (6,6): dpieces.pionN7, (7,6) : dpieces.pionN8}
 
                                     #on change les coordonnées dans les propriétés des objets
-                                    dictionnaire_pieces.tourB1.x , dictionnaire_pieces.tourB1.y = 0, 0
-                                    dictionnaire_pieces.tourB2.x , dictionnaire_pieces.tourB2.y = 7, 0
-                                    dictionnaire_pieces.cavalierB1.x , dictionnaire_pieces.cavalierB1.y = 1 , 0
-                                    dictionnaire_pieces.cavalierB2.x , dictionnaire_pieces.cavalierB2.y = 6 , 0
-                                    dictionnaire_pieces.fouB1.x , dictionnaire_pieces.fouB1.y = 2 , 0
-                                    dictionnaire_pieces.fouB2.x , dictionnaire_pieces.fouB2.y = 5 , 0
-                                    dictionnaire_pieces.dameB.x , dictionnaire_pieces.dameB.y = 3 , 0
-                                    dictionnaire_pieces.roiB.x , dictionnaire_pieces.roiB.y = 4 , 0
-                                    dictionnaire_pieces.pionB1.x , dictionnaire_pieces.pionB1.y = 0 , 1
-                                    dictionnaire_pieces.pionB2.x , dictionnaire_pieces.pionB2.y = 1 , 1
-                                    dictionnaire_pieces.pionB3.x , dictionnaire_pieces.pionB3.y = 2 , 1
-                                    dictionnaire_pieces.pionB4.x , dictionnaire_pieces.pionB4.y = 3 , 1
-                                    dictionnaire_pieces.pionB5.x , dictionnaire_pieces.pionB5.y = 4 , 1
-                                    dictionnaire_pieces.pionB6.x , dictionnaire_pieces.pionB6.y = 5 , 1
-                                    dictionnaire_pieces.pionB7.x , dictionnaire_pieces.pionB7.y = 6 , 1
-                                    dictionnaire_pieces.pionB8.x , dictionnaire_pieces.pionB8.y = 7 , 1
+                                    dpieces.tourB1.x , dpieces.tourB1.y = 0, 0
+                                    dpieces.tourB2.x , dpieces.tourB2.y = 7, 0
+                                    dpieces.cavalierB1.x , dpieces.cavalierB1.y = 1 , 0
+                                    dpieces.cavalierB2.x , dpieces.cavalierB2.y = 6 , 0
+                                    dpieces.fouB1.x , dpieces.fouB1.y = 2 , 0
+                                    dpieces.fouB2.x , dpieces.fouB2.y = 5 , 0
+                                    dpieces.dameB.x , dpieces.dameB.y = 3 , 0
+                                    dpieces.roiB.x , dpieces.roiB.y = 4 , 0
+                                    dpieces.pionB1.x , dpieces.pionB1.y = 0 , 1
+                                    dpieces.pionB2.x , dpieces.pionB2.y = 1 , 1
+                                    dpieces.pionB3.x , dpieces.pionB3.y = 2 , 1
+                                    dpieces.pionB4.x , dpieces.pionB4.y = 3 , 1
+                                    dpieces.pionB5.x , dpieces.pionB5.y = 4 , 1
+                                    dpieces.pionB6.x , dpieces.pionB6.y = 5 , 1
+                                    dpieces.pionB7.x , dpieces.pionB7.y = 6 , 1
+                                    dpieces.pionB8.x , dpieces.pionB8.y = 7 , 1
 
-                                    dictionnaire_pieces.tourN1.x , dictionnaire_pieces.tourN1.y = 0, 7
-                                    dictionnaire_pieces.tourN2.x , dictionnaire_pieces.tourN2.y = 7, 7
-                                    dictionnaire_pieces.cavalierN1.x , dictionnaire_pieces.cavalierN1.y = 1 , 7
-                                    dictionnaire_pieces.cavalierN2.x , dictionnaire_pieces.cavalierN2.y = 6 , 7
-                                    dictionnaire_pieces.fouN1.x , dictionnaire_pieces.fouN1.y = 2 , 7
-                                    dictionnaire_pieces.fouN2.x , dictionnaire_pieces.fouN2.y = 5 , 7
-                                    dictionnaire_pieces.dameN.x , dictionnaire_pieces.dameN.y = 3 , 7
-                                    dictionnaire_pieces.roiN.x , dictionnaire_pieces.roiN.y = 4 , 7
-                                    dictionnaire_pieces.pionN1.x , dictionnaire_pieces.pionN1.y = 0 , 6
-                                    dictionnaire_pieces.pionN2.x , dictionnaire_pieces.pionN2.y = 1 , 6
-                                    dictionnaire_pieces.pionN3.x , dictionnaire_pieces.pionN3.y = 2 , 6
-                                    dictionnaire_pieces.pionN4.x , dictionnaire_pieces.pionN4.y = 3 , 6
-                                    dictionnaire_pieces.pionN5.x , dictionnaire_pieces.pionN5.y = 4 , 6
-                                    dictionnaire_pieces.pionN6.x , dictionnaire_pieces.pionN6.y = 5 , 6
-                                    dictionnaire_pieces.pionN7.x , dictionnaire_pieces.pionN7.y = 6 , 6
-                                    dictionnaire_pieces.pionN8.x , dictionnaire_pieces.pionN8.y = 7 , 6
+                                    dpieces.tourN1.x , dpieces.tourN1.y = 0, 7
+                                    dpieces.tourN2.x , dpieces.tourN2.y = 7, 7
+                                    dpieces.cavalierN1.x , dpieces.cavalierN1.y = 1 , 7
+                                    dpieces.cavalierN2.x , dpieces.cavalierN2.y = 6 , 7
+                                    dpieces.fouN1.x , dpieces.fouN1.y = 2 , 7
+                                    dpieces.fouN2.x , dpieces.fouN2.y = 5 , 7
+                                    dpieces.dameN.x , dpieces.dameN.y = 3 , 7
+                                    dpieces.roiN.x , dpieces.roiN.y = 4 , 7
+                                    dpieces.pionN1.x , dpieces.pionN1.y = 0 , 6
+                                    dpieces.pionN2.x , dpieces.pionN2.y = 1 , 6
+                                    dpieces.pionN3.x , dpieces.pionN3.y = 2 , 6
+                                    dpieces.pionN4.x , dpieces.pionN4.y = 3 , 6
+                                    dpieces.pionN5.x , dpieces.pionN5.y = 4 , 6
+                                    dpieces.pionN6.x , dpieces.pionN6.y = 5 , 6
+                                    dpieces.pionN7.x , dpieces.pionN7.y = 6 , 6
+                                    dpieces.pionN8.x , dpieces.pionN8.y = 7 , 6
 
                                     self.__init__()
 
