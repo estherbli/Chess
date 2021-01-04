@@ -192,17 +192,17 @@ class Piece:
       if self.couleur=="blanc" and dpieces.Echiquier[i].couleur=="blanc":
         if dpieces.Echiquier[i].dlegal(dpieces.roiN.x,dpieces.roiN.y):   #vérifie si la pièce adverse atteint le roi
           echec=True
-          dpieces.roiB.echec = True
+          dpieces.roiN.echec = True
           L+=[i]
       if self.couleur=="noir" and dpieces.Echiquier[i].couleur=="noir":
         if dpieces.Echiquier[i].dlegal(dpieces.roiB.x,dpieces.roiB.y):
           echec=True
-          dpieces.roiN.echec = True
+          dpieces.roiB.echec = True
           L+=[i]
     if echec:
       if self.mat(L):
         return 'mat'
-      else : return echec
+    else : return echec
   
   def mat(self, L):    #appel sur la même pièce que echec  #vérifier si le roi est en échec : on peut mettre la condition ailleurs
     mat=True          #part du principe que c'est vrai : plus facile à manipuler
