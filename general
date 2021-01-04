@@ -388,7 +388,7 @@ class general() :
                                                                 
                                                                 
                                     
-                                    resultat = piece_a_deplacer.pieces.echec_et_mat #on appelle echec sur la piece qui vient de bouger
+                                    resultat = piece_a_deplacer.echec_et_mat #on appelle echec sur la piece qui vient de bouger
                                                                            
                                     if resultat == "mat": #on est dans un cas d'échec et mat, c'est la fin de la partie
                                         self.main_surface.fill((131, 166, 151))
@@ -400,9 +400,9 @@ class general() :
                                             self.ecrire("Echec", (910, 110))
                                         else :
                                             self.ecrire("Echec", (10,110))
-                                        self.echec
+                                        self.echec= True
                                     
-                                    if piece_a_deplacer.pieces.pat :
+                                    if piece_a_deplacer.pat :
                                         self.main_surface.fill((131, 166, 151))
                                         self.ecrire("Pat", (460,250), taille_ecriture=35)
                                         fin_de_partie=True
