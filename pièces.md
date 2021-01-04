@@ -148,29 +148,29 @@ class Piece:
     if self.couleur=="noir":   #couleur de la pièce sur laquelle on applique
       if self.x==dpieces.roiN.x or self.y==dpieces.roiN.y:   #déplacement en colonnes et lignes
         if self.x<dpieces.roiN.x:
-          xn=self.x-1
-          while not (xn,self.y) in dpieces.Echiquier and 0<=xn<8 and 0<=yn<8:   #parcours entre pièce à clouer et suivante
-            xn-=1
-          if dpieces.Echiquier[(xn, self.y)].couleur=="blanc" and dpieces.Echiquier[(xn,self.y)].dlegal(dpieces.roiN.x,dpieces.roiN.y):
-            return True
+          for xn in range(self.x,0,-1):   #parcours entre pièce à clouer et suivante
+            if (xn,self.y) in dpieces.Echiquier:
+              if dpieces.Echiquier[(xn,self.y)].couleur=="noir" and dpieces.Echiquier[(xn,self.y)].dlegal(dpieces.roiB.x,dpieces.roiB.y):
+                return True
+          return False
         if self.x>dpieces.roiN.x:
-          xn=self.x+1
-          while not (xn,self.y) in dpieces.Echiquier and 0<=xn<8 and 0<=yn<8:
-            xn+=1
-          if dpieces.Echiquier[(xn,self.y)].couleur=="blanc" and dpieces.Echiquier[(xn,self.y)].dlegal(dpieces.roiN.x,dpieces.roiN.y):
-            return True
+          for xn in range(self.x,0):   #parcours entre pièce à clouer et suivante
+            if (xn,self.y) in dpieces.Echiquier:
+              if dpieces.Echiquier[(xn,self.y)].couleur=="noir" and dpieces.Echiquier[(xn,self.y)].dlegal(dpieces.roiB.x,dpieces.roiB.y):
+                return True
+          return False
         if self.y<dpieces.roiN.y:
-          yn=self.y-1
-          while not (self.x,yn) in dpieces.Echiquier and 0<=xn<8 and 0<=yn<8:
-            yn-=1
-          if dpieces.Echiquier[(self.x,yn)].couleur=="blanc" and dpieces.Echiquier[(self.x,yn)].dlegal(dpieces.roiN.x,dpieces.roiN.y):
-            return True
+          for yn in range(self.y,0,-1):   #parcours entre pièce à clouer et suivante
+            if (self.x,yn) in dpieces.Echiquier:
+              if dpieces.Echiquier[(xn,self.y)].couleur=="noir" and dpieces.Echiquier[(xn,self.y)].dlegal(dpieces.roiB.x,dpieces.roiB.y):
+                return True
+          return False
         if self.y>dpieces.roiN.y:
-          yn=self.y+1
-          while not (self.x,yn) in dpieces.Echiquier and 0<=xn<8 and 0<=yn<8:
-            yn+=1
-          if dpieces.Echiquier[(self.x,yn)].couleur=="blanc" and dpieces.Echiquier[(self.x,yn)].dlegal(dpieces.roiN.x,dpieces.roiN.y):
-            return True
+          for yn in range(self.y,0):   #parcours entre pièce à clouer et suivante
+            if (self.x,yn) in dpieces.Echiquier:
+              if dpieces.Echiquier[(xn,self.y)].couleur=="noir" and dpieces.Echiquier[(xn,self.y)].dlegal(dpieces.roiB.x,dpieces.roiB.y):
+                return True
+          return False
       if abs(self.x-dpieces.roiN.x)==abs(self.y-dpieces.roiN.y):    #déplacement en diagonales
         pasx = pasy = 1
         if self.x<dpieces.roiN.x: pasx =-1
