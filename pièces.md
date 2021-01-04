@@ -13,12 +13,12 @@ class Piece:
     #nom est le type de pièce
     self.nom = nom #nom est le type de pièce
     self.image = pygame.image.load(f"{path}\\{nom}.png")
-  def deplacement(self, position): #change la position de la pièce et supprime la pièce mangée du dictionnaire 
+    def deplacement(self, position): #change la position de la pièce et supprime la pièce mangée du dictionnaire 
     x = position[0] #transforme le tuple en deux coordonnées distinctes
     y = position [1]
     #vérifier que le déplacement est possible pour la pièce
     if 'roi' in self.nom:
-      if self.dpossible() and self.roque(x,y) == True:
+      if self.dpossible(x,y) and self.roque(x,y) == True:
         if self.couleur == 'blanc': #test pour savoir quel type de roque
           if (x,y) == (self.x+2, self.y): 
             ancienxytour = (7,0)
@@ -74,11 +74,11 @@ class Piece:
       dpieces.Echiquier.pop(ancienxy) #on supprime l'ancienne clé (position) de la pièce
 
       if self.couleur == 'blanc' and dpieces.roiB.echec == True or (self.couleur == 'noir' and dpieces.roiN.echec == True): #si on était déjà en échec on doit ne plus être en échec
-        if self.testechec() == True:
+        if self.echectest() == True:
           #remettre la piece prise
           (self.x,self.y) = ancienxy
           dpieces.Echiquier[ancienxy] = self #piece dans sa position originale
-          dpieces.Echiquier.pop([x,y]) #enlève la piece déplacée
+          dpieces.Echiquier.pop((x,y)) #enlève la piece déplacée
           if piece_prise != None :
             #remettre la piece prise
             dpieces.Echiquier[(piece_prise.x, piece_prise.y)] = pieces_prise
@@ -93,7 +93,7 @@ class Piece:
       for i in range(0,8):
         if (i, yep) in dpieces.Echiquier and (i, yep) != (x,y):
           dpieces.Echiquier[(i,yep)].eppossible = False
-    else : return 'Déplacement impossible' #à changer?
+    else : return 'Déplacement impossible'
     
   def dpossible(self,x,y):
     #vérifie que le déplacement est un bon déplacement pour le type de pièce
