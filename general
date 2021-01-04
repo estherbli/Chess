@@ -8,9 +8,8 @@ class general() :
 
         self.largeur_echiquier=560 #multiple de 8, mis ici pour pouvoir le changer facilement à loisir
         
-        self.echiquier=pygame.image.load(f'{pieces.path}\\echiquierabc2.png') #on charge l'echiquier ici pour n'avoir à le faire qu'une seule fois (opération plutôt lourde)
+        self.echiquier=pygame.image.load(f'{pieces.path_milo}\\echiquierabc2.png') #on charge l'echiquier ici pour n'avoir à le faire qu'une seule fois (opération plutôt lourde)
         self.echiquier=pygame.transform.scale(self.echiquier, (self.largeur_echiquier,self.largeur_echiquier)) #on redimensionne l'image
-        
 
         self.tour_des_blancs=True
         
@@ -22,7 +21,7 @@ class general() :
         while running1:
             self.main_surface.fill((255, 203, 96))
             self.ecrire("Jouons !", (510,230), taille_ecriture=60)
-            pygame.time.delay(1500)
+            pygame.time.delay(1300)
 
             self.main_surface.fill((255, 203, 96))
 
@@ -52,6 +51,11 @@ class general() :
                 if event.type == pygame.KEYDOWN:
                     if event.key ==pygame.K_RETURN:
                         done=False
+                    elif len(word)>0 and event.key ==pygame.K_BACKSPACE: #pour pouvoir effacer
+                        word=word[:-1]
+                        self.main_surface.fill((255, 203, 96))
+                        self.ecrire(message,(24,12))
+                        self.ecrire(word, (25,30))
                     else :
                         if len(word)<8:
                             word+=str(chr(event.key))
@@ -384,7 +388,7 @@ class general() :
                                                                 
                                                                 
                                     
-                                    resultat = piece_a_deplacer.pieces.echec_et_mat(): #on appelle echec sur la piece qui vient de bouger
+                                    resultat = piece_a_deplacer.pieces.echec_et_mat #on appelle echec sur la piece qui vient de bouger
                                                                            
                                     if resultat == "mat": #on est dans un cas d'échec et mat, c'est la fin de la partie
                                         self.main_surface.fill((131, 166, 151))
@@ -396,6 +400,7 @@ class general() :
                                             self.ecrire("Echec", (910, 110))
                                         else :
                                             self.ecrire("Echec", (10,110))
+                                        self.echec
                                     
                                     if piece_a_deplacer.pieces.pat :
                                         self.main_surface.fill((131, 166, 151))
