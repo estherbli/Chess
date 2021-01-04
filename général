@@ -384,16 +384,25 @@ class general() :
                                                                 
                                                                 
                                     
-                                    resultat= piece_a_deplacer.pieces.echec()
-                                    #appeler echec sur la piece qui vient de bouger
-                                    #if piece_a_deplacer.pieces.echec():
-                                    #   self.ecrire("echec", (trouver l'endroit))
-                                    #   if pieces.Piece
-                                    #est ce que un pion promu est aussi sous le nom piece_a déplacer ?
-                                    #appeler pat 
-                                    #if piece_a_deplacer.pieces.pat() == False:
-                                    #finir le jeu et afficher pat
-                                    #else : continuer normalement
+                                    resultat = piece_a_deplacer.pieces.echec_et_mat(): #on appelle echec sur la piece qui vient de bouger
+                                    
+                                    if resultat == True:
+                                        if self.tour_des_blancs:
+                                            self.ecrire("Echec", (910, 110))
+                                            
+                                        else :
+                                            self.ecrire("Echec", (10,110))
+                                        
+                                    elif resultat == "mat":
+                                        self.main_surface.fill((131, 166, 151))
+                                        self.ecrire(f"Les {piece_a_deplacer.couleur}s ont gagné !", (460,250), taille_ecriture=35)
+                                        fin_de_partie=True
+                                    
+                                    
+                                    if piece_a_deplacer.pieces.pat :
+                                        self.main_surface.fill((131, 166, 151))
+                                        self.ecrire("Pat", (460,250), taille_ecriture=35)
+                                        fin_de_partie=True
 
                                 case=()
                                 memoire=[]
