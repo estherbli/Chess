@@ -12,8 +12,9 @@ class Piece:
     self.y = positioniy
     #nom est le type de pièce
     self.nom = nom #nom est le type de pièce
-    self.image = pygame.image.load(f"{path}\\{nom}.png")
-    def deplacement(self, position): #change la position de la pièce et supprime la pièce mangée du dictionnaire 
+    self.image = pygame.image.load(f"{path_esther}\\{nom}.png")
+    
+  def deplacement(self, position): #change la position de la pièce et supprime la pièce mangée du dictionnaire 
     x = position[0] #transforme le tuple en deux coordonnées distinctes
     y = position [1]
     #vérifier que le déplacement est possible pour la pièce
@@ -104,7 +105,7 @@ class Piece:
   def dlegal(self, x,y):
     #deplacement autorisé pour ce type de pièce
     return True or False
-    
+
   def cloue(self):
     if self.couleur=="blanc": #couleur de la pièce sur laquelle on applique
       if self.x==dpieces.roiB.x or self.y==dpieces.roiB.y:   #déplacement en colonnes et lignes
@@ -203,6 +204,7 @@ class Piece:
   
   def echec_et_mat(self): #à appeler sur une pièce qqconque (qui vient d'être déplacée) #renvoie True ou 'mat'
     echec=False
+    cavalier = False
     L=[] #garde la position des pièces qui mettent en échec (utile pour mat)
     for i in dpieces.Echiquier:
       if self.couleur=="blanc" and dpieces.Echiquier[i].couleur=="blanc":
@@ -210,25 +212,29 @@ class Piece:
           echec=True
           dpieces.roiN.echec = True
           L+=[i]
+          if 'cavalier' in dpieces.Echiquier[i].nom :
+            cavalier = True
       if self.couleur=="noir" and dpieces.Echiquier[i].couleur=="noir":
         if dpieces.Echiquier[i].dlegal(dpieces.roiB.x,dpieces.roiB.y):
           echec=True
           dpieces.roiB.echec = True
           L+=[i]
+          if 'cavalier' in dpieces.Echiquier[i].nom :
+            cavalier = True
     if echec:
-      if self.mat(L):
+      if self.mat(L,cavalier):
         return 'mat'
-    else : return echec
+    return echec
   
-  def mat(self, L):    #appel sur la même pièce que echec  #vérifier si le roi est en échec : on peut mettre la condition ailleurs
+  def mat(self, L, cavalier):    #appel sur la même pièce que echec
     mat=True          #part du principe que c'est vrai : plus facile à manipuler
-    if len(L)>1 or "cavalier" in dpieces.Echiquier[L[0]].nom:  #seul le roi peut se sauver
+    if len(L)>1 or cavalier:  #seul le roi peut se sauver #le cavalier peut être autre que la première pièce
       if dpieces.Echiquier[L[0]].couleur=="blanc":
         (a,b)=(dpieces.roiN.x,dpieces.roiN.y)
         for x in [dpieces.roiN.x, dpieces.roiN.x+1, dpieces.roiN.x-1]:
           for y in [dpieces.roiN.y, dpieces.roiN.y-1, dpieces.roiN.y+1]:
             if (x,y) != (a,b) and dpieces.roiN.dlegal(x,y):
-              if self.echectest() == False:
+              if self.echectest(x,y) == False:
                 mat=False
                 return mat
       if self.couleur=="noir":
@@ -236,9 +242,9 @@ class Piece:
         for x in [dpieces.roiB.x, dpieces.roiB.x+1, dpieces.roiB.x-1]:
           for y in [dpieces.roiB.y, dpieces.roiB.y-1, dpieces.roiB.y+1]:
             if (x,y) != (a,b) and dpieces.roiB.dlegal(x,y):
-              if self.echectest() == False:
+              if self.echectest(x,y) == False:
                 mat=False
-                return False
+                return mat
     else:   #transformer en fct° "parcours" pr réutiliser ds fct° "cloué" ?
       P=[L[0]]   #trajectoire entre pièce qui met en échec et le roi
       if dpieces.Echiquier[L[0]].couleur=="blanc":  #roi noir en échec
