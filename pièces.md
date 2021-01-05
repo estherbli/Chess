@@ -124,13 +124,13 @@ class Piece:
         if self.y<dpieces.roiB.y:
           for yn in range(self.y,0,-1):   #parcours entre pièce à clouer et suivante
             if (self.x,yn) in dpieces.Echiquier:
-              if dpieces.Echiquier[(self.x,yn)].couleur=="noir" and dpieces.Echiquier[(xn,self.y)].dlegal(dpieces.roiB.x,dpieces.roiB.y):
+              if dpieces.Echiquier[(self.x,yn)].couleur=="noir" and dpieces.Echiquier[(self.x,yn)].dlegal(dpieces.roiB.x,dpieces.roiB.y):
                 return True
           return False
         if self.y>dpieces.roiB.y:
           for yn in range(self.y,8):   #parcours entre pièce à clouer et suivante
             if (self.x,yn) in dpieces.Echiquier:
-              if dpieces.Echiquier[(self.x,yn)].couleur=="noir" and dpieces.Echiquier[(xn,self.y)].dlegal(dpieces.roiB.x,dpieces.roiB.y):
+              if dpieces.Echiquier[(self.x,yn)].couleur=="noir" and dpieces.Echiquier[(self.x,yn)].dlegal(dpieces.roiB.x,dpieces.roiB.y):
                 return True
           return False
       if abs(self.x-dpieces.roiB.x)==abs(self.y-dpieces.roiB.y):    #déplacement en diagonales
@@ -163,13 +163,13 @@ class Piece:
         if self.y<dpieces.roiN.y:
           for yn in range(self.y,0,-1):   #parcours entre pièce à clouer et suivante
             if (self.x,yn) in dpieces.Echiquier:
-              if dpieces.Echiquier[(self.x,yn)].couleur=="noir" and dpieces.Echiquier[(xn,self.y)].dlegal(dpieces.roiB.x,dpieces.roiB.y):
+              if dpieces.Echiquier[(self.x,yn)].couleur=="noir" and dpieces.Echiquier[(self.x,yn)].dlegal(dpieces.roiB.x,dpieces.roiB.y):
                 return True
           return False
         if self.y>dpieces.roiN.y:
           for yn in range(self.y,8):   #parcours entre pièce à clouer et suivante
             if (self.x,yn) in dpieces.Echiquier:
-              if dpieces.Echiquier[(self.x,yn)].couleur=="noir" and dpieces.Echiquier[(xn,self.y)].dlegal(dpieces.roiB.x,dpieces.roiB.y):
+              if dpieces.Echiquier[(self.x,yn)].couleur=="noir" and dpieces.Echiquier[(self.x,yn)].dlegal(dpieces.roiB.x,dpieces.roiB.y):
                 return True
           return False
       if abs(self.x-dpieces.roiN.x)==abs(self.y-dpieces.roiN.y):    #déplacement en diagonales
