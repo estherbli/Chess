@@ -393,8 +393,10 @@ class general() :
                                     elif resultat == True: #correspond au cas où il y seulement échec
                                         if self.tour_des_blancs:
                                             self.ecrire("Echec", (910, 110))
+                                            pygame.time.delay(1500)
                                         else :
                                             self.ecrire("Echec", (10,110))
+                                            pygame.time.delay(1500)
                                         self.echec= True
                                     
                                     if piece_a_deplacer.pat() :
