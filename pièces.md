@@ -116,7 +116,7 @@ class Piece:
                 return True
           return False
         if self.x>dpieces.roiB.x:
-          for xn in range(self.x,0):   #parcours entre pièce à clouer et suivante
+          for xn in range(self.x,8):   #parcours entre pièce à clouer et suivante
             if (xn,self.y) in dpieces.Echiquier:
               if dpieces.Echiquier[(xn,self.y)].couleur=="noir" and dpieces.Echiquier[(xn,self.y)].dlegal(dpieces.roiB.x,dpieces.roiB.y):
                 return True
@@ -128,7 +128,7 @@ class Piece:
                 return True
           return False
         if self.y>dpieces.roiB.y:
-          for yn in range(self.y,0):   #parcours entre pièce à clouer et suivante
+          for yn in range(self.y,8):   #parcours entre pièce à clouer et suivante
             if (self.x,yn) in dpieces.Echiquier:
               if dpieces.Echiquier[(self.x,yn)].couleur=="noir" and dpieces.Echiquier[(xn,self.y)].dlegal(dpieces.roiB.x,dpieces.roiB.y):
                 return True
@@ -155,7 +155,7 @@ class Piece:
                 return True
           return False
         if self.x>dpieces.roiN.x:
-          for xn in range(self.x,0):   #parcours entre pièce à clouer et suivante
+          for xn in range(self.x,8):   #parcours entre pièce à clouer et suivante
             if (xn,self.y) in dpieces.Echiquier:
               if dpieces.Echiquier[(xn,self.y)].couleur=="noir" and dpieces.Echiquier[(xn,self.y)].dlegal(dpieces.roiB.x,dpieces.roiB.y):
                 return True
@@ -167,7 +167,7 @@ class Piece:
                 return True
           return False
         if self.y>dpieces.roiN.y:
-          for yn in range(self.y,0):   #parcours entre pièce à clouer et suivante
+          for yn in range(self.y,8):   #parcours entre pièce à clouer et suivante
             if (self.x,yn) in dpieces.Echiquier:
               if dpieces.Echiquier[(self.x,yn)].couleur=="noir" and dpieces.Echiquier[(xn,self.y)].dlegal(dpieces.roiB.x,dpieces.roiB.y):
                 return True
