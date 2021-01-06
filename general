@@ -74,9 +74,9 @@ class general() :
             self.ecrire("C'est ton tour.", (910,60))
 
         if dpieces.roiB.echec :
-            self.ecrire("Echec", (10,110))
+            self.ecrire("Echec", (10,130))
         if dpieces.roiN.echec :
-            self.ecrire("Echec", (910, 110))
+            self.ecrire("Echec", (910, 130))
                 
     def setup_pieces(self):
 
