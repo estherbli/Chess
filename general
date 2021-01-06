@@ -16,24 +16,68 @@ class general() :
         self.main_surface=pygame.display.set_mode((1240,self.largeur_echiquier)) # 1240 -> largeur de la fenêtre
         pygame.display.set_caption('Echecs') #titre de la fenêtre
 
+        self.main_surface.fill((255, 203, 96))
+        self.ecrire("Jouons !", (510,230), taille_ecriture=60)
+        pygame.time.delay(1000)
+
+        self.jouer = True #variable permet de savoir si l'utilisateur veut voir la partie entre deep blue et kasparov ou jouer
+
+        self.main_surface.fill((255, 203, 96))
 #page de démarrage
         running1=True
         while running1:
-            self.main_surface.fill((255, 203, 96))
-            self.ecrire("Jouons !", (510,230), taille_ecriture=60)
-            pygame.time.delay(1300)
+            self.ecrire("Que voulez-vous faire ?", (430,150), taille_ecriture=60)
+            couleur_bouton1 = (100,100,100) 
+            couleur_bouton2 = (210,200,80)
+            mouse = pygame.mouse.get_pos() 
 
-            self.main_surface.fill((255, 203, 96))
+            if 300 <= mouse[0] <= 500 and 350 <= mouse[1] <= 410 : 
+                pygame.draw.rect(self.main_surface,couleur_bouton1,[300,350,200,60]) 
+                self.ecrire("voir", (310, 360), taille_ecriture=40)
+                pygame.display.flip()
+        
+            else: 
+                pygame.draw.rect(self.main_surface,couleur_bouton2,[300,350,200,60])
+                self.ecrire("voir",(310, 360), taille_ecriture=40)
+                pygame.display.flip() 
+            
+            if 700 <= mouse[0] <= 900 and 350 <= mouse[1] <= 410 : 
+                pygame.draw.rect(self.main_surface,couleur_bouton1,[700,350,200,60]) 
+                self.ecrire("jouer", (710, 360 ), taille_ecriture=40)
+        
+            else: 
+                pygame.draw.rect(self.main_surface,couleur_bouton2,[700,350,200,60])
+                self.ecrire("jouer", (710, 360 ), taille_ecriture=40)
+            
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running1=False
+                    #Permet de garder la fenêtre ouverte jusqu'à ce que l'utilisateur veuille la fermer
+                    #Par défaut l'evennement QUIT correspond à cliquer sur la croix
+        
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                # Set the x, y postions of the mouse click 
+                    x, y = mouse
+                    if 300 <= x <= 500 and 350 <= y <= 410 : 
+                        running1= False
+                        self.pseudo_blanc= "DeepBlue"
+                        self.pseudo_noir= "Kasparov"
 
-            self.pseudo_blanc = self.input("Joueur blanc, quel est ton nom ? (En minuscule s'il te plaît)")
-            self.ecrire(self.pseudo_blanc,(12,12))
+                        self.jouer= False
 
-            self.main_surface.fill((255, 203, 96))
+                    if 700 <= x <= 900 and 350 <= y <= 410 : 
+                        running1 = False
+                        self.main_surface.fill((255, 203, 96))
 
-            self.pseudo_noir = self.input("Joueur noir, quel est ton nom ? (En minuscule s'il te plaît)")
-            self.ecrire(self.pseudo_noir, (12,12))
+                        self.pseudo_blanc = self.input("Joueur blanc, quel est ton nom ? (En minuscule s'il te plaît)")
+                        self.ecrire(self.pseudo_blanc,(12,12))
 
-            running1=False
+                        self.main_surface.fill((255, 203, 96))
+
+                        self.pseudo_noir = self.input("Joueur noir, quel est ton nom ? (En minuscule s'il te plaît)")
+                        self.ecrire(self.pseudo_noir, (12,12))
+
+                        running1=False
 
         self.setup_board()
         self.setup_pieces()
@@ -109,6 +153,8 @@ class general() :
         case=()
         memoire=[]
         fin_de_partie=False
+        Game1=[(1,0),(2,0)]
+        tour=0 #nombre de tour pour la partie de Kasparov
 
 
         while running2:
@@ -165,368 +211,373 @@ class general() :
                 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     # Set the x, y postions of the mouse click 
-                    x, y = mouse
-
+                    if self.jouer:
+                        x, y = mouse
 #si on clique sur l'echiquier
-                    if 340<=x<=self.largeur_echiquier+340 and y<=560: 
-                        i=(x-340)//70 #correspnd à la colonne
-                        j=(560-y)//70 #correspond à la ligne
+                        if 340<=x<=self.largeur_echiquier+340 and y<=560: 
+                            i=(x-340)//70 #correspnd à la colonne
+                            j=(560-y)//70 #correspond à la ligne
 
-                        if (i,j) == case:
-                            case=()
-                            memoire=[]
-
-                        else :
-                            case=(i,j)
-                            memoire+=[case]
-
-                        if len(memoire)==1:
-                            if (i,j) in dpieces.Echiquier:
-                                if self.tour_des_blancs:
-                                    if dpieces.Echiquier[case].couleur=="blanc": #on vérifie que la pièce est bien de la couleur de la personne qui doit jouer
-                                        self.ecrire("Où veux-tu aller?",(10,90) )
-                                    else:
-                                        case=()
-                                        memoire=[]
-                                else:
-                                    if dpieces.Echiquier[case].couleur=="noir":
-                                        self.ecrire("Où veux-tu aller?",(910,90) ) 
-                                    else:
-                                        case=()
-                                        memoire=[]
-
-                            else : #si le joueur a cliqué sur une case vide
+                            if (i,j) == case:
                                 case=()
                                 memoire=[]
 
-                        if len(memoire)==2:
-                            position_depart=memoire[0][0],memoire[0][1]
-                            position_arrivee=case[0],case[1]
-                            piece_a_deplacer=dpieces.Echiquier[position_depart]
+                            else :
+                                case=(i,j)
+                                memoire+=[case]
 
-                            if position_depart in dpieces.Echiquier:
-                                result=pieces.Piece.deplacement(piece_a_deplacer, position_arrivee)
-
-                                if result=="Déplacement impossible": 
+                            if len(memoire)==1:
+                                if (i,j) in dpieces.Echiquier:
                                     if self.tour_des_blancs:
-                                        self.ecrire("Déplacement impossible", (10,110))
-                                        pygame.time.delay(1000)
-                                    else :
-                                        self.ecrire("Déplacement impossible", (910, 110))
-                                        pygame.time.delay(1000)
-                                
+                                        if dpieces.Echiquier[case].couleur=="blanc": #on vérifie que la pièce est bien de la couleur de la personne qui doit jouer
+                                            self.ecrire("Où veux-tu aller?",(10,90) )
+                                        else:
+                                            case=()
+                                            memoire=[]
+                                    else:
+                                        if dpieces.Echiquier[case].couleur=="noir":
+                                            self.ecrire("Où veux-tu aller?",(910,90) ) 
+                                        else:
+                                            case=()
+                                            memoire=[]
+
+                                else : #si le joueur a cliqué sur une case vide
+                                    case=()
+                                    memoire=[]
+                    else:
+                        if tour>len(Game1):
+                            fin_de_partie= True
+                        else:
+                            case=Game1[tour+1]
+                            memoire=Game1[tour:tour+2]
+                            tour+=2
+
+                    if len(memoire)==2:
+                        position_depart=memoire[0][0],memoire[0][1]
+                        position_arrivee=case[0],case[1]
+                        piece_a_deplacer=dpieces.Echiquier[position_depart]
+
+                        if position_depart in dpieces.Echiquier:
+                            result=pieces.Piece.deplacement(piece_a_deplacer, position_arrivee)
+
+                            if result=="Déplacement impossible": 
+                                if self.tour_des_blancs:
+                                    self.ecrire("Déplacement impossible", (10,110))
+                                    pygame.time.delay(1000)
                                 else :
-                                    if self.tour_des_blancs:
-                                        self.tour_des_blancs=False
-                                    else :
-                                        self.tour_des_blancs=True
-                                    
-                                    #promotion
-                                    if piece_a_deplacer.nom[:-1]=="pion": # ici on regarde si un pion a atteint la dernière ligne de l'échiquier d'un côté ou de l'autre
-                                        if piece_a_deplacer.couleur=="blanc" and piece_a_deplacer.y==7:
+                                    self.ecrire("Déplacement impossible", (910, 110))
+                                    pygame.time.delay(1000)
+                            
+                            else :
+                                if self.tour_des_blancs:
+                                    self.tour_des_blancs=False
+                                else :
+                                    self.tour_des_blancs=True
+                                
+                                #promotion
+                                if piece_a_deplacer.nom[:-1]=="pion": # ici on regarde si un pion a atteint la dernière ligne de l'échiquier d'un côté ou de l'autre
+                                    if piece_a_deplacer.couleur=="blanc" and piece_a_deplacer.y==7:
+                                        
+                                        couleur_bouton1 = (100,100,100) 
+                                        couleur_bouton2 = (210,200,80)
+                                        en_attente_de_decision=True
+                                        while en_attente_de_decision:
+                                            self.ecrire("Votre pion se transforme en?", (10, 130))
+
+                                            mouse = pygame.mouse.get_pos()
+
+                                            #différentes options de promotion
+                                            if 10 <= mouse[0] <= 80 and 250 <= mouse[1] <= 310 : 
+                                                pygame.draw.rect(self.main_surface,couleur_bouton1,[10,250,70,60]) 
+                                                self.ecrire("Dame", (22, 272), taille_ecriture=20)
+                                                pygame.display.flip()
+            
+                                            else: 
+                                                pygame.draw.rect(self.main_surface,couleur_bouton2,[10,250,70,60])
+                                                self.ecrire("Dame",(22, 272), taille_ecriture=20)
+                                                pygame.display.flip() 
+            
+                                            if 90 <= mouse[0] <= 160 and 250 <= mouse[1] <= 310 : 
+                                                pygame.draw.rect(self.main_surface,couleur_bouton1,[90,250,70,60]) 
+                                                self.ecrire("fou", (102, 272), taille_ecriture=20)
+            
+                                            else: 
+                                                pygame.draw.rect(self.main_surface,couleur_bouton2,[90,250,70,60])
+                                                self.ecrire("fou", (102, 272), taille_ecriture=20)
                                             
+                                            if 170 <= mouse[0] <= 240 and 250 <= mouse[1] <= 310 : 
+                                                pygame.draw.rect(self.main_surface,couleur_bouton1,[170,250,70,60]) 
+                                                self.ecrire("tour", (182, 272), taille_ecriture=20)
+                                                pygame.display.flip()
+            
+                                            else: 
+                                                pygame.draw.rect(self.main_surface,couleur_bouton2,[170,250,70,60])
+                                                self.ecrire("tour",(182, 272), taille_ecriture=20)
+                                                pygame.display.flip() 
+            
+                                            if 250 <= mouse[0] <= 320 and 250 <= mouse[1] <= 310 : 
+                                                pygame.draw.rect(self.main_surface,couleur_bouton1,[250,250,100,60]) 
+                                                self.ecrire("cavalier", (262, 272), taille_ecriture=20)
+            
+                                            else: 
+                                                pygame.draw.rect(self.main_surface,couleur_bouton2,[250,250,100,60])
+                                                self.ecrire("cavalier", (262, 272), taille_ecriture=20)
+
+                                            for event in pygame.event.get():
+                                                if event.type == pygame.QUIT:
+                                                    en_attente_de_decision = False
+                                                    running2=False
+                                                    #Permet de garder la fenêtre ouverte jusqu'à ce que l'utilisateur veuille la fermer
+                                                    #Par défaut l'evennement QUIT correspond à cliquer sur la croix
+                
+                                                if event.type == pygame.MOUSEBUTTONDOWN:
+                                                    # Set the x, y postions of the mouse click 
+                                                    mouse=pygame.mouse.get_pos()
+
+                                                    if 10 <= mouse[0] <= 80 and 250 <= mouse[1] <= 310: #le joueur choisit une dame
+                                                        dpieces.Echiquier[position_arrivee]=pieces.dame('blanc', position_arrivee[0],position_arrivee[1], 'dameB')
+                                                        piece_a_deplacer=dpieces.Echiquier[position_arrivee]
+                                                        en_attente_de_decision=False
+
+                                                    if 90 <= mouse[0] <= 160 and 250 <= mouse[1] <= 310: #le joueur choisit un fou
+                                                        dpieces.Echiquier[position_arrivee]=pieces.fou('blanc', position_arrivee[0],position_arrivee[1], 'fouB')
+                                                        piece_a_deplacer=dpieces.Echiquier[position_arrivee]
+                                                        en_attente_de_decision=False
+
+                                                    if 170 <= mouse[0] <= 240 and 250 <= mouse[1] <= 310: #le joueur choisit une tour 
+                                                        dpieces.Echiquier[position_arrivee]=pieces.tour('blanc', position_arrivee[0],position_arrivee[1], 'tourB')
+                                                        piece_a_deplacer=dpieces.Echiquier[position_arrivee]
+                                                        en_attente_de_decision=False
+
+                                                    if 250 <= mouse[0] <= 320 and 250 <= mouse[1] <= 310: #le joueur choisit un cavalier
+                                                        dpieces.Echiquier[position_arrivee]=pieces.cavalier('blanc', position_arrivee[0],position_arrivee[1], 'cavalierB')
+                                                        piece_a_deplacer=dpieces.Echiquier[position_arrivee]
+                                                        en_attente_de_decision=False
+                                                    
+                                            
+
+
+                                    else:
+                                        if position_arrivee[1]==0:
+                                            self.ecrire("Votre pion se transforme en ?", (340+self.largeur_echiquier +10, 130))
                                             couleur_bouton1 = (100,100,100) 
                                             couleur_bouton2 = (210,200,80)
+                                            
                                             en_attente_de_decision=True
-                                            while en_attente_de_decision:
-                                                self.ecrire("Votre pion se transforme en?", (10, 130))
 
-                                                mouse = pygame.mouse.get_pos()
-    
+                                            while en_attente_de_decision:
+
+                                                mouse = pygame.mouse.get_pos() 
+
                                                 #différentes options de promotion
-                                                if 10 <= mouse[0] <= 80 and 250 <= mouse[1] <= 310 : 
-                                                    pygame.draw.rect(self.main_surface,couleur_bouton1,[10,250,70,60]) 
-                                                    self.ecrire("Dame", (22, 272), taille_ecriture=20)
+                                                if 340+self.largeur_echiquier + 10 <= mouse[0] <= 340+self.largeur_echiquier + 80 and 250 <= mouse[1] <= 310 : 
+                                                    pygame.draw.rect(self.main_surface,couleur_bouton1,[340+self.largeur_echiquier +10,250,70,60]) 
+                                                    self.ecrire("Dame", (340+self.largeur_echiquier + 22, 272), taille_ecriture=20)
                                                     pygame.display.flip()
-                
+            
                                                 else: 
-                                                    pygame.draw.rect(self.main_surface,couleur_bouton2,[10,250,70,60])
-                                                    self.ecrire("Dame",(22, 272), taille_ecriture=20)
+                                                    pygame.draw.rect(self.main_surface,couleur_bouton2,[340+self.largeur_echiquier +10,250,70,60])
+                                                    self.ecrire("Dame",(340+self.largeur_echiquier +22, 272), taille_ecriture=20)
                                                     pygame.display.flip() 
                 
-                                                if 90 <= mouse[0] <= 160 and 250 <= mouse[1] <= 310 : 
-                                                    pygame.draw.rect(self.main_surface,couleur_bouton1,[90,250,70,60]) 
-                                                    self.ecrire("fou", (102, 272), taille_ecriture=20)
-                
+                                                if 340+self.largeur_echiquier +90 <= mouse[0] <= 340+self.largeur_echiquier +160 and 250 <= mouse[1] <= 310 : 
+                                                    pygame.draw.rect(self.main_surface,couleur_bouton1,[340+self.largeur_echiquier +90,250,70,60]) 
+                                                    self.ecrire("fou", (340+self.largeur_echiquier +102, 272), taille_ecriture=20)
+            
                                                 else: 
-                                                    pygame.draw.rect(self.main_surface,couleur_bouton2,[90,250,70,60])
-                                                    self.ecrire("fou", (102, 272), taille_ecriture=20)
+                                                    pygame.draw.rect(self.main_surface,couleur_bouton2,[340+self.largeur_echiquier +90,250,70,60])
+                                                    self.ecrire("fou", (340+self.largeur_echiquier +102, 272), taille_ecriture=20)
                                                 
-                                                if 170 <= mouse[0] <= 240 and 250 <= mouse[1] <= 310 : 
-                                                    pygame.draw.rect(self.main_surface,couleur_bouton1,[170,250,70,60]) 
-                                                    self.ecrire("tour", (182, 272), taille_ecriture=20)
+                                                if 340+self.largeur_echiquier +170 <= mouse[0] <= 340+self.largeur_echiquier +240 and 250 <= mouse[1] <= 310 : 
+                                                    pygame.draw.rect(self.main_surface,couleur_bouton1,[340+self.largeur_echiquier +170,250,70,60]) 
+                                                    self.ecrire("tour", (340+self.largeur_echiquier +182, 272), taille_ecriture=20)
                                                     pygame.display.flip()
-                
+            
                                                 else: 
-                                                    pygame.draw.rect(self.main_surface,couleur_bouton2,[170,250,70,60])
-                                                    self.ecrire("tour",(182, 272), taille_ecriture=20)
+                                                    pygame.draw.rect(self.main_surface,couleur_bouton2,[340+self.largeur_echiquier +170,250,70,60])
+                                                    self.ecrire("tour",(340+self.largeur_echiquier +182, 272), taille_ecriture=20)
                                                     pygame.display.flip() 
                 
-                                                if 250 <= mouse[0] <= 320 and 250 <= mouse[1] <= 310 : 
-                                                    pygame.draw.rect(self.main_surface,couleur_bouton1,[250,250,100,60]) 
-                                                    self.ecrire("cavalier", (262, 272), taille_ecriture=20)
-                
+                                                if 340+self.largeur_echiquier +250 <= mouse[0] <= 340+self.largeur_echiquier +310 and 250 <= mouse[1] <= 310 : 
+                                                    pygame.draw.rect(self.main_surface,couleur_bouton1,[340+self.largeur_echiquier +250,250,90,60]) 
+                                                    self.ecrire("cavalier", (340+self.largeur_echiquier +262, 272), taille_ecriture=20)
+            
                                                 else: 
-                                                    pygame.draw.rect(self.main_surface,couleur_bouton2,[250,250,100,60])
-                                                    self.ecrire("cavalier", (262, 272), taille_ecriture=20)
+                                                    pygame.draw.rect(self.main_surface,couleur_bouton2,[340+self.largeur_echiquier +250,250,90,60])
+                                                    self.ecrire("cavalier", (340+self.largeur_echiquier +262, 272), taille_ecriture=20)
 
                                                 for event in pygame.event.get():
+
                                                     if event.type == pygame.QUIT:
                                                         en_attente_de_decision = False
                                                         running2=False
-                                                        #Permet de garder la fenêtre ouverte jusqu'à ce que l'utilisateur veuille la fermer
-                                                        #Par défaut l'evennement QUIT correspond à cliquer sur la croix
+                                                        #l'utilisateur peut encore fermer la fenêtre sans problème
                     
                                                     if event.type == pygame.MOUSEBUTTONDOWN:
                                                         # Set the x, y postions of the mouse click 
                                                         mouse=pygame.mouse.get_pos()
 
-                                                        if 10 <= mouse[0] <= 80 and 250 <= mouse[1] <= 310: #le joueur choisit une dame
-                                                            dpieces.Echiquier[position_arrivee]=pieces.dame('blanc', position_arrivee[0],position_arrivee[1], 'dameB')
+                                                        if 340+self.largeur_echiquier +10 <= mouse[0] <= 340+self.largeur_echiquier +80 and 250 <= mouse[1] <= 310: #le joueur choisit une dame
+                                                            dpieces.Echiquier[position_arrivee]=pieces.dame('noir', position_arrivee[0],position_arrivee[1], 'dameN')
                                                             piece_a_deplacer=dpieces.Echiquier[position_arrivee]
                                                             en_attente_de_decision=False
 
-                                                        if 90 <= mouse[0] <= 160 and 250 <= mouse[1] <= 310: #le joueur choisit un fou
-                                                            dpieces.Echiquier[position_arrivee]=pieces.fou('blanc', position_arrivee[0],position_arrivee[1], 'fouB')
+                                                        if 340+self.largeur_echiquier +90 <= mouse[0] <= 340+self.largeur_echiquier +160 and 250 <= mouse[1] <= 310: #le joueur choisit un fou
+                                                            dpieces.Echiquier[position_arrivee]=pieces.fou('noir', position_arrivee[0],position_arrivee[1], 'fouN')
                                                             piece_a_deplacer=dpieces.Echiquier[position_arrivee]
                                                             en_attente_de_decision=False
 
-                                                        if 170 <= mouse[0] <= 240 and 250 <= mouse[1] <= 310: #le joueur choisit une tour 
-                                                            dpieces.Echiquier[position_arrivee]=pieces.tour('blanc', position_arrivee[0],position_arrivee[1], 'tourB')
+                                                        if 340+self.largeur_echiquier +170 <= mouse[0] <= 340+self.largeur_echiquier +240 and 250 <= mouse[1] <= 310: #le joueur choisit une tour 
+                                                            dpieces.Echiquier[position_arrivee]=pieces.tour('noir', position_arrivee[0],position_arrivee[1], 'tourN')
                                                             piece_a_deplacer=dpieces.Echiquier[position_arrivee]
                                                             en_attente_de_decision=False
 
-                                                        if 250 <= mouse[0] <= 320 and 250 <= mouse[1] <= 310: #le joueur choisit un cavalier
-                                                            dpieces.Echiquier[position_arrivee]=pieces.cavalier('blanc', position_arrivee[0],position_arrivee[1], 'cavalierB')
+                                                        if 340+self.largeur_echiquier +250 <= mouse[0] <= 340+self.largeur_echiquier +310 and 250 <= mouse[1] <= 310: #le joueur choisit un cavalier
+                                                            dpieces.Echiquier[position_arrivee]=pieces.cavalier('noir', position_arrivee[0],position_arrivee[1], 'cavalierN')
                                                             piece_a_deplacer=dpieces.Echiquier[position_arrivee]
                                                             en_attente_de_decision=False
-                                                        
-                                                
+                                                            
+                                resultat = piece_a_deplacer.echec_et_mat() #on appelle echec sur la piece qui vient de bouger
+                                                                        
+                                if resultat == "mat": #on est dans un cas d'échec et mat, c'est la fin de la partie
+                                    self.main_surface.fill((131, 166, 151))
+                                    self.ecrire(f"Echec et mat, Les {piece_a_deplacer.couleur}s ont gagné !", (440,250), taille_ecriture=35)
+                                    pygame.time.delay(2000)
+                                    fin_de_partie=True
+                                
+                                if piece_a_deplacer.pat() :
+                                    self.main_surface.fill((131, 166, 151))
+                                    self.ecrire("Pat", (460,250), taille_ecriture=35)
+                                    pygame.time.delay(2000)
+                                    fin_de_partie=True
 
-
-                                        else:
-                                            if position_arrivee[1]==0:
-                                                self.ecrire("Votre pion se transforme en ?", (340+self.largeur_echiquier +10, 130))
-                                                couleur_bouton1 = (100,100,100) 
-                                                couleur_bouton2 = (210,200,80)
-                                                
-                                                en_attente_de_decision=True
-
-                                                while en_attente_de_decision:
-
-                                                    mouse = pygame.mouse.get_pos() 
-
-                                                    #différentes options de promotion
-                                                    if 340+self.largeur_echiquier + 10 <= mouse[0] <= 340+self.largeur_echiquier + 80 and 250 <= mouse[1] <= 310 : 
-                                                        pygame.draw.rect(self.main_surface,couleur_bouton1,[340+self.largeur_echiquier +10,250,70,60]) 
-                                                        self.ecrire("Dame", (340+self.largeur_echiquier + 22, 272), taille_ecriture=20)
-                                                        pygame.display.flip()
-                
-                                                    else: 
-                                                        pygame.draw.rect(self.main_surface,couleur_bouton2,[340+self.largeur_echiquier +10,250,70,60])
-                                                        self.ecrire("Dame",(340+self.largeur_echiquier +22, 272), taille_ecriture=20)
-                                                        pygame.display.flip() 
-                    
-                                                    if 340+self.largeur_echiquier +90 <= mouse[0] <= 340+self.largeur_echiquier +160 and 250 <= mouse[1] <= 310 : 
-                                                        pygame.draw.rect(self.main_surface,couleur_bouton1,[340+self.largeur_echiquier +90,250,70,60]) 
-                                                        self.ecrire("fou", (340+self.largeur_echiquier +102, 272), taille_ecriture=20)
-                
-                                                    else: 
-                                                        pygame.draw.rect(self.main_surface,couleur_bouton2,[340+self.largeur_echiquier +90,250,70,60])
-                                                        self.ecrire("fou", (340+self.largeur_echiquier +102, 272), taille_ecriture=20)
-                                                    
-                                                    if 340+self.largeur_echiquier +170 <= mouse[0] <= 340+self.largeur_echiquier +240 and 250 <= mouse[1] <= 310 : 
-                                                        pygame.draw.rect(self.main_surface,couleur_bouton1,[340+self.largeur_echiquier +170,250,70,60]) 
-                                                        self.ecrire("tour", (340+self.largeur_echiquier +182, 272), taille_ecriture=20)
-                                                        pygame.display.flip()
-                
-                                                    else: 
-                                                        pygame.draw.rect(self.main_surface,couleur_bouton2,[340+self.largeur_echiquier +170,250,70,60])
-                                                        self.ecrire("tour",(340+self.largeur_echiquier +182, 272), taille_ecriture=20)
-                                                        pygame.display.flip() 
-                    
-                                                    if 340+self.largeur_echiquier +250 <= mouse[0] <= 340+self.largeur_echiquier +310 and 250 <= mouse[1] <= 310 : 
-                                                        pygame.draw.rect(self.main_surface,couleur_bouton1,[340+self.largeur_echiquier +250,250,90,60]) 
-                                                        self.ecrire("cavalier", (340+self.largeur_echiquier +262, 272), taille_ecriture=20)
-                
-                                                    else: 
-                                                        pygame.draw.rect(self.main_surface,couleur_bouton2,[340+self.largeur_echiquier +250,250,90,60])
-                                                        self.ecrire("cavalier", (340+self.largeur_echiquier +262, 272), taille_ecriture=20)
-
-                                                    for event in pygame.event.get():
-
-                                                        if event.type == pygame.QUIT:
-                                                            en_attente_de_decision = False
-                                                            running2=False
-                                                            #l'utilisateur peut encore fermer la fenêtre sans problème
+                            case=()
+                            memoire=[]
+                            self.setup_board()
+                            self.setup_pieces()
                         
-                                                        if event.type == pygame.MOUSEBUTTONDOWN:
-                                                            # Set the x, y postions of the mouse click 
-                                                            mouse=pygame.mouse.get_pos()
-
-                                                            if 340+self.largeur_echiquier +10 <= mouse[0] <= 340+self.largeur_echiquier +80 and 250 <= mouse[1] <= 310: #le joueur choisit une dame
-                                                                dpieces.Echiquier[position_arrivee]=pieces.dame('noir', position_arrivee[0],position_arrivee[1], 'dameN')
-                                                                piece_a_deplacer=dpieces.Echiquier[position_arrivee]
-                                                                en_attente_de_decision=False
-
-                                                            if 340+self.largeur_echiquier +90 <= mouse[0] <= 340+self.largeur_echiquier +160 and 250 <= mouse[1] <= 310: #le joueur choisit un fou
-                                                                dpieces.Echiquier[position_arrivee]=pieces.fou('noir', position_arrivee[0],position_arrivee[1], 'fouN')
-                                                                piece_a_deplacer=dpieces.Echiquier[position_arrivee]
-                                                                en_attente_de_decision=False
-
-                                                            if 340+self.largeur_echiquier +170 <= mouse[0] <= 340+self.largeur_echiquier +240 and 250 <= mouse[1] <= 310: #le joueur choisit une tour 
-                                                                dpieces.Echiquier[position_arrivee]=pieces.tour('noir', position_arrivee[0],position_arrivee[1], 'tourN')
-                                                                piece_a_deplacer=dpieces.Echiquier[position_arrivee]
-                                                                en_attente_de_decision=False
-
-                                                            if 340+self.largeur_echiquier +250 <= mouse[0] <= 340+self.largeur_echiquier +310 and 250 <= mouse[1] <= 310: #le joueur choisit un cavalier
-                                                                dpieces.Echiquier[position_arrivee]=pieces.cavalier('noir', position_arrivee[0],position_arrivee[1], 'cavalierN')
-                                                                piece_a_deplacer=dpieces.Echiquier[position_arrivee]
-                                                                en_attente_de_decision=False
-                                                                
-                                                                
-                                    
-                                    resultat = piece_a_deplacer.echec_et_mat() #on appelle echec sur la piece qui vient de bouger
-                                                                           
-                                    if resultat == "mat": #on est dans un cas d'échec et mat, c'est la fin de la partie
-                                        self.main_surface.fill((131, 166, 151))
-                                        self.ecrire(f"Les {piece_a_deplacer.couleur}s ont gagné !", (460,250), taille_ecriture=35)
-                                        pygame.time.delay(2000)
-                                        fin_de_partie=True
-                                    
-                                    if piece_a_deplacer.pat() :
-                                        self.main_surface.fill((131, 166, 151))
-                                        self.ecrire("Pat", (460,250), taille_ecriture=35)
-                                        pygame.time.delay(2000)
-                                        fin_de_partie=True
-
-                                case=()
-                                memoire=[]
-                                self.setup_board()
-                                self.setup_pieces()
-                            
-                            pygame.display.flip()
+                        pygame.display.flip()
 
 #déclarer forfait de l'un ou de l'autre des joueurs
-                    elif 20 <= mouse[0] <= 120 and 450 <= mouse[1] <= 510:
+                elif 20 <= mouse[0] <= 120 and 450 <= mouse[1] <= 510:
 
-                        self.ecrire(f"{self.pseudo_blanc} a déclaré forfait.", (910, 200))
-                        pygame.time.delay(2000) #pause for a given number of milliseconds based on the CPU clock 
+                    self.ecrire(f"{self.pseudo_blanc} a déclaré forfait.", (910, 200))
+                    pygame.time.delay(2000) #pause for a given number of milliseconds based on the CPU clock 
 
-                        self.main_surface.fill((131, 166, 151))
-                        self.ecrire(f"{self.pseudo_noir} a gagné !", (460,250), taille_ecriture=35)
-                        pygame.time.delay(2000)
+                    self.main_surface.fill((131, 166, 151))
+                    self.ecrire(f"{self.pseudo_noir} a gagné !", (460,250), taille_ecriture=35)
+                    pygame.time.delay(2000)
 
-                        fin_de_partie=True
+                    fin_de_partie=True
 
-                    
-                    elif self.largeur_echiquier+360 <= mouse[0] <= self.largeur_echiquier+460 and 450 <= mouse[1] <= 510:
+                
+                elif self.largeur_echiquier+360 <= mouse[0] <= self.largeur_echiquier+460 and 450 <= mouse[1] <= 510:
 
-                        self.ecrire(f"{self.pseudo_noir} a déclaré forfait.", (10, 200))
-                        pygame.time.delay(2000)
+                    self.ecrire(f"{self.pseudo_noir} a déclaré forfait.", (10, 200))
+                    pygame.time.delay(2000)
 
-                        self.main_surface.fill((131, 166, 151))
-                        self.ecrire(f"{self.pseudo_blanc} a gagné !", (460,250), taille_ecriture=35)
-                        pygame.time.delay(2000) 
-                        fin_de_partie=True
-                                                  
-                    pygame.display.flip() 
+                    self.main_surface.fill((131, 166, 151))
+                    self.ecrire(f"{self.pseudo_blanc} a gagné !", (460,250), taille_ecriture=35)
+                    pygame.time.delay(2000) 
+                    fin_de_partie=True
+                                                
+                pygame.display.flip() 
 
 #proposer la nulle en cliquant sur l'un des boutons proposer la nulle
-                    if 140+40 <= mouse[0] <= 260+40 and 450 <= mouse[1] <= 510 : #ie les blancs demandent match nul
-                        self.ecrire(f"{self.pseudo_blanc} propose la nulle.", (910, 300))
-                        self.ecrire("Acceptes-tu?", (910, 330))
-                        pause=True
+                if 140+40 <= mouse[0] <= 260+40 and 450 <= mouse[1] <= 510 : #ie les blancs demandent match nul
+                    self.ecrire(f"{self.pseudo_blanc} propose la nulle.", (910, 300))
+                    self.ecrire("Acceptes-tu?", (910, 330))
+                    pause=True
 
-                        while pause :
-                            mouse=pygame.mouse.get_pos()
+                    while pause :
+                        mouse=pygame.mouse.get_pos()
 
-                            if self.largeur_echiquier+360 <= mouse[0] <= self.largeur_echiquier+460 and 450 <= mouse[1] <= 510 : #bouton change de couleur quand la souris passe dessus
-                                pygame.draw.rect(self.main_surface,couleur_bouton1,[self.largeur_echiquier+360,450,100,60]) 
-                                self.ecrire("Oui", (self.largeur_echiquier+371, 472), taille_ecriture=20)
-          
-                            else: 
-                                pygame.draw.rect(self.main_surface,couleur_bouton2,[self.largeur_echiquier+360,450,100,60])
-                                self.ecrire("Oui", (self.largeur_echiquier+371, 472), taille_ecriture=20)
-    
-                            if self.largeur_echiquier+480+40 <= mouse[0] <= self.largeur_echiquier+600+40 and 450 <= mouse[1] <= 510 : 
-                                pygame.draw.rect(self.main_surface,couleur_bouton1,[self.largeur_echiquier+480+40,450,120,60]) 
-                                self.ecrire("Non", (self.largeur_echiquier+490+40, 472), taille_ecriture=20)
-    
-                            else: 
-                                pygame.draw.rect(self.main_surface,couleur_bouton2,[self.largeur_echiquier+480+40,450,120,60])
-                                self.ecrire("Non", (self.largeur_echiquier+490+40, 472), taille_ecriture=20)
+                        if self.largeur_echiquier+360 <= mouse[0] <= self.largeur_echiquier+460 and 450 <= mouse[1] <= 510 : #bouton change de couleur quand la souris passe dessus
+                            pygame.draw.rect(self.main_surface,couleur_bouton1,[self.largeur_echiquier+360,450,100,60]) 
+                            self.ecrire("Oui", (self.largeur_echiquier+371, 472), taille_ecriture=20)
+        
+                        else: 
+                            pygame.draw.rect(self.main_surface,couleur_bouton2,[self.largeur_echiquier+360,450,100,60])
+                            self.ecrire("Oui", (self.largeur_echiquier+371, 472), taille_ecriture=20)
 
-                            
-                            for event in pygame.event.get():
-                                if event.type == pygame.QUIT:
-                                    pause = False
-                                    running2=False
-                                    #permet à l'utilisateur de fermer la fenêtre à tout moment
-                
-                                if event.type == pygame.MOUSEBUTTONDOWN:
-                                    # Set the x, y postions of the mouse click 
-                                    x, y = mouse
+                        if self.largeur_echiquier+480+40 <= mouse[0] <= self.largeur_echiquier+600+40 and 450 <= mouse[1] <= 510 : 
+                            pygame.draw.rect(self.main_surface,couleur_bouton1,[self.largeur_echiquier+480+40,450,120,60]) 
+                            self.ecrire("Non", (self.largeur_echiquier+490+40, 472), taille_ecriture=20)
 
-                                    if self.largeur_echiquier+360+40 <= x <= self.largeur_echiquier+460+40 and 450 <= y <= 510 :
-                                        pause=False
-                                        self.main_surface.fill((131, 166, 151))
-                                        self.ecrire("Partie nulle", (510,250), taille_ecriture=50)
-                                        pygame.time.delay(2000) 
-                                        fin_de_partie=True
-                                    
-                                    elif self.largeur_echiquier+480+40 <= x <= self.largeur_echiquier+600+40 and 450 <= y <= 510 :
-                                        pause=False
-                                        self.setup_board() 
-                                        self.setup_pieces() 
-                        continue       
-                    
-                    if self.largeur_echiquier+480+40 <= mouse[0] <= self.largeur_echiquier+600+40 and 450 <= mouse[1] <= 510 : #ie les noirs demandent match nul
+                        else: 
+                            pygame.draw.rect(self.main_surface,couleur_bouton2,[self.largeur_echiquier+480+40,450,120,60])
+                            self.ecrire("Non", (self.largeur_echiquier+490+40, 472), taille_ecriture=20)
+
                         
-                        self.ecrire(f"{self.pseudo_noir} propose la nulle.", (10, 300))
-                        self.ecrire("Acceptes-tu?", (10, 330))
-                        pause1=True
+                        for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                pause = False
+                                running2=False
+                                #permet à l'utilisateur de fermer la fenêtre à tout moment
+            
+                            if event.type == pygame.MOUSEBUTTONDOWN:
+                                # Set the x, y postions of the mouse click 
+                                x, y = mouse
 
-                        while pause1 :
-                            mouse = pygame.mouse.get_pos() 
-
-                            if 20 <= mouse[0] <= 120 and 450 <= mouse[1] <= 510 : #bouton change de couleur quand la souris passe dessus
-                                pygame.draw.rect(self.main_surface,couleur_bouton1,[20,450,100,60]) 
-                                self.ecrire("Oui", (31, 472), taille_ecriture=20)
-          
-                            else: 
-                                pygame.draw.rect(self.main_surface,couleur_bouton2,[20,450,100,60])
-                                self.ecrire("Oui", (31, 472), taille_ecriture=20)
-    
-                            if 140+40 <= mouse[0] <= 260+40 and 450 <= mouse[1] <= 510 : 
-                                pygame.draw.rect(self.main_surface,couleur_bouton1,[140+40,450,120,60]) 
-                                self.ecrire("Non", (150+40, 472), taille_ecriture=20)
-    
-                            else: 
-                                pygame.draw.rect(self.main_surface,couleur_bouton2,[140+40,450,120,60])
-                                self.ecrire("Non", (150+40, 472), taille_ecriture=20)
-
-                            for event in pygame.event.get():
-                                if event.type == pygame.QUIT:
-                                    pause1 = False
-                                    running2=False
-                                    #permet à l'utilisateur de fermer la fenêtre à tout moment
+                                if self.largeur_echiquier+360+40 <= x <= self.largeur_echiquier+460+40 and 450 <= y <= 510 :
+                                    pause=False
+                                    self.main_surface.fill((131, 166, 151))
+                                    self.ecrire("Partie nulle", (510,250), taille_ecriture=50)
+                                    pygame.time.delay(2000) 
+                                    fin_de_partie=True
+                                
+                                elif self.largeur_echiquier+480+40 <= x <= self.largeur_echiquier+600+40 and 450 <= y <= 510 :
+                                    pause=False
+                                    self.setup_board() 
+                                    self.setup_pieces() 
+                    continue       
                 
-                                if event.type == pygame.MOUSEBUTTONDOWN:
-                                    # Set the x, y postions of the mouse click 
-                                    x, y = mouse
+                if self.largeur_echiquier+480+40 <= mouse[0] <= self.largeur_echiquier+600+40 and 450 <= mouse[1] <= 510 : #ie les noirs demandent match nul
+                    
+                    self.ecrire(f"{self.pseudo_noir} propose la nulle.", (10, 300))
+                    self.ecrire("Acceptes-tu?", (10, 330))
+                    pause1=True
 
-                                    if 20 <= x <= 120 and 450 <= y <= 510 :
-                                        pause1=False
-                                        self.main_surface.fill((131, 166, 151))
-                                        self.ecrire("Partie nulle", (510,250), taille_ecriture=50)
-                                        pygame.time.delay(2000) 
-                                        fin_de_partie=True
-                                    
-                                    elif 140+40 <= x <= 260+40 and 450 <= y <= 510:
-                                        pause1=False
-                                        self.setup_board() 
-                                        self.setup_pieces()                                      
+                    while pause1 :
+                        mouse = pygame.mouse.get_pos() 
+
+                        if 20 <= mouse[0] <= 120 and 450 <= mouse[1] <= 510 : #bouton change de couleur quand la souris passe dessus
+                            pygame.draw.rect(self.main_surface,couleur_bouton1,[20,450,100,60]) 
+                            self.ecrire("Oui", (31, 472), taille_ecriture=20)
+        
+                        else: 
+                            pygame.draw.rect(self.main_surface,couleur_bouton2,[20,450,100,60])
+                            self.ecrire("Oui", (31, 472), taille_ecriture=20)
+
+                        if 140+40 <= mouse[0] <= 260+40 and 450 <= mouse[1] <= 510 : 
+                            pygame.draw.rect(self.main_surface,couleur_bouton1,[140+40,450,120,60]) 
+                            self.ecrire("Non", (150+40, 472), taille_ecriture=20)
+
+                        else: 
+                            pygame.draw.rect(self.main_surface,couleur_bouton2,[140+40,450,120,60])
+                            self.ecrire("Non", (150+40, 472), taille_ecriture=20)
+
+                        for event in pygame.event.get():
+                            if event.type == pygame.QUIT:
+                                pause1 = False
+                                running2=False
+                                #permet à l'utilisateur de fermer la fenêtre à tout moment
+            
+                            if event.type == pygame.MOUSEBUTTONDOWN:
+                                # Set the x, y postions of the mouse click 
+                                x, y = mouse
+
+                                if 20 <= x <= 120 and 450 <= y <= 510 :
+                                    pause1=False
+                                    self.main_surface.fill((131, 166, 151))
+                                    self.ecrire("Partie nulle", (510,250), taille_ecriture=50)
+                                    pygame.time.delay(2000) 
+                                    fin_de_partie=True
+                                
+                                elif 140+40 <= x <= 260+40 and 450 <= y <= 510:
+                                    pause1=False
+                                    self.setup_board() 
+                                    self.setup_pieces()                                      
 
 #la partie qui suit code la fin de partie, laissant aux joueurs le choix de rejouer ou de quitter                
                 if fin_de_partie==True:
