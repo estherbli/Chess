@@ -82,7 +82,7 @@ class Piece:
           dpieces.Echiquier.pop((x,y)) #enlève la piece déplacée
           if piece_prise != None :
             #remettre la piece prise
-            dpieces.Echiquier[(piece_prise.x, piece_prise.y)] = pieces_prise
+            dpieces.Echiquier[(piece_prise.x, piece_prise.y)] = piece_prise
           return 'Déplacement impossible'
 
       if (('roi' in self.nom) or ('pion' in self.nom) or ('tour' in self.nom)):
@@ -185,10 +185,10 @@ class Piece:
           if dpieces.Echiquier[(xn,yn)].couleur=="blanc" and dpieces.Echiquier[(xn,yn)].dlegal(dpieces.roiN.x,dpieces.roiN.y):
             return True   #ds dpossible : si cloué=True => dpossible=False
         return False
-
+        
   def echectest(self, x=None, y=None): #a appeler pour vérifier si echec sur roi de la même couleur sans changer propriété ni vérifier mat #renvoie True
     if 'roi' in self.nom : (roix, roiy) = (x,y) #pour pouvoir vérifier sur des coordonnées que le roi ne se met pas en échec lui-même
-    elif self.couleur == 'noir' : (roix, roiy) = (dpieces.roiN.x, dpieces.roiN.y)
+    elif self.couleur == 'noir': (roix, roiy) = (dpieces.roiN.x, dpieces.roiN.y)
     else : (roix, roiy) = (dpieces.roiB.x, dpieces.roiB.y)
     for i in dpieces.Echiquier:
       if self.couleur=="blanc" and dpieces.Echiquier[i].couleur=="noir":
@@ -515,7 +515,11 @@ class cavalier(Piece):
     else : return False
   
   def dlegal(self,x,y):
-    if self.dpossible(x,y):
+    dLavant = ((y == self.y + 2)  and ((x == self.x + 1) or (x == self.x - 1)))
+    dLarriere = ((y == self.y - 2) and ((x == self.x + 1) or (x == self.x - 1)))
+    dLdroite = ((x == self.x + 2) and ((y == self.y + 1) or (y == self.y - 1)))
+    dLgauche = ((x == self.x - 2) and ((y == self.y + 1) or (y == self.y - 1)))
+    if dLavant or dLarriere or dLdroite or dLgauche :
       return True
     else: return False
 
