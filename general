@@ -17,7 +17,7 @@ class general() :
         pygame.display.set_caption('Echecs') #titre de la fenêtre
 
         self.main_surface.fill((255, 203, 96))
-        self.ecrire("Jouons !", (510,230), taille_ecriture=60)
+        self.ecrire("Bienvenue", (490,230), taille_ecriture=60)
         pygame.time.delay(1000)
 
         self.jouer = True #variable permet de savoir si l'utilisateur veut voir la partie entre deep blue et kasparov ou jouer
@@ -26,19 +26,19 @@ class general() :
 #page de démarrage
         running1=True
         while running1:
-            self.ecrire("Que voulez-vous faire ?", (430,150), taille_ecriture=60)
+            self.ecrire("Que voulez-vous faire ?", (390,170), taille_ecriture=60)
             couleur_bouton1 = (100,100,100) 
             couleur_bouton2 = (210,200,80)
             mouse = pygame.mouse.get_pos() 
 
             if 300 <= mouse[0] <= 500 and 350 <= mouse[1] <= 410 : 
                 pygame.draw.rect(self.main_surface,couleur_bouton1,[300,350,200,60]) 
-                self.ecrire("voir", (310, 360), taille_ecriture=40)
+                self.ecrire("observer", (310, 360), taille_ecriture=40)
                 pygame.display.flip()
         
             else: 
                 pygame.draw.rect(self.main_surface,couleur_bouton2,[300,350,200,60])
-                self.ecrire("voir",(310, 360), taille_ecriture=40)
+                self.ecrire("observer",(310, 360), taille_ecriture=40)
                 pygame.display.flip() 
             
             if 700 <= mouse[0] <= 900 and 350 <= mouse[1] <= 410 : 
@@ -153,7 +153,9 @@ class general() :
         case=()
         memoire=[]
         fin_de_partie=False
-        Game1=[(1,0),(2,0)]
+        Game1=[(4,1),(4,3),
+        (),()
+        (),()]
         tour=0 #nombre de tour pour la partie de Kasparov
 
 
