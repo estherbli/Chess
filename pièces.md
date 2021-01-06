@@ -87,8 +87,8 @@ class Piece:
             dpieces.Echiquier[(piece_prise.x, piece_prise.y)] = piece_prise
           return 'Déplacement impossible'
         else : #on n'est plus en echec et on peut se déplacer
-          if self.couleur == 'blanc': dpieces.roiB.echec == False
-          if self.couleur == 'noir': dpieces.roiN.echec == False 
+          if self.couleur == 'blanc': dpieces.roiB.echec = False
+          if self.couleur == 'noir': dpieces.roiN.echec = False 
 
       if (('roi' in self.nom) or ('pion' in self.nom) or ('tour' in self.nom)):
         self.joué = True
@@ -235,7 +235,6 @@ class Piece:
     return echec
   
   def mat(self, L, cavalier):    #appel sur la même pièce que echec
-    breakpoint()
     mat=True          #part du principe que c'est vrai : plus facile à manipuler
     if len(L)>1 or cavalier:  #seul le roi peut se sauver #le cavalier peut être autre que la première pièce
       if dpieces.Echiquier[L[0]].couleur=="blanc":
@@ -254,6 +253,7 @@ class Piece:
               if self.echectest(x,y) == False:
                 mat=False
                 return mat
+      return mat
     else:   #transformer en fct° "parcours" pr réutiliser ds fct° "cloué" ?
       P=[L[0]]   #trajectoire entre pièce qui met en échec et le roi
       if dpieces.Echiquier[L[0]].couleur=="blanc":  #roi noir en échec
@@ -286,6 +286,7 @@ class Piece:
               if dpieces.Echiquier[i].dpossible(j[0],j[1]):
                 mat=False
                 return mat   #sort dès qu'on trouve une pièce pour bloquer
+        return mat
       if dpieces.Echiquier[L[0]].couleur=="noir":   #roi blanc en échec
         if dpieces.Echiquier[L[0]].x==dpieces.roiB.x or dpieces.Echiquier[L[0]].y==dpieces.roiB.y:   #cas de la tour et de la dame (ligne droite)
           if dpieces.Echiquier[L[0]].x<dpieces.roiB.x:
@@ -316,7 +317,7 @@ class Piece:
               if dpieces.Echiquier[i].dpossible(j[0],j[1]):
                 mat=False
                 return mat   #sort dès qu'on trouve une pièce pour bloquer
-    return mat
+        return mat
 
   def pat(self): #vérifie que la couleur adverse peut encore
     for piece in dpieces.Echiquier:
@@ -426,7 +427,7 @@ class dame(Piece):
         if x<self.x: pasx =-1 #parcours de gauche à droite
         if y<self.y: pasy =-1 #parcours de haut en bas
         xn = self.x + pasx #on part de la position initiale + 1 case
-        yn = self.y + pasy 
+        yn = self.y + pasy
         while xn!=x and yn!=y:
           if (xn,yn) in dpieces.Echiquier:
             return False
@@ -450,12 +451,13 @@ class roi(Piece):
 
   #sans prendre en compte l'échec
   def dpossible(self, x,y):
-    if self.echectest(x,y) == False and self.presderoioupion(x,y)==False: #echectest prend en compte toutes les situations qui aurait pu se faire sans déplacer le roi
+    if self.presderoioupion(x,y)==False: #echectest prend en compte toutes les situations qui aurait pu se faire sans déplacer le roi
       davant_arriere1case = ( x == self.x and ((y == self.y + 1) or (y == self.y-1)))
       ddiagonale1case = (x == self.x + 1 or x == self.x - 1) and ((y == self.y + 1) or (y == self.y - 1))
       dcoté1case = (( y == self.y and ((x == self.x + 1) or (x == self.x-1)) ))
       if davant_arriere1case or dcoté1case or ddiagonale1case or self.roque(x,y):
-        return True
+        if self.echectest(x,y) == False :
+          return True
     else : return False
   
   def presderoioupion(self,x,y): #vérifie que le roi ne peut pas se mettre en echec en se rapprochant de l'autre roi
@@ -505,7 +507,7 @@ class roi(Piece):
           return True
       else : return False
 
-  def echectest(self, x=None, y=None): #a appeler pour vérifier si echec sur roi de la même couleur sans changer propriété ni vérifier mat #renvoie True
+  def echectest(self, x, y): #a appeler pour vérifier si echec sur roi de la même couleur sans changer propriété ni vérifier mat #renvoie True
     (roix, roiy) = (x,y) #pour pouvoir vérifier sur des nouvelles coordonnées que le roi ne se met pas en échec lui-même
     for i in dpieces.Echiquier:
       if self.couleur=="blanc" and dpieces.Echiquier[i].couleur=="noir":
