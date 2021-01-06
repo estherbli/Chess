@@ -102,6 +102,7 @@ class Piece:
           dpieces.Echiquier[(i,yep)].eppossible = False
     else : return 'Déplacement impossible'
     
+    
   def dpossible(self,x,y):
     #vérifie que le déplacement est un bon déplacement pour le type de pièce
     # à rajouter vérification de pas mise en échec de son propre roi (fait avec cloué)
@@ -111,6 +112,7 @@ class Piece:
   def dlegal(self, x,y):
     #deplacement autorisé pour ce type de pièce
     return True or False
+
 
   def cloue(self):
     if self.couleur=="blanc": #couleur de la pièce sur laquelle on applique
@@ -193,6 +195,21 @@ class Piece:
           else: return False
     return False
 
+
+  def echectest(self): #a appeler pour vérifier si echec sur roi de la même couleur sans changer propriété ni vérifier mat #renvoie True
+    if self.couleur == 'noir': (roix, roiy) = (dpieces.roiN.x, dpieces.roiN.y)
+    else : (roix, roiy) = (dpieces.roiB.x, dpieces.roiB.y)
+    for i in dpieces.Echiquier:
+      if self.couleur=="blanc" and dpieces.Echiquier[i].couleur=="noir":
+        if not('roi' in dpieces.Echiquier[i].nom) and dpieces.Echiquier[i].dpossible(roix,roiy):   #vérifie si la pièce adverse atteint le roi
+          echec=True
+          return echec
+      if self.couleur=="noir" and dpieces.Echiquier[i].couleur=="blanc":
+        if not('roi' in dpieces.Echiquier[i].nom) and dpieces.Echiquier[i].dpossible(roix,roiy):
+          echec=True
+          return echec
+    return False
+  
   
   def echec_et_mat(self): #à appeler sur une pièce qqconque (qui vient d'être déplacée) #renvoie True ou 'mat'
     echec=False
