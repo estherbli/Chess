@@ -558,7 +558,7 @@ class pion(Piece):
       if self.couleur == 'blanc':
         pas = 1
       else : pas = -1 #noir
-      if not(self.joué) and (x == self.x and y == self.y +2*pas) and not((self.x, self.y +pas) in dpieces.Echiquier): #avance de 2 cases
+      if not(self.joué) and (x == self.x and y == self.y +2*pas) and not((self.x, self.y +2*pas) in dpieces.Echiquier): #avance de 2 cases
         self.eppossible = True
         return True
       elif (x == self.x and y == self.y +pas) and not((self.x, self.y +pas) in dpieces.Echiquier): #avance d'une case
