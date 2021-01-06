@@ -60,11 +60,11 @@ class Piece:
       else : #cas de la prise en passant
         if 'pion' in self.nom:
           if self.pepg == True:
-            piece_prise = dpieces.Echiquier((self.x-1,self.y))
+            piece_prise = dpieces.Echiquier[(self.x-1,self.y)]
             dpieces.Echiquier.pop((self.x-1,self.y)) #prend la pièce en passant à gauche
             self.pepg = False
           if self.pepd == True:
-            piece_prise = dpieces.Echiquier((self.x+1,self.y))
+            piece_prise = dpieces.Echiquier[(self.x+1,self.y)]
             dpieces.Echiquier.pop((self.x+1,self.y)) #prend la pièce en passant à droite
             self.pepd = False
       #bouger la pièce 
@@ -74,7 +74,8 @@ class Piece:
       dpieces.Echiquier[(x,y)] = self #on bouge la pièce en la rajoutant dans le dictionnaire avec comme clé sa nouvelle position
       dpieces.Echiquier.pop(ancienxy) #on supprime l'ancienne clé (position) de la pièce
 
-      if self.couleur == 'blanc' and dpieces.roiB.echec == True or (self.couleur == 'noir' and dpieces.roiN.echec == True): #si on était déjà en échec on doit ne plus être en échec
+      if (self.couleur == 'blanc' and dpieces.roiB.echec == True) or (self.couleur == 'noir' and dpieces.roiN.echec == True): #si on était déjà en échec on doit ne plus être en échec
+        breakpoint()
         if 'roi' in self.nom : echec = self.echectest(x,y)
         else : echec = self.echectest()
         if echec:
@@ -86,6 +87,9 @@ class Piece:
             #remettre la piece prise
             dpieces.Echiquier[(piece_prise.x, piece_prise.y)] = piece_prise
           return 'Déplacement impossible'
+        else : #on n'est plus en echec et on peut se déplacer
+          if self.couleur == 'blanc': roiB.echec == False
+          if self.couelur == 'noir': roiN.echec == False 
 
       if (('roi' in self.nom) or ('pion' in self.nom) or ('tour' in self.nom)):
         self.joué = True
@@ -187,20 +191,6 @@ class Piece:
           if dpieces.Echiquier[(xn,yn)].couleur=="blanc" and dpieces.Echiquier[(xn,yn)].dlegal(dpieces.roiN.x,dpieces.roiN.y):
             return True   #ds dpossible : si cloué=True => dpossible=False
           else: return False
-    return False
-        
-  def echectest(self): #a appeler pour vérifier si echec sur roi de la même couleur sans changer propriété ni vérifier mat #renvoie True
-    if self.couleur == 'noir': (roix, roiy) = (dpieces.roiN.x, dpieces.roiN.y)
-    else : (roix, roiy) = (dpieces.roiB.x, dpieces.roiB.y)
-    for i in dpieces.Echiquier:
-      if self.couleur=="blanc" and dpieces.Echiquier[i].couleur=="noir":
-        if not('roi' in dpieces.Echiquier[i].nom) and dpieces.Echiquier[i].dpossible(roix,roiy):   #vérifie si la pièce adverse atteint le roi
-          echec=True
-          return echec
-      if self.couleur=="noir" and dpieces.Echiquier[i].couleur=="blanc":
-        if not('roi' in dpieces.Echiquier[i].nom) and dpieces.Echiquier[i].dpossible(roix,roiy):
-          echec=True
-          return echec
     return False
 
   
