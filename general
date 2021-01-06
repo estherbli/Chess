@@ -6,14 +6,14 @@ import pieces
 class general() :
     def __init__(self):
 
-        self.largeur_echiquier=560 #multiple de 8, mis ici pour pouvoir le changer facilement à loisir
+        self.largeur_echiquier=560 #multiple de 8 
         
         self.echiquier=pygame.image.load(f'{pieces.path_milo}\\echiquierabc2.png') #on charge l'echiquier ici pour n'avoir à le faire qu'une seule fois (opération plutôt lourde)
         self.echiquier=pygame.transform.scale(self.echiquier, (self.largeur_echiquier,self.largeur_echiquier)) #on redimensionne l'image
 
         self.tour_des_blancs=True
         
-        self.main_surface=pygame.display.set_mode((1240,self.largeur_echiquier)) # 900 -> largeur de la fenêtre
+        self.main_surface=pygame.display.set_mode((1240,self.largeur_echiquier)) # 1240 -> largeur de la fenêtre
         pygame.display.set_caption('Echecs') #titre de la fenêtre
 
 #page de démarrage
@@ -41,7 +41,7 @@ class general() :
     
     def input(self, message):
         word=""
-        self.ecrire(message,(24,12)) #example asking name
+        self.ecrire(message,(24,12)) #
         pygame.display.flip()
         done = True
         while done:
@@ -137,23 +137,23 @@ class general() :
                 self.ecrire("Abandonner", (self.largeur_echiquier+371, 472), taille_ecriture=20)
 
             #boutons la nulle
-            if 140 <= mouse[0] <= 260 and 450 <= mouse[1] <= 510 : 
-                pygame.draw.rect(self.main_surface,couleur_bouton1,[140,450,120,60]) 
-                self.ecrire("Proposer la nulle", (152, 472), taille_ecriture=20)
+            if 140+40 <= mouse[0] <= 260+40 and 450 <= mouse[1] <= 510 : 
+                pygame.draw.rect(self.main_surface,couleur_bouton1,[140+40,450,120,60]) 
+                self.ecrire("Proposer la nulle", (152+40, 472), taille_ecriture=20)
                 pygame.display.flip()
           
             else: 
-                pygame.draw.rect(self.main_surface,couleur_bouton2,[140,450,120,60])
-                self.ecrire("Proposer la nulle",(152, 472), taille_ecriture=20)
+                pygame.draw.rect(self.main_surface,couleur_bouton2,[140+40,450,120,60])
+                self.ecrire("Proposer la nulle",(152+40, 472), taille_ecriture=20)
                 pygame.display.flip() 
             
-            if self.largeur_echiquier+480 <= mouse[0] <= self.largeur_echiquier+600 and 450 <= mouse[1] <= 510 : 
-                pygame.draw.rect(self.main_surface,couleur_bouton1,[self.largeur_echiquier+480,450,120,60]) 
-                self.ecrire("Proposer la nulle", (self.largeur_echiquier+490, 472), taille_ecriture=20)
+            if self.largeur_echiquier+480+40 <= mouse[0] <= self.largeur_echiquier+600+40 and 450 <= mouse[1] <= 510 : 
+                pygame.draw.rect(self.main_surface,couleur_bouton1,[self.largeur_echiquier+480+40,450,120,60]) 
+                self.ecrire("Proposer la nulle", (self.largeur_echiquier+490+40, 472), taille_ecriture=20)
           
             else: 
-                pygame.draw.rect(self.main_surface,couleur_bouton2,[self.largeur_echiquier+480,450,120,60])
-                self.ecrire("Proposer la nulle", (self.largeur_echiquier+490, 472), taille_ecriture=20)
+                pygame.draw.rect(self.main_surface,couleur_bouton2,[self.largeur_echiquier+480+40,450,120,60])
+                self.ecrire("Proposer la nulle", (self.largeur_echiquier+490+40, 472), taille_ecriture=20)
 
             
 
@@ -433,7 +433,7 @@ class general() :
                     pygame.display.flip() 
 
 #proposer la nulle en cliquant sur l'un des boutons proposer la nulle
-                    if 140 <= mouse[0] <= 260 and 450 <= mouse[1] <= 510 : #ie les blancs demandent match nul
+                    if 140+40 <= mouse[0] <= 260+40 and 450 <= mouse[1] <= 510 : #ie les blancs demandent match nul
                         self.ecrire(f"{self.pseudo_blanc} propose la nulle.", (910, 300))
                         self.ecrire("Acceptes-tu?", (910, 330))
                         pause=True
@@ -449,13 +449,13 @@ class general() :
                                 pygame.draw.rect(self.main_surface,couleur_bouton2,[self.largeur_echiquier+360,450,100,60])
                                 self.ecrire("Oui", (self.largeur_echiquier+371, 472), taille_ecriture=20)
     
-                            if self.largeur_echiquier+480 <= mouse[0] <= self.largeur_echiquier+600 and 450 <= mouse[1] <= 510 : 
-                                pygame.draw.rect(self.main_surface,couleur_bouton1,[self.largeur_echiquier+480,450,120,60]) 
-                                self.ecrire("Non", (self.largeur_echiquier+490, 472), taille_ecriture=20)
+                            if self.largeur_echiquier+480+40 <= mouse[0] <= self.largeur_echiquier+600+40 and 450 <= mouse[1] <= 510 : 
+                                pygame.draw.rect(self.main_surface,couleur_bouton1,[self.largeur_echiquier+480+40,450,120,60]) 
+                                self.ecrire("Non", (self.largeur_echiquier+490+40, 472), taille_ecriture=20)
     
                             else: 
-                                pygame.draw.rect(self.main_surface,couleur_bouton2,[self.largeur_echiquier+480,450,120,60])
-                                self.ecrire("Non", (self.largeur_echiquier+490, 472), taille_ecriture=20)
+                                pygame.draw.rect(self.main_surface,couleur_bouton2,[self.largeur_echiquier+480+40,450,120,60])
+                                self.ecrire("Non", (self.largeur_echiquier+490+40, 472), taille_ecriture=20)
 
                             
                             for event in pygame.event.get():
@@ -468,20 +468,20 @@ class general() :
                                     # Set the x, y postions of the mouse click 
                                     x, y = mouse
 
-                                    if self.largeur_echiquier+360 <= x <= self.largeur_echiquier+460 and 450 <= y <= 510 :
+                                    if self.largeur_echiquier+360+40 <= x <= self.largeur_echiquier+460+40 and 450 <= y <= 510 :
                                         pause=False
                                         self.main_surface.fill((131, 166, 151))
                                         self.ecrire("Partie nulle", (510,250), taille_ecriture=50)
                                         pygame.time.delay(2000) 
                                         fin_de_partie=True
                                     
-                                    elif self.largeur_echiquier+480 <= x <= self.largeur_echiquier+600 and 450 <= y <= 510 :
+                                    elif self.largeur_echiquier+480+40 <= x <= self.largeur_echiquier+600+40 and 450 <= y <= 510 :
                                         pause=False
                                         self.setup_board() 
                                         self.setup_pieces() 
                         continue       
                     
-                    if self.largeur_echiquier+480 <= mouse[0] <= self.largeur_echiquier+600 and 450 <= mouse[1] <= 510 : #ie les noirs demandent match nul
+                    if self.largeur_echiquier+480+40 <= mouse[0] <= self.largeur_echiquier+600+40 and 450 <= mouse[1] <= 510 : #ie les noirs demandent match nul
                         
                         self.ecrire(f"{self.pseudo_noir} propose la nulle.", (10, 300))
                         self.ecrire("Acceptes-tu?", (10, 330))
@@ -498,13 +498,13 @@ class general() :
                                 pygame.draw.rect(self.main_surface,couleur_bouton2,[20,450,100,60])
                                 self.ecrire("Oui", (31, 472), taille_ecriture=20)
     
-                            if 140 <= mouse[0] <= 260 and 450 <= mouse[1] <= 510 : 
-                                pygame.draw.rect(self.main_surface,couleur_bouton1,[140,450,120,60]) 
-                                self.ecrire("Non", (150, 472), taille_ecriture=20)
+                            if 140+40 <= mouse[0] <= 260+40 and 450 <= mouse[1] <= 510 : 
+                                pygame.draw.rect(self.main_surface,couleur_bouton1,[140+40,450,120,60]) 
+                                self.ecrire("Non", (150+40, 472), taille_ecriture=20)
     
                             else: 
-                                pygame.draw.rect(self.main_surface,couleur_bouton2,[140,450,120,60])
-                                self.ecrire("Non", (150, 472), taille_ecriture=20)
+                                pygame.draw.rect(self.main_surface,couleur_bouton2,[140+40,450,120,60])
+                                self.ecrire("Non", (150+40, 472), taille_ecriture=20)
 
                             for event in pygame.event.get():
                                 if event.type == pygame.QUIT:
@@ -523,7 +523,7 @@ class general() :
                                         pygame.time.delay(2000) 
                                         fin_de_partie=True
                                     
-                                    elif 140 <= x <= 260 and 450 <= y <= 510:
+                                    elif 140+40 <= x <= 260+40 and 450 <= y <= 510:
                                         pause1=False
                                         self.setup_board() 
                                         self.setup_pieces()                                      
