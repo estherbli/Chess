@@ -154,8 +154,7 @@ class general() :
         memoire=[]
         fin_de_partie=False
         Game1=[(4,1),(4,3),
-        (),()
-        (),()]
+        (2,6),(2,4)]
         tour=0 #nombre de tour pour la partie de Kasparov
 
 
@@ -246,8 +245,11 @@ class general() :
                                 else : #si le joueur a cliqué sur une case vide
                                     case=()
                                     memoire=[]
-                    else:
-                        if tour>len(Game1):
+                    else: #cas où on observe la partie entre Kasparov et Deep Blue
+                        if tour>len(Game1)-1: #Il reste des coups à jouer
+                            self.main_surface.fill((131, 166, 151))
+                            self.ecrire("Ici, Kasparov a abandonné", (460,250), taille_ecriture=35)
+                            pygame.time.delay(2000)
                             fin_de_partie= True
                         else:
                             case=Game1[tour+1]
