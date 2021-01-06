@@ -109,6 +109,7 @@ class Piece:
   
   def dlegal(self, x,y):
     #deplacement autorisé pour ce type de pièce
+    #ne sert que dans cloue
     return True or False
 
   def cloue(self):
@@ -192,6 +193,7 @@ class Piece:
           else: return False
     return False
 
+
   def echectest(self): #a appeler pour vérifier si echec sur roi de la même couleur sans changer propriété ni vérifier mat #renvoie True
     if self.couleur == 'noir': (roix, roiy) = (dpieces.roiN.x, dpieces.roiN.y)
     else : (roix, roiy) = (dpieces.roiB.x, dpieces.roiB.y)
@@ -205,26 +207,28 @@ class Piece:
           echec=True
           return echec
     return False
+
+
   def echec_et_mat(self): #à appeler sur une pièce qqconque (qui vient d'être déplacée) #renvoie True ou 'mat'
-    breakpoint()
     echec=False
     cavalier = False
     L=[] #garde la position des pièces qui mettent en échec (utile pour mat)
     for i in dpieces.Echiquier:
-      if self.couleur=="blanc" and dpieces.Echiquier[i].couleur=="blanc":
-        if dpieces.Echiquier[i].dpossible(dpieces.roiN.x,dpieces.roiN.y):   #vérifie si la pièce adverse atteint le roi
-          echec=True
-          dpieces.roiN.echec = True
-          L+=[i]
-          if 'cavalier' in dpieces.Echiquier[i].nom :
-            cavalier = True
-      if self.couleur=="noir" and dpieces.Echiquier[i].couleur=="noir":
-        if dpieces.Echiquier[i].dpossible(dpieces.roiB.x,dpieces.roiB.y):
-          echec=True
-          dpieces.roiB.echec = True
-          L+=[i]
-          if 'cavalier' in dpieces.Echiquier[i].nom :
-            cavalier = True
+      if not('roi' in dpieces.Echiquier[i].nom):
+        if self.couleur=="blanc" and dpieces.Echiquier[i].couleur=="blanc":
+          if dpieces.Echiquier[i].dpossible(dpieces.roiN.x,dpieces.roiN.y):   #vérifie si la pièce adverse atteint le roi
+            echec=True
+            dpieces.roiN.echec = True
+            L+=[i]
+            if 'cavalier' in dpieces.Echiquier[i].nom :
+              cavalier = True
+        if self.couleur=="noir" and dpieces.Echiquier[i].couleur=="noir":
+          if dpieces.Echiquier[i].dpossible(dpieces.roiB.x,dpieces.roiB.y):
+            echec=True
+            dpieces.roiB.echec = True
+            L+=[i]
+            if 'cavalier' in dpieces.Echiquier[i].nom :
+              cavalier = True
     if echec:
       if self.mat(L,cavalier):
         return 'mat'
@@ -245,7 +249,7 @@ class Piece:
         (a,b)=(dpieces.roiB.x,dpieces.roiB.y)
         for x in [dpieces.roiB.x, dpieces.roiB.x+1, dpieces.roiB.x-1]:
           for y in [dpieces.roiB.y, dpieces.roiB.y-1, dpieces.roiB.y+1]:
-            if (x,y) != (a,b) and dpieces.roiB.possible(x,y):
+            if (x,y) != (a,b) and dpieces.roiB.dpossible(x,y):
               if self.echectest(x,y) == False:
                 mat=False
                 return mat
@@ -319,7 +323,7 @@ class Piece:
         if 'cavalier' in dpieces.Echiquier[piece].nom :
           #teste position
           for (x,y) in [(piece[0]+1, piece[1]+2), (piece[0]-1, piece[1]+2), (piece[0]+1, piece[1]-2), (piece[0]-1, piece[1]-2), (piece[0]+2, piece[1]-1), (piece[0]+2, piece[1]-1), (piece[0]-2, piece[1]-1), (piece[0]-2, piece[1]+1)]:
-            if dpieces.Echiquier[piece].dlegal(x,y):
+            if dpieces.Echiquier[piece].dpossible(x,y):
               return False
         else : 
           #teste des positions
@@ -327,7 +331,7 @@ class Piece:
           for x in [self.x, self.x+1, self.x-1]:
             for y in [self.y, self.y-1, self.y+1]:
               if (self.x,self.y) != (a,b):
-                if dpieces.Echiquier[piece].dlegal(x,y):
+                if dpieces.Echiquier[piece].dpossible(x,y):
                   return False
     return True
 
@@ -460,9 +464,6 @@ class roi(Piece):
     return False
 
 
-  def dlegal(self, x,y):
-    if self.dpossible(x,y) or self.roque(x,y): #roque on regarde s'il y a des pièces entre donc pas le mieux
-      return True
   
   def roque(self, x, y):
     #truc spécifique au roque
