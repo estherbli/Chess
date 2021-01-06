@@ -87,8 +87,8 @@ class Piece:
             dpieces.Echiquier[(piece_prise.x, piece_prise.y)] = piece_prise
           return 'Déplacement impossible'
         else : #on n'est plus en echec et on peut se déplacer
-          if self.couleur == 'blanc': roiB.echec == False
-          if self.couleur == 'noir': roiN.echec == False 
+          if self.couleur == 'blanc': dpieces.roiB.echec == False
+          if self.couleur == 'noir': dpieces.roiN.echec == False 
 
       if (('roi' in self.nom) or ('pion' in self.nom) or ('tour' in self.nom)):
         self.joué = True
@@ -235,6 +235,7 @@ class Piece:
     return echec
   
   def mat(self, L, cavalier):    #appel sur la même pièce que echec
+    breakpoint()
     mat=True          #part du principe que c'est vrai : plus facile à manipuler
     if len(L)>1 or cavalier:  #seul le roi peut se sauver #le cavalier peut être autre que la première pièce
       if dpieces.Echiquier[L[0]].couleur=="blanc":
