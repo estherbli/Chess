@@ -236,7 +236,8 @@ class general() :
         (6,4),(5,2),
         (4,0),(7,0),
         (7,1),(6,1),
-        (5,4),(4,3),]
+        (5,4),(4,3),
+        (7,6),(7,3),]
         tour=0 #nombre de tour pour la partie de Kasparov
 
 
