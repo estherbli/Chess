@@ -69,12 +69,12 @@ class general() :
                         running1 = False
                         self.main_surface.fill((255, 203, 96))
 
-                        self.pseudo_blanc = self.input("Joueur blanc, quel est ton nom ? (En minuscule s'il te plaît)")
+                        self.pseudo_blanc = self.input("Joueur blanc, quel est ton nom ?")
                         self.ecrire(self.pseudo_blanc,(12,12))
 
                         self.main_surface.fill((255, 203, 96))
 
-                        self.pseudo_noir = self.input("Joueur noir, quel est ton nom ? (En minuscule s'il te plaît)")
+                        self.pseudo_noir = self.input("Joueur noir, quel est ton nom ?")
                         self.ecrire(self.pseudo_noir, (12,12))
 
                         running1=False
