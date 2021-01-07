@@ -102,8 +102,13 @@ class general() :
                         self.ecrire(word, (25,30))
                     else :
                         if len(word)<8:
-                            word+=str(chr(event.key))
-                            self.ecrire(word, (25,30))
+                            try:
+                                word+=str(chr(event.key))
+                                self.ecrire(word, (25,30))
+                            
+                            except ValueError:
+                                pass
+
         return word
     
     def setup_board(self):
