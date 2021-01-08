@@ -512,19 +512,12 @@ class roi(Piece):
     return False
   
   def peut_bouger(self):
-    if dpieces.Echiquier[L[0]].couleur=="blanc":
-      (a,b)=(dpieces.roiN.x,dpieces.roiN.y)
-      for x in [dpieces.roiN.x, dpieces.roiN.x+1, dpieces.roiN.x-1]:
-        for y in [dpieces.roiN.y, dpieces.roiN.y-1, dpieces.roiN.y+1]:
-          if (x,y) != (a,b) and dpieces.roiN.dpossible(x,y):
-            return True
-    elif self.couleur=="noir":
-      (a,b)=(dpieces.roiB.x,dpieces.roiB.y)
-      for x in [dpieces.roiB.x, dpieces.roiB.x+1, dpieces.roiB.x-1]:
-        for y in [dpieces.roiB.y, dpieces.roiB.y-1, dpieces.roiB.y+1]:
-          if (x,y) != (a,b) and dpieces.roiB.dpossible(x,y):
-            return True
-    else : return False
+    (a,b)=(dpieces.self.x,dpieces.self.y)
+    for x in [self.x, self.x+1, self.x-1]:
+      for y in [self.y, self.y-1, self.y+1]:
+        if (x,y) != (a,b) and self.dpossible(x,y):
+          return True
+    return False
 
 class cavalier(Piece):
   def __init__(self, couleur, positionix, positioniy, nom):
