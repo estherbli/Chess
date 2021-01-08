@@ -236,8 +236,10 @@ class Piece:
   
   def mat(self, L, cavalier):    #appel sur la même pièce que echec
     mat=True          #part du principe que c'est vrai : plus facile à manipuler
+    if self.couleur == 'blanc' : roi = dpieces.roiN
+    else : roi = dpieces.roiB
     if len(L)>1 or cavalier:  #seul le roi peut se sauver #le cavalier peut être autre que la première pièce
-      if roi.peut_bouger():
+      if self roi.peut_bouger():
         return False
       else : return mat
     else: #une pièce peut s'interposer
