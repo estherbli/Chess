@@ -512,7 +512,7 @@ class roi(Piece):
     return False
   
   def peut_bouger(self):
-    (a,b)=(dpieces.self.x,dpieces.self.y)
+    (a,b)=(self.x,self.y)
     for x in [self.x, self.x+1, self.x-1]:
       for y in [self.y, self.y-1, self.y+1]:
         if (x,y) != (a,b) and self.dpossible(x,y):
