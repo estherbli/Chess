@@ -221,32 +221,16 @@ class general() :
         (6,1),(6,2),
         (4,4),(3,2),
         (2,0),(2,6),#tour blanche
-        (6,7),(4,7),#tour noir près du roi
-        (1,6),(3,5),#cavalier
-        (4,7),(4,0),#tour noir
+        (6,7),(4,7),#tour noire près du roi
+        (1,6),(3,5),#cavalier blanc
+        (4,7),(4,0),#tour noir ###
         (6,0),(7,1),#roi blanc
         (3,2),(5,1),#cavalier noir
         (3,5),(5,6), #cavalier blanc censé
         (7,7),(6,6),
         (5,6),(6,4),
         (6,6),(7,5),
-        (2,6),(7,6),
-        (7,5),(6,5),
-        (3,4),(6,7),
-        (6,5),(5,4),
-        (6,4),(5,2),
-        (4,0),(7,0),
-        (7,1),(6,1),
-        (5,4),(4,3),
-        (5,3),(5,2),
-        (6,1),(6,2),
-        (4,4),(3,2),
-        (7,6),(7,3),
-        (2,0),(2,6),
-        (6,7),(5,7),
-        (1,6),(3,5),
-        (4,7),(4,0),
-        (6,0),(7,1),]
+        (2,6),(7,6)]
         tour=0 #nombre de tour pour la partie de Kasparov
 
 
@@ -355,7 +339,6 @@ class general() :
                             position_depart=memoire[0][0],memoire[0][1]
                             position_arrivee=case[0],case[1]
                             piece_a_deplacer=dpieces.Echiquier[position_depart]
-
                             if position_depart in dpieces.Echiquier:
                                 result=pieces.Piece.deplacement(piece_a_deplacer, position_arrivee)
 
@@ -535,7 +518,7 @@ class general() :
                                                                 dpieces.Echiquier[position_arrivee]=pieces.cavalier('noir', position_arrivee[0],position_arrivee[1], 'cavalierN')
                                                                 piece_a_deplacer=dpieces.Echiquier[position_arrivee]
                                                                 en_attente_de_decision=False
-                                                                
+                                    if (position_depart, position_arrivee) == ((5,4),(4,3)): breakpoint()                                                                
                                     resultat = piece_a_deplacer.echec_et_mat() #on appelle echec sur la piece qui vient de bouger
                                                                             
                                     if resultat == "mat": #on est dans un cas d'échec et mat, c'est la fin de la partie
@@ -750,14 +733,14 @@ class general() :
                                     dpieces.dameB = pieces.dame('blanc', 3, 0, 'dameB') 
                                     dpieces.roiB = pieces.roi('blanc', 4, 0, 'roiB')
 
-                                    tourN1 = pieces.tour('noir', 0, 7, 'tourN')
-                                    tourN2 = pieces.tour('noir', 7, 7, 'tourN')
-                                    cavalierN1 = pieces.cavalier('noir', 1, 7, 'cavalierN')
-                                    cavalierN2 = pieces.cavalier('noir', 6, 7, 'cavalierN')
-                                    fouN1 = pieces.fou('noir', 2, 7, 'fouN')
-                                    fouN2 = pieces.fou('noir', 5, 7, 'fouN')
-                                    dameN = pieces.dame('noir', 3, 7, 'dameN') 
-                                    roiN = pieces.roi('noir', 4, 7, 'roiN')
+                                    dpieces.tourN1 = pieces.tour('noir', 0, 7, 'tourN')
+                                    dpieces.tourN2 = pieces.tour('noir', 7, 7, 'tourN')
+                                    dpieces.cavalierN1 = pieces.cavalier('noir', 1, 7, 'cavalierN')
+                                    dpieces.cavalierN2 = pieces.cavalier('noir', 6, 7, 'cavalierN')
+                                    dpieces.fouN1 = pieces.fou('noir', 2, 7, 'fouN')
+                                    dpieces.fouN2 = pieces.fou('noir', 5, 7, 'fouN')
+                                    dpieces.dameN = pieces.dame('noir', 3, 7, 'dameN') 
+                                    dpieces.roiN = pieces.roi('noir', 4, 7, 'roiN')
 
                                     dpieces.Echiquier={
                                         (0,0) : dpieces.tourB1, (7,0) : dpieces.tourB2, (1,0) : dpieces.cavalierB1, (6,0) : dpieces.cavalierB2, (2,0) : dpieces.fouB1, (5,0) : dpieces.fouB2, (3,0) : dpieces.dameB, (4,0) : dpieces.roiB, 
