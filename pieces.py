@@ -1,6 +1,8 @@
 import pygame
 import dpieces
-path = ""
+path_milo = "C:\\Users\\emili\\OneDrive\\Documents\\CPES-2\\informatique\\chess"
+path_esther="C:\\Users\\esthe\\OneDrive\\Bureau\\CPES-L2\\Info\\projet"
+path_clo="C:\\Users\\cloth\\Documents\\CPES\\CPES2\\algo\\projet"
 
 class Piece:
   def __init__(self, couleur, positionix, positioniy, nom):
@@ -10,7 +12,7 @@ class Piece:
     self.y = positioniy
     #nom est le type de pièce
     self.nom = nom #nom est le type de pièce
-    self.image = pygame.image.load(f"{path}\\{nom}.png")
+    self.image = pygame.image.load(f"{path_esther}\\{nom}.png")
     
   def deplacement(self, position): #change la position de la pièce et supprime la pièce mangée du dictionnaire 
     x = position[0] #transforme le tuple en deux coordonnées distinctes
@@ -92,7 +94,7 @@ class Piece:
         self.joué = True
 
       #changer eppossible False sauf le self
-      if self.couleur == 'blanc' : yep = 3 #yep = y du prise en passant pour les blancs
+      if self.couleur == 'blanc' : yep = 3 #yep = y (position) des pions qui auraient pu être pris en passant mais qui ne peuvent plus l'être
       else : yep = 4
       for i in range(0,8):
         if (i, yep) in dpieces.Echiquier and (i, yep) != (x,y):
@@ -308,7 +310,7 @@ class Piece:
                 return mat   #sort dès qu'on trouve une pièce pour bloquer
         return mat
 
-  def pat(self): #vérifie que la couleur adverse peut encore
+  def pat(self): #vérifie que la couleur adverse peut encore bouger
     for piece in dpieces.Echiquier:
       if self.couleur != dpieces.Echiquier[piece].couleur :
         if 'cavalier' in dpieces.Echiquier[piece].nom :
@@ -318,10 +320,10 @@ class Piece:
               return False
         else : 
           #teste des positions
-          (a,b)=(self.x,self.y)
-          for x in [self.x, self.x+1, self.x-1]:
-            for y in [self.y, self.y-1, self.y+1]:
-              if (self.x,self.y) != (a,b):
+          (a,b)=(piece.x,piece.y)
+          for x in [piece.x, piece.x+1, piece.x-1]:
+            for y in [piece.y, piece.y-1, piece.y+1]:
+              if (piece.x,piece.y) != (a,b):
                 if dpieces.Echiquier[piece].dpossible(x,y):
                   return False
     return True
@@ -450,10 +452,15 @@ class roi(Piece):
     else : return False
   
   def presderoioupion(self,x,y): #vérifie que le roi ne peut pas se mettre en echec en se rapprochant de l'autre roi
-    for i in [(x+1,y+1),(x+1,y),(x+1,y-1),(x,y+1),(x-1,y+1),(x-1,y),(x-1,y-1),(x,y+1),(x,y-1)]:
-      if i in dpieces.Echiquier and dpieces.Echiquier[i].couleur!=self.couleur and ('roi' in dpieces.Echiquier[i].nom or 'pion' in dpieces.Echiquier[i].nom):
-        return True
-    return False
+    if self.couleur = 'blanc':
+      for i in [(x+1,y),(x+1,y-1),(x,y+1),(x-1,y),(x-1,y-1),(x,y-1)]: #mise en échec par le roi adverse ->déplacement impossible
+        if i in dpieces.Echiquier and dpieces.Echiquier[i].couleur!=self.couleur and ('roi' in dpieces.Echiquier[i].nom):
+          return True
+      return
+      for i in [(x+1,y+1),(x-1,y+1)]: #pion qui peut manger le roi ? -> déplacement impossible
+        if i in dpieces.Echiquier and dpieces.Echiquier[i].couleur!=self.couleur and ('roi' in dpieces.Echiquier[i].nom) or 'pion' in dpieces.Echiquier[i].nom
+      return False
+    if self.couleur = 'noir'
 
 
   
