@@ -519,7 +519,7 @@ class general() :
                                                                 piece_a_deplacer=dpieces.Echiquier[position_arrivee]
                                                                 en_attente_de_decision=False
                                                               
-                                    resultat = piece_a_deplacer.echec_et_mat() #on appelle echec sur la piece qui vient de bouger
+                                    resultat = piece_a_deplacer.echec_et_mat() #on appelle echec_et_mat sur la piece qui vient de bouger
                                                                             
                                     if resultat == "mat": #on est dans un cas d'échec et mat, c'est la fin de la partie
                                         self.main_surface.fill((131, 166, 151))
@@ -527,11 +527,12 @@ class general() :
                                         pygame.time.delay(2000)
                                         fin_de_partie=True
                                     
-                                    if piece_a_deplacer.pat() :
-                                        self.main_surface.fill((131, 166, 151))
-                                        self.ecrire("Pat", (460,250), taille_ecriture=35)
-                                        pygame.time.delay(2000)
-                                        fin_de_partie=True
+                                    elif resultat == False: #dans le cas où on est pas en échec
+                                        if piece_a_deplacer.pat(): #on regarde si on est en pat
+                                            self.main_surface.fill((131, 166, 151))
+                                            self.ecrire("Pat", (460,250), taille_ecriture=35)
+                                            pygame.time.delay(2000)
+                                            fin_de_partie=True
 
                                 case=()
                                 memoire=[]
