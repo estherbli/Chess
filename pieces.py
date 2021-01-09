@@ -452,15 +452,22 @@ class roi(Piece):
     else : return False
   
   def presderoioupion(self,x,y): #vérifie que le roi ne peut pas se mettre en echec en se rapprochant de l'autre roi
-    if self.couleur = 'blanc':
+    if self.couleur == 'blanc':
       for i in [(x+1,y),(x+1,y-1),(x,y+1),(x-1,y),(x-1,y-1),(x,y-1)]: #mise en échec par le roi adverse ->déplacement impossible
         if i in dpieces.Echiquier and dpieces.Echiquier[i].couleur!=self.couleur and ('roi' in dpieces.Echiquier[i].nom):
           return True
       return
-      for i in [(x+1,y+1),(x-1,y+1)]: #pion qui peut manger le roi ? -> déplacement impossible
-        if i in dpieces.Echiquier and dpieces.Echiquier[i].couleur!=self.couleur and ('roi' in dpieces.Echiquier[i].nom) or 'pion' in dpieces.Echiquier[i].nom
+      for i in [(x+1,y+1),(x-1,y+1)]: #emplacement de pion qui pourrait manger le roi -> déplacement impossible
+        if i in dpieces.Echiquier and dpieces.Echiquier[i].couleur!=self.couleur and ('roi' in dpieces.Echiquier[i].nom) or 'pion' in dpieces.Echiquier[i].nom:
       return False
-    if self.couleur = 'noir'
+    if self.couleur == 'noir':
+      for i in [(x+1,y),(x+1,y+1),(x,y+1),(x-1,y),(x-1,y+1),(x,y-1)]: #mise en échec par le roi adverse ->déplacement impossible
+        if i in dpieces.Echiquier and dpieces.Echiquier[i].couleur!=self.couleur and ('roi' in dpieces.Echiquier[i].nom):
+          return True
+      for i in [(x+1,y-1),(x-1,y-1)]: #emplacement de pion qui pourrait manger le roi -> déplacement impossible
+        if i in dpieces.Echiquier and dpieces.Echiquier[i].couleur!=self.couleur and ('roi' in dpieces.Echiquier[i].nom) or 'pion' in dpieces.Echiquier[i].nom:
+          return True
+      return False
 
 
   
