@@ -518,7 +518,7 @@ class general() :
                                                                 dpieces.Echiquier[position_arrivee]=pieces.cavalier('noir', position_arrivee[0],position_arrivee[1], 'cavalierN')
                                                                 piece_a_deplacer=dpieces.Echiquier[position_arrivee]
                                                                 en_attente_de_decision=False
-                                    if (position_depart, position_arrivee) == ((5,4),(4,3)): breakpoint()                                                                
+                                                              
                                     resultat = piece_a_deplacer.echec_et_mat() #on appelle echec sur la piece qui vient de bouger
                                                                             
                                     if resultat == "mat": #on est dans un cas d'échec et mat, c'est la fin de la partie
