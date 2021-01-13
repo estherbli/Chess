@@ -1,6 +1,5 @@
 import pygame
 import dpieces
-path = ""
 path_milo = "C:\\Users\\emili\\OneDrive\\Documents\\CPES-2\\informatique\\chess"
 path_esther="C:\\Users\\esthe\\OneDrive\\Bureau\\CPES-L2\\Info\\projet"
 path_clo="C:\\Users\\cloth\\Documents\\CPES\\CPES2\\algo\\projet"
@@ -13,7 +12,7 @@ class Piece:
     self.y = positioniy
     #nom est le type de pièce
     self.nom = nom #nom est le type de pièce
-    self.image = pygame.image.load(f"{path}\\{nom}.png")
+    self.image = pygame.image.load(f"{path_esther}\\{nom}.png")
     
   def deplacement(self, position): #change la position de la pièce et supprime la pièce mangée du dictionnaire 
     x = position[0] #transforme le tuple en deux coordonnées distinctes
@@ -331,14 +330,13 @@ class Piece:
               return False
         else : 
           #teste des positions
-          (a,b)=(piece.x,piece.y)
+          (a,b) = (piece.x,piece.y)
           for x in [piece.x, piece.x+1, piece.x-1]:
             for y in [piece.y, piece.y-1, piece.y+1]:
-              if (piece.x,piece.y) != (a,b):
+              if (x,y) != (a,b):
                 if piece.dpossible(x,y):
                   return False
     return True
-
 
 class fou(Piece):
   def __init__(self, couleur, positionix, positioniy, nom):
@@ -468,7 +466,7 @@ class roi(Piece):
         if i in dpieces.Echiquier and dpieces.Echiquier[i].couleur!=self.couleur and ('roi' in dpieces.Echiquier[i].nom):
           return True
       for i in [(x+1,y+1),(x-1,y+1)]: #emplacement de pion qui pourrait manger le roi -> déplacement impossible
-        if i in dpieces.Echiquier and dpieces.Echiquier[i].couleur!=self.couleur and ('roi' in dpieces.Echiquier[i].nom) or 'pion' in dpieces.Echiquier[i].nom:
+        if i in dpieces.Echiquier and dpieces.Echiquier[i].couleur!=self.couleur and ('roi' in dpieces.Echiquier[i].nom or 'pion' in dpieces.Echiquier[i].nom):
           return True
       return False
     if self.couleur == 'noir':
