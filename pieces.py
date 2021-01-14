@@ -569,8 +569,11 @@ class roi(Piece):
     (a,b)=(self.x,self.y)
     for x in [self.x, self.x+1, self.x-1]:
       for y in [self.y, self.y-1, self.y+1]:
-        if (x,y) != (a,b) and self.dpossible(x,y):
-          return True
+        if 0<=x<8 and 0<=y<8 and (x,y) != (a,b) and self.dpossible(x,y):
+          if (x,y) in dpieces.Echiquier:
+            if dpieces.Echiquier[(x,y)].couleur != self.couleur:
+              return True
+          else : return True
     return False
 
 class cavalier(Piece):
