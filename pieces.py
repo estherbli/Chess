@@ -1,6 +1,5 @@
 import pygame
 import dpieces
-path = ''
 path_milo = "C:\\Users\\emili\\OneDrive\\Documents\\CPES-2\\informatique\\chess"
 path_esther="C:\\Users\\esthe\\OneDrive\\Bureau\\CPES-L2\\Info\\projet"
 path_clo="C:\\Users\\cloth\\Documents\\CPES\\CPES2\\algo\\projet"
@@ -13,11 +12,40 @@ class Piece:
     self.y = positioniy
     #nom est le type de pièce
     self.nom = nom #nom est le type de pièce
-    self.image = pygame.image.load(f"{path}\\{nom}.png")
+    self.image = pygame.image.load(f"{path_esther}\\{nom}.png")
     
   def deplacement(self, position): #change la position de la pièce et supprime la pièce mangée du dictionnaire 
     x = position[0] #transforme le tuple en deux coordonnées distinctes
     y = position [1]
+    #vérifier que le déplacement est possible pour la pièce
+    if 'roi' in self.nom:
+      if self.dpossible(x,y) and self.roque(x,y) == True:
+        if self.couleur == 'blanc': #test pour savoir quel type de roque
+          if (x,y) == (self.x+2, self.y): 
+            ancienxytour = (7,0)
+            nouveauxytour = (5,0)
+          else :
+            ancienxytour = (0,0)
+            nouveauxytour = (3,0)
+        if self.couleur == 'noir':
+          if (x,y) == (self.x+2, self.y):
+            ancienxytour = (7,7)
+            nouveauxytour = (5,7)   
+          else :
+            ancienxytour = (0,7)
+            nouveauxytour = (3,7)
+        #bouger le roi
+        ancienxyroi = (self.x,self.y)
+        self.x = x #changer les coordonnées de la pièce
+        self.joué = True
+        dpieces.Echiquier[(x,y)] = self #on bouge la pièce en la rajoutant dans le dictionnaire avec comme clé sa nouvelle position
+        dpieces.Echiquier.pop(ancienxyroi) #on supprime l'ancienne pièce
+        #bouger la tour
+        dpieces.Echiquier[ancienxytour].joué = True
+        dpieces.Echiquier[ancienxytour].x = nouveauxytour[0]
+        dpieces.Echiquier[nouveauxytour] = dpieces.Echiquier[ancienxytour]
+        dpieces.Echiquier.pop(ancienxytour)
+        return None #le déplacement est fini, le roque a été fait
     #on vérifie que le déplacement est possible
     if self.dpossible(x,y):
       piece_prise = None
@@ -47,7 +75,9 @@ class Piece:
       dpieces.Echiquier.pop(ancienxy) #on supprime l'ancienne clé (position) de la pièce
 
       if (self.couleur == 'blanc' and dpieces.roiB.echec == True) or (self.couleur == 'noir' and dpieces.roiN.echec == True): #si on était déjà en échec on doit ne plus être en échec
-        if self.echectest():
+        if 'roi' in self.nom : echec = self.echectest(x,y)
+        else : echec = self.echectest()
+        if echec:
           #remettre la piece prise
           (self.x,self.y) = ancienxy
           dpieces.Echiquier[ancienxy] = self #piece dans sa position originale
@@ -60,7 +90,7 @@ class Piece:
           if self.couleur == 'blanc': dpieces.roiB.echec = False
           if self.couleur == 'noir': dpieces.roiN.echec = False 
 
-      if ('pion' in self.nom) or ('tour' in self.nom):
+      if (('roi' in self.nom) or ('pion' in self.nom) or ('tour' in self.nom)):
         self.joué = True
 
       #changer eppossible False sauf le self
@@ -334,6 +364,7 @@ class fou(Piece):
     else : return False
 
 
+
 class tour(Piece):
   def __init__(self, couleur, positionix, positioniy, nom):
     Piece.__init__(self, couleur,positionix, positioniy, nom)
@@ -419,65 +450,6 @@ class roi(Piece):
     self.joué = False
     self.echec = False #variable bool pour restreindre les mouvements du roi
 
-  def deplacement(self, position): #change la position de la pièce et supprime la pièce mangée du dictionnaire 
-    x = position[0] #transforme le tuple en deux coordonnées distinctes
-    y = position [1]
-    #vérifier que le déplacement est possible pour la pièce
-    if not(self.echectest(x,y)) and self.roque(x,y) == True:
-      if self.couleur == 'blanc': #test pour savoir quel type de roque
-        if (x,y) == (self.x+2, self.y): 
-          ancienxytour = (7,0)
-          nouveauxytour = (5,0)
-        else :
-          ancienxytour = (0,0)
-          nouveauxytour = (3,0)
-      if self.couleur == 'noir':
-        if (x,y) == (self.x+2, self.y):
-          ancienxytour = (7,7)
-          nouveauxytour = (5,7)   
-        else :
-          ancienxytour = (0,7)
-          nouveauxytour = (3,7)
-      #bouger le roi
-      ancienxyroi = (self.x,self.y)
-      self.x = x #changer les coordonnées de la pièce
-      self.joué = True
-      dpieces.Echiquier[(x,y)] = self #on bouge la pièce en la rajoutant dans le dictionnaire avec comme clé sa nouvelle position
-      dpieces.Echiquier.pop(ancienxyroi) #on supprime l'ancienne pièce
-      #bouger la tour
-      dpieces.Echiquier[ancienxytour].joué = True
-      dpieces.Echiquier[ancienxytour].x = nouveauxytour[0]
-      dpieces.Echiquier[nouveauxytour] = dpieces.Echiquier[ancienxytour]
-      dpieces.Echiquier.pop(ancienxytour)
-      return None #le déplacement est fini, le roque a été fait
-
-    #on vérifie que le déplacement est possible
-    if self.dpossible(x,y):
-      if (x,y) in dpieces.Echiquier: #prendre une pièce
-        if self.couleur != dpieces.Echiquier[(x,y)].couleur:  #vérifie que la pièce qui va être prise est bien de la couleur adverse
-          dpieces.Echiquier.pop((x,y))  #pièce prise = supprimée de l'échiquier
-        else : return 'Déplacement impossible' #on ne peut pas manger un de ses propres pions
-
-      #bouger la pièce 
-      ancienxy = (self.x,self.y)
-      self.x = x #changer les coordonnées de la pièce
-      self.y = y
-      dpieces.Echiquier[(x,y)] = self #on bouge la pièce en la rajoutant dans le dictionnaire avec comme clé sa nouvelle position
-      dpieces.Echiquier.pop(ancienxy) #on supprime l'ancienne clé (position) de la pièce
-
-      if self.echec == True:
-        #si on a pu déplacer le roi on a déjà testé si on est encore en échec
-        if self.couleur == 'blanc': dpieces.roiB.echec = False
-        if self.couleur == 'noir': dpieces.roiN.echec = False 
-      self.joué = True
-
-      #changer eppossible False sauf le self
-      if self.couleur == 'blanc' : yep = 3 #yep = y (position) des pions qui auraient pu être pris en passant mais qui ne peuvent plus l'être
-      else : yep = 4
-      for i in range(0,8):
-        if (i, yep) in dpieces.Echiquier and (i, yep) != (x,y):
-          dpieces.Echiquier[(i,yep)].eppossible = False
-    else : return 'Déplacement impossible'
 
   def dpossible(self, x,y):
     if self.presderoioupion(x,y)==False: #echectest prend en compte toutes les situations qui aurait pu se faire sans déplacer le roi
