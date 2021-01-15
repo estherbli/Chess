@@ -13,7 +13,7 @@ class Piece:
     self.y = positioniy
     #nom est le type de pièce
     self.nom = nom #nom est le type de pièce
-    self.image = pygame.image.load(f"{path}\\{nom}.png")
+    self.image = pygame.image.load(f"{path_esther}\\{nom}.png")
     
   def deplacement(self, position): #change la position de la pièce et supprime la pièce mangée du dictionnaire 
     x = position[0] #transforme le tuple en deux coordonnées distinctes
@@ -76,7 +76,7 @@ class Piece:
       dpieces.Echiquier.pop(ancienxy) #on supprime l'ancienne clé (position) de la pièce
 
       if (self.couleur == 'blanc' and dpieces.roiB.echec == True) or (self.couleur == 'noir' and dpieces.roiN.echec == True): #si on était déjà en échec on doit ne plus être en échec
-        if 'roi' in self.nom : echec = self.echectest(x,y)
+        if 'roi' in self.nom : echec = False #déjà vérifié dans dpossible du roi
         else : echec = self.echectest()
         if echec:
           #remettre la piece prise
@@ -521,10 +521,11 @@ class roi(Piece):
       else : return False
 
   def echectest(self, roix, roiy): #a appeler pour vérifier si echec sur roi de la même couleur sans changer propriété ni vérifier mat #renvoie True
+    breakpoint()
     piece_à_prendre = False
     #on se place comme si le roi s'était déplacé
     roi = dpieces.Echiquier[(self.x,self.y)]
-    if (roix,roiy) in dpieces.Echiquier : 
+    if (roix,roiy) in dpieces.Echiquier and dpieces.Echiquier[(roix,roiy)].couleur != roi.couleur: 
       piece_à_prendre = True
       piece_prise = dpieces.Echiquier[(roix,roiy)]
       dpieces.Echiquier.pop((roix,roiy))
