@@ -13,7 +13,7 @@ class Piece:
     self.y = positioniy
     #nom est le type de pièce
     self.nom = nom #nom est le type de pièce
-    self.image = pygame.image.load(f"{path_esther}\\{nom}.png")
+    self.image = pygame.image.load(f"{path}\\{nom}.png")
 
   def deplacement(self, position): #change la position de la pièce et supprime la pièce mangée du dictionnaire
     x = position[0] #transforme le tuple en deux coordonnées distinctes
