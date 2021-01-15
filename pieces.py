@@ -551,7 +551,6 @@ class roi(Piece):
           dpieces.Echiquier[(roi.x,roi.y)] = roi
           return echec
     #remet sitution initiale
-    breakpoint()
     dpieces.Echiquier.pop((roix,roiy))
     if piece_à_prendre: 
       dpieces.Echiquier[(roix,roiy)] = piece_prise
