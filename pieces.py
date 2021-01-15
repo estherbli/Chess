@@ -13,7 +13,7 @@ class Piece:
     self.y = positioniy
     #nom est le type de pièce
     self.nom = nom #nom est le type de pièce
-    self.image = pygame.image.load(f"{path_esther}\\{nom}.png")
+    self.image = pygame.image.load(f"{path}\\{nom}.png")
     
   def deplacement(self, position): #change la position de la pièce et supprime la pièce mangée du dictionnaire 
     x = position[0] #transforme le tuple en deux coordonnées distinctes
@@ -521,7 +521,6 @@ class roi(Piece):
       else : return False
 
   def echectest(self, roix, roiy): #a appeler pour vérifier si echec sur roi de la même couleur sans changer propriété ni vérifier mat #renvoie True
-    breakpoint()
     piece_à_prendre = False
     #on se place comme si le roi s'était déplacé
     roi = dpieces.Echiquier[(self.x,self.y)]
