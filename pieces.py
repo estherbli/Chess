@@ -1,9 +1,6 @@
 import pygame
 import dpieces
 path=""
-path_milo = "C:\\Users\\emili\\OneDrive\\Documents\\CPES-2\\informatique\\chess"
-path_esther="C:\\Users\\esthe\\OneDrive\\Bureau\\CPES-L2\\Info\\projet"
-path_clo="C:\\Users\\cloth\\Documents\\CPES\\CPES2\\algo\\projet"
 
 class Piece:
   def __init__(self, couleur, positionix, positioniy, nom):
@@ -162,10 +159,12 @@ class Piece:
         if self.y<dpieces.roiB.y: pasy =-1
         xn = self.x + pasx
         yn = self.y + pasy
-        for xn in range(0,dpieces.roiB.x,-pasx):
-          for yn in range(0,dpieces.roiB.y,-pasy):
+        for xn in range(self.x - pasx,dpieces.roiB.x,-pasx):
+          for yn in range(self.y - pasy,dpieces.roiB.y,-pasy):
             if (xn,yn) in dpieces.Echiquier:
               return False
+        xn = self.x + pasx
+        yn = self.y + pasy
         while not (xn,yn) in dpieces.Echiquier and 0<=xn<8 and 0<=yn<8:   #parcours entre pièce à clouer et suivante
           xn+=pasx
           yn+=pasy
@@ -227,6 +226,8 @@ class Piece:
           for yn in range(0,dpieces.roiN.y,-pasy):
             if (xn,yn) in dpieces.Echiquier:
               return False
+        xn = self.x + pasx
+        yn = self.y + pasy
         while not (xn,yn) in dpieces.Echiquier and 0<=xn<8 and 0<=yn<8:   #parcours entre pièce à clouer et suivante
           xn+=pasx
           yn+=pasy
