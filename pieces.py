@@ -155,7 +155,7 @@ class Piece:
           yn+=pasy
         if (xn,yn) in dpieces.Echiquier and not('roi' in dpieces.Echiquier[(xn,yn)].nom):
           if dpieces.Echiquier[(xn,yn)].couleur=="noir" and dpieces.Echiquier[(xn,yn)].dlegal(dpieces.roiB.x,dpieces.roiB.y):
-            if not(x>=self.x*pasx and y>=self.y*pasy) or not(x<=self.x*pasx and y<=self.y*pasy):
+            if not(abs(xn-x)==abs(yn-y)):
               return True   #ds dpossible : si cloué=True => dpossible=False
           else: return False
     if self.couleur=="noir":   #couleur de la pièce sur laquelle on applique
@@ -199,7 +199,7 @@ class Piece:
           yn+=pasy
         if (xn,yn) in dpieces.Echiquier and not('roi' in dpieces.Echiquier[(xn,yn)].nom):
           if dpieces.Echiquier[(xn,yn)].couleur=="blanc" and dpieces.Echiquier[(xn,yn)].dlegal(dpieces.roiN.x,dpieces.roiN.y):
-            if not(x>=self.x*pasx and y>=self.y*pasy) or not(x<=self.x*pasx and y<=self.y*pasy):
+            if not(abs(xn-x)==abs(yn-y)):
               return True   #ds dpossible : si cloué=True => dpossible=False
           else: return False
     return False
